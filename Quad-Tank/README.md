@@ -14,6 +14,7 @@ All code relating to explicit MPC on the quad-tank.
 
 # How to use the files:
 
+### MATLAB Portion
 Run *main_EMPC_QuadTank.m* (Top Level) 
 >*quad_tank_setup.m* to create the continuous time SS 
 >
@@ -22,3 +23,7 @@ Run *main_EMPC_QuadTank.m* (Top Level)
 >*observer_calc.m* is called to generate the observer matrices
 
 Run *Sim_Main.slx* (Top simulation)
+
+### PLC Portion
+Copy and paste PWA_Solution.txt into a GVL in TwinCAT 3
+
