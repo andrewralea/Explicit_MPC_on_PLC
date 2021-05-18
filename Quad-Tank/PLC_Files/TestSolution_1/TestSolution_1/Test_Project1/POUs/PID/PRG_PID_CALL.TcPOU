@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <POU Name="PRG_PID_CALL" Id="{54b85479-030f-46b0-98d4-c25718c13426}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_PID_CALL
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+
+// Scale 12 bit digital voltage reading to V in range of EL3004 (0, +10)
+GVL.rAI_1 := (INT_TO_REAL(IO.ai_tank_1_V)/(32767.0 - 0.0)) * 10.0;
+GVL.rAI_2 := (INT_TO_REAL(IO.ai_tank_2_V)/(32767.0 - 0.0)) * 10.0;
+
+PRG_FB_CTRL_PID();
+
+// Unscale real V output to 12 bit digital value 
+IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
+IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_PID_CALL">
+      <LineId Id="6" Count="9" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
