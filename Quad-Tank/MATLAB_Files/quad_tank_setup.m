@@ -97,6 +97,8 @@ G(1,2) = tf((1-gamma2)*c2, conv([T1 1],[T3 1]));
 G(2,1) = tf((1-gamma1)*c3, conv([T2 1],[T4 1]));
 G(2,2) = tf(gamma2*c4, [T2 1]);
 
+% [Ac, Bc, Cc, Dc] = ssdata(G);
+
 % Linearized State-Space Model
 Ac =    [-1/T1      0           At3/(At1*T3)    0;
         0           -1/T2       0               At4/(At2*T4);

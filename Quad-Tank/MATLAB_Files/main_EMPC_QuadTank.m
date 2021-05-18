@@ -11,22 +11,12 @@
 clear
 clc
 
-%% Generate continuous time state space matrices
+%% Implicit MPC
+% Generate continuous time state space matrices
 [A_ct, B_ct, C_ct, D_ct, G] = quad_tank_setup();
-
-%% Discretize with Ts = 5s using Zero-Order Hold
-Ts = 5;
-[A_d,B_d,C_d,D_d] = discretizer(A_ct, B_ct, C_ct, D_ct, Ts);
 
 % Create Final State-Space representation
 plant = ss(A_ct, B_ct, C_ct, D_ct);
-plant_for_sim = ss(G);
-
-
-%% Observer
-[A_ob, B_ob, C_ob] = observer_calc(A_d, B_d, C_d, D_d);
-
-%% Explicit MPC 
 
 % Creating Controller
 Ts = 0.1;       % sampling period
@@ -36,7 +26,20 @@ m = 2;          % control horizon
 mpcobj = mpc(plant,Ts, p, m);
 
 % Specify constraints of the manipulated variable (V)
-mpcobj.MV = struct('Min', {0, 0},'Max', {21, 21});
+mpcobj.MV = struct('Min', {0, 0},'Max', {22, 22});
+
+% Create discrete model for simulation
+plant_discrete = c2d(plant,Ts);
+
+% Simulation
+Tstop = 30;                             % simulation time
+Nf = round(Tstop/Ts);                   % number of simulation steps
+r = ones(Nf,2);                         % output reference signal
+
+sim(mpcobj,Nf,r)                        % simulate plant and controller in closed loop
+
+
+%% Explicit MPC
 
 % Generate Explicit MPC
 range = generateExplicitRange(mpcobj);
