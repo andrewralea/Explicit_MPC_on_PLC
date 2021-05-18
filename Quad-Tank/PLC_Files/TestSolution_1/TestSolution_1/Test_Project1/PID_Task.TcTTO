@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <Task Name="PID_Task" Id="{302947d7-2473-4a25-9977-e4e17beb4bf1}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>10000</CycleTime>
+    <Priority>1</Priority>
+    <PouCall>
+      <Name>PRG_PID_CALL</Name>
+    </PouCall>
+    <TaskFBGuid>{9dfe113e-51e7-425a-aa9b-a74c4eaf519f}</TaskFBGuid>
+    <Fb_init>{d14dd363-e243-447e-85f6-1271949c7dd3}</Fb_init>
+    <Fb_exit>{5679df8c-6f45-43f7-8b25-5a3a51f58f07}</Fb_exit>
+    <CycleUpdate>{1beed0c9-81fa-48e1-88cc-f29848f098e1}</CycleUpdate>
+    <PostCycleUpdate>{0b569f84-fb4a-4f9f-b20f-f73889face6c}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>

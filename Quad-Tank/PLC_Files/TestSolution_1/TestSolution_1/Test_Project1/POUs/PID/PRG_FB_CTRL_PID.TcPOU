@@ -3,7 +3,7 @@
   <POU Name="PRG_FB_CTRL_PID" Id="{ab4b9d68-903a-4dd7-8d89-3218bcdb26f1}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_FB_CTRL_PID
 VAR
-	fSetpointValue					: LREAL		:= 1.0;
+	fSetpointValue					: LREAL		:= 2.0;
 	fActualValue					: LREAL;
 	fManSyncValue					: LREAL;
 	bSync							: BOOL;
@@ -28,14 +28,14 @@ END_VAR
     <Implementation>
       <ST><![CDATA[IF bInit THEN
 	(* init parameter struct *)
-	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#10ms;
-	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#10ms;
+	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#50MS;
+	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#50MS;
 	stCTRL_PID_PARAMS.fKp					:= 2.0;			(* proportional gain Kp				*)
 	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
 	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
 	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:=  95;			(* maximum output limit				*)
-	stCTRL_PID_PARAMS.fOutMinLimit			:= -95;			(* minimum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:= 9;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMinLimit			:= 0;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
 	eMode := eCTRL_MODE_ACTIVE;
@@ -45,19 +45,11 @@ END_VAR
 END_IF
 
 
-(* generate input signal *)
-fbTON( IN:= TRUE,
-		PT:= T#6S);
-		
-IF fbTON.Q THEN
-	fbTON( IN:= FALSE);
-	fSetpointValue := -1.0 * fSetpointValue;
-END_IF
-
 (* copy var to scope var *)
 GVL.fSetpointValueToScope 	:= fSetpointValue;
 GVL.fActualValueToScope 	:= fActualValue;
 
+fActualValue := GVL.rAI_1;
 
 (* call controller *)
 fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
@@ -73,12 +65,18 @@ fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
 				bError				=> bError
 				);
 
+GVL.rAO_1 := PRG_FB_CTRL_PID.fOut;
 
 (* copy var to scope var *)
 GVL.fOutToScope := fOut;]]></ST>
     </Implementation>
     <LineIds Name="PRG_FB_CTRL_PID">
-      <LineId Id="3" Count="48" />
+      <LineId Id="3" Count="16" />
+      <LineId Id="29" Count="6" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="36" Count="14" />
+      <LineId Id="76" Count="0" />
+      <LineId Id="51" Count="0" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
