@@ -36,8 +36,7 @@ Tstop = 30;                             % simulation time
 Nf = round(Tstop/Ts);                   % number of simulation steps
 r = ones(Nf,2);                         % output reference signal
 
-sim(mpcobj,Nf,r)                        % simulate plant and controller in closed loop
-
+% sim(mpcobj,Nf,r)                      % simulate plant and controller in closed loop
 
 %% Explicit MPC
 
@@ -45,20 +44,20 @@ sim(mpcobj,Nf,r)                        % simulate plant and controller in close
 range = generateExplicitRange(mpcobj);
 
 % Set range of state variables 
-% (state defined as x - x0, where x0 is the setpoint in cm)
-range.State.Min(:) = [-10, -10, -10, -10, -12, -12];
-range.State.Max(:) = [ 20,  20,  20,  20,  18,  18];
+% (state defined as x - x0, where x0 is the operating in cm)
+range.State.Min(:) = [-10, -10, -14, -14, -100, -100];
+range.State.Max(:) = [ 20,  20,  16,  16,  100,  100];
 
 % Reference Bounds (cm)
-range.Reference.Min = [0; 0];
-range.Reference.Max = [20; 20];
+range.Reference.Min = [0, 0];
+range.Reference.Max = [20, 20];
 
 % Range of manipulated variable must contain the constraints (V)
 range.ManipulatedVariable.Min = [0; 0];
-range.ManipulatedVariable.Max = [22; 22];
+range.ManipulatedVariable.Max = [23; 23];
 
 mpcobjExplicit = generateExplicitMPC(mpcobj, range);
 
 % Join pairs of regions with corresponding gains are equal and whose union
 % is a convex set to minimize memory footprint
-mpcobjExplicitSimplified = simplify(mpcobjExplicit, 'exact')
+mpcobjExplicitSimplified = simplify(mpcobjExplicit, 'exact');

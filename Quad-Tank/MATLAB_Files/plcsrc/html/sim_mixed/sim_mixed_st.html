@@ -1,0 +1,1583 @@
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>RTW Report - sim_mixed.st</title>
+<link rel="stylesheet" type="text/css" href="rtwreport.css"></link><script language="JavaScript" type="text/javascript" src="rtwreport_utils.js"></script>
+<SCRIPT type="text/javascript" language="JavaScript" src="slwebview.js"></SCRIPT>
+<SCRIPT type="text/javascript" language="JavaScript" src="id_mapping.js"></SCRIPT>
+</head>
+<body bgcolor="#eeeeee" onload="try {if (top) { if (top.rtwFileOnLoad) top.rtwFileOnLoad(window.document); else local_onload();}} catch(err) {};">
+<p>
+<table border="0" cellspacing="0" cellpadding="6" width="100%%" height="100%%"><tr><td width="100%%" valign="top" bgcolor="#ffffff">
+<h4>File: <a href="file:///plcsrc/sim_mixed.st" target="rtwreport_document_frame" id="linkToText_plain">sim_mixed.st</a></h4>
+<pre id="RTWcode">
+<span><a class="LN" name="1">    1   </a><span class="CT">(*</span>
+</span><span><a class="LN" name="2">    2   </a><span class="CT"> *</span>
+</span><span><a class="LN" name="3">    3   </a><span class="CT"> * File: sim_mixed.st</span>
+</span><span><a class="LN" name="4">    4   </a><span class="CT"> *</span>
+</span><span><a class="LN" name="5">    5   </a><span class="CT"> * IEC 61131-3 Structured Text (ST) code generated for subsystem "sim_mixed/Implicit Controller"</span>
+</span><span><a class="LN" name="6">    6   </a><span class="CT"> *</span>
+</span><span><a class="LN" name="7">    7   </a><span class="CT"> * Model name                      : sim_mixed</span>
+</span><span><a class="LN" name="8">    8   </a><span class="CT"> * Model version                   : 1.35</span>
+</span><span><a class="LN" name="9">    9   </a><span class="CT"> * Model creator                   : andrewralea</span>
+</span><span><a class="LN" name="10">   10   </a><span class="CT"> * Model last modified by          : andrewralea</span>
+</span><span><a class="LN" name="11">   11   </a><span class="CT"> * Model last modified on          : Tue May 18 13:09:48 2021</span>
+</span><span><a class="LN" name="12">   12   </a><span class="CT"> * Model sample time               : 0s</span>
+</span><span><a class="LN" name="13">   13   </a><span class="CT"> * Subsystem name                  : sim_mixed/Implicit Controller</span>
+</span><span><a class="LN" name="14">   14   </a><span class="CT"> * Subsystem sample time           : 0.1s</span>
+</span><span><a class="LN" name="15">   15   </a><span class="CT"> * Simulink PLC Coder version      : 3.3 (R2020b) 29-Jul-2020</span>
+</span><span><a class="LN" name="16">   16   </a><span class="CT"> * ST code generated on            : Tue May 18 13:11:36 2021</span>
+</span><span><a class="LN" name="17">   17   </a><span class="CT"> *</span>
+</span><span><a class="LN" name="18">   18   </a><span class="CT"> * Target IDE selection            : Beckhoff TwinCAT 3</span>
+</span><span><a class="LN" name="19">   19   </a><span class="CT"> * Test Bench included             : No</span>
+</span><span><a class="LN" name="20">   20   </a><span class="CT"> *</span>
+</span><span><a class="LN" name="21">   21   </a><span class="CT"> *)</span>
+</span><span><a class="LN" name="22">   22   </a><span class="KW">FUNCTION_BLOCK</span> Implicit
+</span><span><a class="LN" name="23">   23   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="24">   24   </a>    ssMethodType: <span class="KW">SINT</span>;
+</span><span><a class="LN" name="25">   25   </a>    MeasuredTankOutputs: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="26">   26   </a>    ref: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="27">   27   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="28">   28   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="29">   29   </a>    mv: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="30">   30   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="31">   31   </a><span class="KW">VAR</span>
+</span><span><a class="LN" name="32">   32   </a>    last_mv_DSTATE: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="33">   33   </a>    MathFunction2: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="34">   34   </a>    MathFunction1: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="35">   35   </a>    MathFunction: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="36">   36   </a>    last_x_PreviousInput: <span class="KW">ARRAY</span> [0..5] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="37">   37   </a>    Memory_PreviousInput: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">BOOL</span>;
+</span><span><a class="LN" name="38">   38   </a>    c_a: <span class="KW">ARRAY</span> [0..11] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.15299877600979192,0.0,0.0,0.15299877600979192,0.0,0.0,0.0,0.0,1.0,0.0,0.0,1.0;
+</span><span><a class="LN" name="39">   39   </a>    Implicit_b_a: <span class="KW">ARRAY</span> [0..11] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.00012829320734723115,1.0284618689926092E-5,2.4378658054917943E-5,
+</span><span><a class="LN" name="40">   40   </a>        9.19840748563352E-5,0.095123941749644919,1.2151957187730602E-6,2.8085799988137366E-5,0.00013352110274451323,
+</span><span><a class="LN" name="41">   41   </a>        9.1481345508264347E-5,2.6760937667881709E-5,-1.5083632311296561E-6,0.095123901802077374;
+</span><span><a class="LN" name="42">   42   </a>    b_Mlim: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">SINT</span> := 22,22,22,22,0,0,0,0;
+</span><span><a class="LN" name="43">   43   </a>    b_Mu1: <span class="KW">ARRAY</span> [0..15] <span class="KW">OF</span> <span class="KW">SINT</span> := -1,0,-1,0,1,0,1,0,0,-1,0,-1,0,1,0,1;
+</span><span><a class="LN" name="44">   44   </a>    Implicit_b_Ku1: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span> := 5.9492754882972821E-5,1.8991926806624559E-6,1.8991926806624559E-6,
+</span><span><a class="LN" name="45">   45   </a>        5.9663712810129039E-5,3.4079021571385069E-5,8.9313929448378668E-7,1.0150252181219738E-6,
+</span><span><a class="LN" name="46">   46   </a>        3.4166450624283017E-5;
+</span><span><a class="LN" name="47">   47   </a>    Implicit_b_Kx: <span class="KW">ARRAY</span> [0..23] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.0018586236780009755,3.4926471775588163E-5,6.7400357790713952E-5,
+</span><span><a class="LN" name="48">   48   </a>        2.5382991195437073E-6,0.012377561102617883,0.00023229366748986574,1.8953605157923528E-5,
+</span><span><a class="LN" name="49">   49   </a>        0.0018667096849439319,7.5736826796662566E-7,0.00012335967439996092,0.00012646378504830278,
+</span><span><a class="LN" name="50">   50   </a>        0.012395478555877915,0.00092928180510377652,1.2568859120969367E-5,3.8558620458259761E-5,
+</span><span><a class="LN" name="51">   51   </a>        9.9487385682305283E-7,0.0062053215904621963,8.3726583056212175E-5,6.797836913194305E-6,
+</span><span><a class="LN" name="52">   52   </a>        0.00093333329619172485,2.960697977538412E-7,7.0458706555801221E-5,4.5441504782982477E-5,
+</span><span><a class="LN" name="53">   53   </a>        0.0062117450837542356;
+</span><span><a class="LN" name="54">   54   </a>    Implicit_b_Kr: <span class="KW">ARRAY</span> [0..23] <span class="KW">OF</span> <span class="KW">LREAL</span> := -0.0020739763742296251,-1.6905907107077571E-5,-0.0041313452162325716,
+</span><span><a class="LN" name="55">   55   </a>        -6.68206759491346E-5,-0.0061722395121556872,-0.00014856708443365357,-9.1459584754378131E-6,
+</span><span><a class="LN" name="56">   56   </a>        -0.0020752661577623528,-3.6295546307544664E-5,-0.0041364789259918829,-8.10222802653203E-5,
+</span><span><a class="LN" name="57">   57   </a>        -0.006183733472123679,-0.0,-0.0,-0.0020739763742296251,-1.6905907107077571E-5,-0.0041313452162325716,
+</span><span><a class="LN" name="58">   58   </a>        -6.68206759491346E-5,-0.0,-0.0,-9.1459584754378131E-6,-0.0020752661577623528,-3.6295546307544664E-5,
+</span><span><a class="LN" name="59">   59   </a>        -0.0041364789259918829;
+</span><span><a class="LN" name="60">   60   </a>    Implicit_b_Hinv: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span> := 99.409740687364575,-0.01870390960968929,-0.33805395800903737,
+</span><span><a class="LN" name="61">   61   </a>        -0.00998879988801769,0.0,-0.01870390960968929,99.408056908776629,-0.0087797355830947343,-0.3389138209581502,
+</span><span><a class="LN" name="62">   62   </a>        0.0,-0.33805395800903737,-0.0087797355830947343,99.787865064824445,-0.0047194350905236148,0.0,
+</span><span><a class="LN" name="63">   63   </a>        -0.00998879988801769,-0.3389138209581502,-0.0047194350905236148,99.787428601317927,0.0,0.0,0.0,0.0,0.0,
+</span><span><a class="LN" name="64">   64   </a>        9.9999999999999974E-6;
+</span><span><a class="LN" name="65">   65   </a>    b_Ac: <span class="KW">ARRAY</span> [0..39] <span class="KW">OF</span> <span class="KW">SINT</span> := -1,0,-1,0,1,0,1,0,0,-1,0,-1,0,1,0,1,0,0,-1,0,0,0,1,0,0,0,0,-1,0,0,0,1,0,0,0,0,0,
+</span><span><a class="LN" name="66">   66   </a>        0,0,0;
+</span><span><a class="LN" name="67">   67   </a>    Implicit_b_Linv: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span> := 9.970385694986529,-0.0018823536567107852,-0.033841356807291958,
+</span><span><a class="LN" name="68">   68   </a>        -0.00099994335098697765,0.0,0.0,9.9703011519635485,-0.00088051087977516281,-0.033927461319074238,0.0,0.0,
+</span><span><a class="LN" name="69">   69   </a>        0.0,9.9893876109408879,-0.00047244591863780422,0.0,0.0,0.0,0.0,9.9893657757296044,0.0,0.0,0.0,0.0,0.0,
+</span><span><a class="LN" name="70">   70   </a>        0.003162277660168379;
+</span><span><a class="LN" name="71">   71   </a>    Implicit_f_a: <span class="KW">ARRAY</span> [0..11] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.0001276450955094171,1.2854367351689592E-5,2.3997921309368413E-5,
+</span><span><a class="LN" name="72">   72   </a>        8.9335659154009977E-5,0.09512394174964503,1.2151957188376696E-6,2.9283879090142048E-5,
+</span><span><a class="LN" name="73">   73   </a>        0.00013338479733282079,9.0052624136951334E-5,2.5990433777560329E-5,-1.5083632311395109E-6,
+</span><span><a class="LN" name="74">   74   </a>        0.095123901802077124;
+</span><span><a class="LN" name="75">   75   </a>    Implicit_e_a: <span class="KW">ARRAY</span> [0..11] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.013555509581964829,0.00011049700885185901,0.0,0.007544918864475102,
+</span><span><a class="LN" name="76">   76   </a>        0.0,0.0,5.9777984595461545E-5,0.013563939607134739,0.0075957283920631228,0.0,0.0,0.0;
+</span><span><a class="LN" name="77">   77   </a>    Implicit_d_a: <span class="KW">ARRAY</span> [0..35] <span class="KW">OF</span> <span class="KW">LREAL</span> := 0.99199241976281094,0.0,0.0,0.0,0.0,0.0,0.0,0.9932281507698385,0.0,0.0,
+</span><span><a class="LN" name="78">   78   </a>        0.0,0.0,0.015554847722926923,0.0,0.98438237475163026,0.0,0.0,0.0,0.0,0.028694038103379366,0.0,
+</span><span><a class="LN" name="79">   79   </a>        0.97120788890393217,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0;
+</span><span><a class="LN" name="80">   80   </a>    i0_maximum2: maximum2;
+</span><span><a class="LN" name="81">   81   </a>    i0_qr: qr;
+</span><span><a class="LN" name="82">   82   </a>    i0_mpcblock_refmd: mpcblock_refmd;
+</span><span><a class="LN" name="83">   83   </a>    i0_DropConstraint: DropConstraint;
+</span><span><a class="LN" name="84">   84   </a>    i0_abs_c: abs_c;
+</span><span><a class="LN" name="85">   85   </a>    i0_abs_c3: abs_c3;
+</span><span><a class="LN" name="86">   86   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="87">   87   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="88">   88   </a>    xk: <span class="KW">ARRAY</span> [0..5] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="89">   89   </a>    y_innov: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="90">   90   </a>    rseq: <span class="KW">ARRAY</span> [0..5] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="91">   91   </a>    vseq: <span class="KW">ARRAY</span> [0..3] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="92">   92   </a>    v: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="93">   93   </a>    Bc: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="94">   94   </a>    unusedU0: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="95">   95   </a>    zopt: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="96">   96   </a>    b_i: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="97">   97   </a>    iA: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">INT</span>;
+</span><span><a class="LN" name="98">   98   </a>    b_r: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="99">   99   </a>    rMin: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="100">  100   </a>    b_D: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="101">  101   </a>    b_H: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="102">  102   </a>    U: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="103">  103   </a>    cTol: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="104">  104   </a>    cTolComputed: <span class="KW">BOOL</span>;
+</span><span><a class="LN" name="105">  105   </a>    iC: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">INT</span>;
+</span><span><a class="LN" name="106">  106   </a>    nA: <span class="KW">INT</span>;
+</span><span><a class="LN" name="107">  107   </a>    Opt: <span class="KW">ARRAY</span> [0..9] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="108">  108   </a>    Rhs: <span class="KW">ARRAY</span> [0..9] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="109">  109   </a>    DualFeasible: <span class="KW">BOOL</span>;
+</span><span><a class="LN" name="110">  110   </a>    ColdReset: <span class="KW">BOOL</span>;
+</span><span><a class="LN" name="111">  111   </a>    kDrop: <span class="KW">INT</span>;
+</span><span><a class="LN" name="112">  112   </a>    Xnorm0: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="113">  113   </a>    cMin: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="114">  114   </a>    kNext: <span class="KW">INT</span>;
+</span><span><a class="LN" name="115">  115   </a>    cVal: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="116">  116   </a>    AcRow: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="117">  117   </a>    z: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="118">  118   </a>    t: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="119">  119   </a>    iSave: <span class="KW">INT</span>;
+</span><span><a class="LN" name="120">  120   </a>    RLinv: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="121">  121   </a>    c_i: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="122">  122   </a>    TL: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="123">  123   </a>    QQ: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="124">  124   </a>    RR: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="125">  125   </a>    u_i: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="126">  126   </a>    f_j: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="127">  127   </a>    q: <span class="KW">UINT</span>;
+</span><span><a class="LN" name="128">  128   </a>    x: <span class="KW">UINT</span>;
+</span><span><a class="LN" name="129">  129   </a>    rtb_xest: <span class="KW">ARRAY</span> [0..5] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="130">  130   </a>    tmp: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="131">  131   </a>    tmp_0: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="132">  132   </a>    iC_0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="133">  133   </a>    old_u_idx_0: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="134">  134   </a>    old_u_idx_1: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="135">  135   </a>    b_H_tmp: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="136">  136   </a>    b_H_tmp_0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="137">  137   </a>    temp1: <span class="KW">INT</span>;
+</span><span><a class="LN" name="138">  138   </a>    exitg1: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="139">  139   </a>    exitg2: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="140">  140   </a>    exitg3: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="141">  141   </a>    exitg4: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="142">  142   </a>    temp2: <span class="KW">BOOL</span>;
+</span><span><a class="LN" name="143">  143   </a>    temp3: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="144">  144   </a>    temp4: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="145">  145   </a>    temp5: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="146">  146   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="147">  147   </a><span class="KW">CASE</span> ssMethodType <span class="KW">OF</span>
+</span><span><a class="LN" name="148">  148   </a>    SS_INITIALIZE: 
+</span><span><a class="LN" name="149">  149   </a>        <span class="CT">(* SystemInitialize for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="150">  150   </a>        <span class="CT">(* InitializeConditions for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:79')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Memory</i></font></a>' *)</span>
+</span><span><a class="LN" name="151">  151   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="152">  152   </a>            Memory_PreviousInput[c_i] := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="153">  153   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="154">  154   </a>        <span class="CT">(* End of InitializeConditions for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:79')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Memory</i></font></a>' *)</span>
+</span><span><a class="LN" name="155">  155   </a>        
+</span><span><a class="LN" name="156">  156   </a>        <span class="CT">(* InitializeConditions for UnitDelay: '<a href="matlab:coder.internal.code2model('sim_mixed:4:1925')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_mv</i></font></a>' *)</span>
+</span><span><a class="LN" name="157">  157   </a>        last_mv_DSTATE[0] := 0.0;
+</span><span><a class="LN" name="158">  158   </a>        last_mv_DSTATE[1] := 0.0;
+</span><span><a class="LN" name="159">  159   </a>        <span class="CT">(* End of SystemInitialize for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="160">  160   </a>        <span class="CT">(* SystemInitialize for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="161">  161   </a>        <span class="CT">(* InitializeConditions for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:2572')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_x</i></font></a>' *)</span>
+</span><span><a class="LN" name="162">  162   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="163">  163   </a>            last_x_PreviousInput[c_i] := 0.0;
+</span><span><a class="LN" name="164">  164   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="165">  165   </a>        <span class="CT">(* End of InitializeConditions for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:2572')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_x</i></font></a>' *)</span>
+</span><span><a class="LN" name="166">  166   </a>        <span class="CT">(* End of SystemInitialize for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="167">  167   </a>        
+</span><span><a class="LN" name="168">  168   </a>        <span class="CT">(* ConstCode for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="169">  169   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3591')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function</i></font></a>' *)</span>
+</span><span><a class="LN" name="170">  170   </a>        MathFunction[0] := 0.0;
+</span><span><a class="LN" name="171">  171   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3592')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function1</i></font></a>' *)</span>
+</span><span><a class="LN" name="172">  172   </a>        MathFunction1[0] := 0.0;
+</span><span><a class="LN" name="173">  173   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3593')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function2</i></font></a>' *)</span>
+</span><span><a class="LN" name="174">  174   </a>        MathFunction2[0] := 0.0;
+</span><span><a class="LN" name="175">  175   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3591')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function</i></font></a>' *)</span>
+</span><span><a class="LN" name="176">  176   </a>        MathFunction[1] := 0.0;
+</span><span><a class="LN" name="177">  177   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3592')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function1</i></font></a>' *)</span>
+</span><span><a class="LN" name="178">  178   </a>        MathFunction1[1] := 0.0;
+</span><span><a class="LN" name="179">  179   </a>        <span class="CT">(* ConstCode for Math: '<a href="matlab:coder.internal.code2model('sim_mixed:4:3593')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Math Function2</i></font></a>' *)</span>
+</span><span><a class="LN" name="180">  180   </a>        MathFunction2[1] := 0.0;
+</span><span><a class="LN" name="181">  181   </a>        <span class="CT">(* End of ConstCode for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="182">  182   </a>    SS_STEP: 
+</span><span><a class="LN" name="183">  183   </a>        <span class="CT">(* MATLAB Function 'MPC Controller/MPC/optimizer/optimizer': '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1</i></font></a>' *)</span>
+</span><span><a class="LN" name="184">  184   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:15')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:15</i></font></a>' coder.extrinsic('mpcblock_optimizer_double_mex'); *)</span>
+</span><span><a class="LN" name="185">  185   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:16')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:16</i></font></a>' coder.extrinsic('mpcblock_optimizer_single_mex'); *)</span>
+</span><span><a class="LN" name="186">  186   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:17')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:17</i></font></a>' coder.extrinsic('mpcblock_refmd_double_mex'); *)</span>
+</span><span><a class="LN" name="187">  187   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:18')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:18</i></font></a>' coder.extrinsic('mpcblock_refmd_single_mex'); *)</span>
+</span><span><a class="LN" name="188">  188   </a>        <span class="CT">(* Parameters *)</span>
+</span><span><a class="LN" name="189">  189   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:21')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:21</i></font></a>' isSimulation = coder.target('Sfun') && ~coder.target('RtwForRapid') && ~coder.target('RtwForSim'); *)</span>
+</span><span><a class="LN" name="190">  190   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:22')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:22</i></font></a>' isAdaptive = false; *)</span>
+</span><span><a class="LN" name="191">  191   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:23')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:23</i></font></a>' isLTV = false; *)</span>
+</span><span><a class="LN" name="192">  192   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:24')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:24</i></font></a>' isDouble = isa(ref,'double'); *)</span>
+</span><span><a class="LN" name="193">  193   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:25')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:25</i></font></a>' ZERO = zeros('like',ref); *)</span>
+</span><span><a class="LN" name="194">  194   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:26')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:26</i></font></a>' ONE = ones('like',ref); *)</span>
+</span><span><a class="LN" name="195">  195   </a>        <span class="CT">(* Pre-allocate all the MEX block outputs for the simulation mode *)</span>
+</span><span><a class="LN" name="196">  196   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:31')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:31</i></font></a>' if isSimulation *)</span>
+</span><span><a class="LN" name="197">  197   </a>        <span class="CT">(* Get reference and MD signals -- accounting for previewing *)</span>
+</span><span><a class="LN" name="198">  198   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:45')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:45</i></font></a>' if isSimulation *)</span>
+</span><span><a class="LN" name="199">  199   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:52')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:52</i></font></a>' else *)</span>
+</span><span><a class="LN" name="200">  200   </a>        <span class="CT">(* When doing code generation, use M code directly *)</span>
+</span><span><a class="LN" name="201">  201   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:54')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:54</i></font></a>' [rseq, vseq, v] = mpcblock_refmd(ref,md,nv,ny,p,yoff,voff,no_md,no_ref,openloopflag, RYscale, RMDscale); *)</span>
+</span><span><a class="LN" name="202">  202   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="203">  203   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="204">  204   </a><span class="CT">         *  UnitDelay: '<a href="matlab:coder.internal.code2model('sim_mixed:4:1925')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_mv</i></font></a>' *)</span>
+</span><span><a class="LN" name="205">  205   </a>        <span class="CT">(* External MV override.   *)</span>
+</span><span><a class="LN" name="206">  206   </a>        <span class="CT">(* NOTE: old_u and ext_mv input signals are dimensionless but include offset *)</span>
+</span><span><a class="LN" name="207">  207   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:59')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:59</i></font></a>' old_u = old_u - uoff; *)</span>
+</span><span><a class="LN" name="208">  208   </a>        tmp[0] := 0.0;
+</span><span><a class="LN" name="209">  209   </a>        tmp_0[0] := 1.0;
+</span><span><a class="LN" name="210">  210   </a>        old_u_idx_0 := last_mv_DSTATE[0];
+</span><span><a class="LN" name="211">  211   </a>        tmp[1] := 0.0;
+</span><span><a class="LN" name="212">  212   </a>        tmp_0[1] := 1.0;
+</span><span><a class="LN" name="213">  213   </a>        old_u_idx_1 := last_mv_DSTATE[1];
+</span><span><a class="LN" name="214">  214   </a>        i0_mpcblock_refmd(ref := ref, b_yoff := tmp, b_RYscale := tmp_0);
+</span><span><a class="LN" name="215">  215   </a>        rseq := i0_mpcblock_refmd.rseq;
+</span><span><a class="LN" name="216">  216   </a>        vseq := i0_mpcblock_refmd.vseq;
+</span><span><a class="LN" name="217">  217   </a>        v := i0_mpcblock_refmd.v;
+</span><span><a class="LN" name="218">  218   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="219">  219   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:60')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:60</i></font></a>' if no_mv==ONE *)</span>
+</span><span><a class="LN" name="220">  220   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:61')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:61</i></font></a>' delmv = zeros(nu,1,'like',ref); *)</span>
+</span><span><a class="LN" name="221">  221   </a>        <span class="CT">(* Obtain x[k|k] *)</span>
+</span><span><a class="LN" name="222">  222   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:69')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:69</i></font></a>' xk = xk - xoff; *)</span>
+</span><span><a class="LN" name="223">  223   </a>        <span class="CT">(* Remove offset *)</span>
+</span><span><a class="LN" name="224">  224   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:70')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:70</i></font></a>' if CustomEstimation==ONE *)</span>
+</span><span><a class="LN" name="225">  225   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:73')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:73</i></font></a>' else *)</span>
+</span><span><a class="LN" name="226">  226   </a>        <span class="CT">(* Default state estimation.     *)</span>
+</span><span><a class="LN" name="227">  227   </a>        <span class="CT">(* Scale measured output and remove offset. *)</span>
+</span><span><a class="LN" name="228">  228   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:76')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:76</i></font></a>' ym = ym.*RYscale(myindex) - myoff; *)</span>
+</span><span><a class="LN" name="229">  229   </a>        <span class="CT">(* Correct x(k|k-1) for possible external mv override. *)</span>
+</span><span><a class="LN" name="230">  230   </a>        <span class="CT">(* NOTE:  Offset was removed from x[k|k-1] at k=0. *)</span>
+</span><span><a class="LN" name="231">  231   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:79')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:79</i></font></a>' xk = xk + Bu*delmv; *)</span>
+</span><span><a class="LN" name="232">  232   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="233">  233   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="234">  234   </a><span class="CT">         *  Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:2572')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_x</i></font></a>' *)</span>
+</span><span><a class="LN" name="235">  235   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="236">  236   </a>            xk[c_i] := last_x_PreviousInput[c_i];
+</span><span><a class="LN" name="237">  237   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="238">  238   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="239">  239   </a>        <span class="CT">(* Measurement upate to x(k|k) *)</span>
+</span><span><a class="LN" name="240">  240   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:81')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:81</i></font></a>' ym_est = C(myindex,:)*xk + Dv(myindex,:)*v; *)</span>
+</span><span><a class="LN" name="241">  241   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:82')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:82</i></font></a>' y_innov = ym - ym_est; *)</span>
+</span><span><a class="LN" name="242">  242   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="243">  243   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="244">  244   </a>        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 1 <span class="KW">DO</span> 
+</span><span><a class="LN" name="245">  245   </a>            cVal := 0.0;
+</span><span><a class="LN" name="246">  246   </a>            <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="247">  247   </a>                cVal := (c_a[(b_H_tmp_0 * 2) + b_H_tmp] * xk[b_H_tmp_0]) + cVal;
+</span><span><a class="LN" name="248">  248   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="249">  249   </a>            y_innov[b_H_tmp] := MeasuredTankOutputs[b_H_tmp] - cVal;
+</span><span><a class="LN" name="250">  250   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="251">  251   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="252">  252   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:83')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:83</i></font></a>' xest = xk + M*y_innov; *)</span>
+</span><span><a class="LN" name="253">  253   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="254">  254   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="255">  255   </a>        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="256">  256   </a>            rtb_xest[b_H_tmp] := ((Implicit_b_a[b_H_tmp + 6] * y_innov[1]) + (Implicit_b_a[b_H_tmp] * y_innov[0])) + xk[b_H_tmp];
+</span><span><a class="LN" name="257">  257   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="258">  258   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="259">  259   </a>        <span class="CT">(* Real-time MV target override *)</span>
+</span><span><a class="LN" name="260">  260   </a>        <span class="CT">(* Note: utargetValue is a vector length p*nu.   *)</span>
+</span><span><a class="LN" name="261">  261   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:88')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:88</i></font></a>' if no_uref==ONE *)</span>
+</span><span><a class="LN" name="262">  262   </a>        <span class="CT">(* no external utarget *)</span>
+</span><span><a class="LN" name="263">  263   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:90')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:90</i></font></a>' utargetValue = utarget; *)</span>
+</span><span><a class="LN" name="264">  264   </a>        <span class="CT">(* Real-time custom constraint override (scaled E/F/S) *)</span>
+</span><span><a class="LN" name="265">  265   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:99')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:99</i></font></a>' if no_cc~=ONE *)</span>
+</span><span><a class="LN" name="266">  266   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:108')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:108</i></font></a>' return_sequence = (return_mvseq || return_xseq || return_ovseq)*ONE; *)</span>
+</span><span><a class="LN" name="267">  267   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:109')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:109</i></font></a>' if isSimulation *)</span>
+</span><span><a class="LN" name="268">  268   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:138')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:138</i></font></a>' else *)</span>
+</span><span><a class="LN" name="269">  269   </a>        <span class="CT">(* When doing code generation, use M code directly *)</span>
+</span><span><a class="LN" name="270">  270   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:140')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:140</i></font></a>' [u, cost, useq, status, iAout] = mpcblock_optimizer(... *)</span>
+</span><span><a class="LN" name="271">  271   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:141')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:141</i></font></a>'             rseq, vseq, umin, umax, ymin, ymax, switch_in, xest, old_u, iA, ... *)</span>
+</span><span><a class="LN" name="272">  272   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:142')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:142</i></font></a>'             isQP, nu, ny, degrees, Hinv, Kx, Ku1, Kut, Kr, Kv, Mlim, ... *)</span>
+</span><span><a class="LN" name="273">  273   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:143')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:143</i></font></a>'             Mx, Mu1, Mv, z_degrees, utargetValue, p, uoff, voff, yoff, ... *)</span>
+</span><span><a class="LN" name="274">  274   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:144')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:144</i></font></a>'             false, CustomSolverCodeGen, UseSuboptimalSolution, ... *)</span>
+</span><span><a class="LN" name="275">  275   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:145')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:145</i></font></a>'             UseActiveSetSolver, ASOptions, IPOptions, nxQP, openloopflag, ... *)</span>
+</span><span><a class="LN" name="276">  276   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:146')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:146</i></font></a>'             no_umin, no_umax, no_ymin, no_ymax, no_cc, switch_inport, ... *)</span>
+</span><span><a class="LN" name="277">  277   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:147')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:147</i></font></a>'             no_switch, enable_value, return_cost, H, return_sequence, Linv, Ac, ... *)</span>
+</span><span><a class="LN" name="278">  278   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:148')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:148</i></font></a>'             ywt, uwt, duwt, rhoeps, no_ywt, no_uwt, no_duwt, no_rhoeps,... *)</span>
+</span><span><a class="LN" name="279">  279   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:149')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:149</i></font></a>'             Wy, Wdu, Jm, SuJm, Su1, Sx, Hv, Wu, I1, ... *)</span>
+</span><span><a class="LN" name="280">  280   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:150')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:150</i></font></a>'             isAdaptive, isLTV, A, Bu, Bv, C, Dv, ... *)</span>
+</span><span><a class="LN" name="281">  281   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:151')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:151</i></font></a>'             Mrows, nCC, Ecc, Fcc, Scc, Gcc, RYscale, RMVscale, m); *)</span>
+</span><span><a class="LN" name="282">  282   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="283">  283   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="284">  284   </a>        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="285">  285   </a>            Bc[b_H_tmp] :=  -(SINT_TO_LREAL(b_Mlim[b_H_tmp]) + ((SINT_TO_LREAL(b_Mu1[b_H_tmp + 8]) * old_u_idx_1) + (SINT_TO_LREAL(b_Mu1[b_H_tmp]) * old_u_idx_0)));
+</span><span><a class="LN" name="286">  286   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="287">  287   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="288">  288   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="289">  289   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="290">  290   </a>        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="291">  291   </a>            AcRow[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="292">  292   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="293">  293   </a>        <span class="KW">FOR</span> b_i := 0 <span class="KW">TO</span> 3 <span class="KW">DO</span> 
+</span><span><a class="LN" name="294">  294   </a>            rMin := 0.0;
+</span><span><a class="LN" name="295">  295   </a>            Xnorm0 := 0.0;
+</span><span><a class="LN" name="296">  296   </a>            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="297">  297   </a>                c_i := (6 * b_i) + b_H_tmp;
+</span><span><a class="LN" name="298">  298   </a>                rMin := (Implicit_b_Kx[c_i] * rtb_xest[b_H_tmp]) + rMin;
+</span><span><a class="LN" name="299">  299   </a>                Xnorm0 := (Implicit_b_Kr[c_i] * rseq[b_H_tmp]) + Xnorm0;
+</span><span><a class="LN" name="300">  300   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="301">  301   </a>            c_i := DWORD_TO_DINT(<span class="KW">SHL</span>(DINT_TO_DWORD(b_i), 1));
+</span><span><a class="LN" name="302">  302   </a>            AcRow[b_i] := ((Implicit_b_Ku1[c_i + 1] * old_u_idx_1) + (Implicit_b_Ku1[c_i] * old_u_idx_0)) + (rMin + Xnorm0);
+</span><span><a class="LN" name="303">  303   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="304">  304   </a>        b_i := 1;
+</span><span><a class="LN" name="305">  305   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="306">  306   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="307">  307   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="308">  308   </a><span class="CT">         *  Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:79')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Memory</i></font></a>' *)</span>
+</span><span><a class="LN" name="309">  309   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="310">  310   </a>            iA[c_i] := BOOL_TO_INT(Memory_PreviousInput[c_i]);
+</span><span><a class="LN" name="311">  311   </a>            unusedU0[c_i] := 0.0;
+</span><span><a class="LN" name="312">  312   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="313">  313   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="314">  314   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="315">  315   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="316">  316   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="317">  317   </a>            zopt[c_i] := 0.0;
+</span><span><a class="LN" name="318">  318   </a>            b_r[c_i] := 0.0;
+</span><span><a class="LN" name="319">  319   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="320">  320   </a>        rMin := 0.0;
+</span><span><a class="LN" name="321">  321   </a>        cTolComputed := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="322">  322   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="323">  323   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="324">  324   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="325">  325   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="326">  326   </a>            cTol[c_i] := 1.0;
+</span><span><a class="LN" name="327">  327   </a>            iC[c_i] := 0;
+</span><span><a class="LN" name="328">  328   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="329">  329   </a>        nA := 0;
+</span><span><a class="LN" name="330">  330   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="331">  331   </a>            <span class="KW">IF</span> iA[c_i] = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="332">  332   </a>                b_H_tmp := INT_TO_DINT(nA) + 1;
+</span><span><a class="LN" name="333">  333   </a>                <span class="KW">IF</span> (INT_TO_DINT(nA) + 1) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="334">  334   </a>                    b_H_tmp := 32767;
+</span><span><a class="LN" name="335">  335   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="336">  336   </a>                nA := DINT_TO_INT(b_H_tmp);
+</span><span><a class="LN" name="337">  337   </a>                iC[INT_TO_DINT(DINT_TO_INT(b_H_tmp)) - 1] := DINT_TO_INT(c_i + 1);
+</span><span><a class="LN" name="338">  338   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="339">  339   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="340">  340   </a>        temp2 := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="341">  341   </a>        <span class="KW">IF</span> nA &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="342">  342   </a>            <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 9 <span class="KW">DO</span> 
+</span><span><a class="LN" name="343">  343   </a>                Opt[c_i] := 0.0;
+</span><span><a class="LN" name="344">  344   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="345">  345   </a>            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="346">  346   </a>                Rhs[b_H_tmp] := AcRow[b_H_tmp];
+</span><span><a class="LN" name="347">  347   </a>                Rhs[b_H_tmp + 5] := 0.0;
+</span><span><a class="LN" name="348">  348   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="349">  349   </a>            DualFeasible := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="350">  350   </a>            b_H_tmp := 3 * INT_TO_DINT(nA);
+</span><span><a class="LN" name="351">  351   </a>            <span class="KW">IF</span> b_H_tmp &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="352">  352   </a>                b_H_tmp := 32767;
+</span><span><a class="LN" name="353">  353   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="354">  354   </a>            kNext := <span class="KW">MAX</span>(DINT_TO_INT(b_H_tmp), 50);
+</span><span><a class="LN" name="355">  355   </a>            q := UDINT_TO_UINT(INT_TO_UDINT(kNext) / 10);
+</span><span><a class="LN" name="356">  356   </a>            x := UDINT_TO_UINT(INT_TO_UDINT(kNext) - DINT_TO_UDINT(UINT_TO_DINT(q) * 10));
+</span><span><a class="LN" name="357">  357   </a>            <span class="KW">IF</span> (x &gt; 0) <span class="KW">AND</span> (x &gt;= 5) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="358">  358   </a>                q := DINT_TO_UINT(UINT_TO_DINT(q) + 1);
+</span><span><a class="LN" name="359">  359   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="360">  360   </a>            ColdReset := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="361">  361   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="362">  362   </a>                exitg3 := 0;
+</span><span><a class="LN" name="363">  363   </a>                <span class="KW">IF</span> (( <span class="KW">NOT</span> DualFeasible) <span class="KW">AND</span> (nA &gt; 0)) <span class="KW">AND</span> (b_i &lt;= 120) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="364">  364   </a>                    c_i := 1;
+</span><span><a class="LN" name="365">  365   </a>                    <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="366">  366   </a>                        RLinv[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="367">  367   </a>                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="368">  368   </a>                    u_i := 1;
+</span><span><a class="LN" name="369">  369   </a>                    <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="370">  370   </a>                        iC_0 := INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(u_i)) - 1]);
+</span><span><a class="LN" name="371">  371   </a>                        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="372">  372   </a>                            f_j := b_H_tmp + (5 * (INT_TO_DINT(DINT_TO_INT(u_i)) - 1));
+</span><span><a class="LN" name="373">  373   </a>                            RLinv[f_j] := 0.0;
+</span><span><a class="LN" name="374">  374   </a>                            <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="375">  375   </a>                                RLinv[f_j] := (SINT_TO_LREAL(b_Ac[((b_H_tmp_0 * 8) + iC_0) - 1]) * Implicit_b_Linv[(5 * b_H_tmp_0) + b_H_tmp]) + RLinv[f_j];
+</span><span><a class="LN" name="376">  376   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="377">  377   </a>                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="378">  378   </a>                        u_i := u_i + 1;
+</span><span><a class="LN" name="379">  379   </a>                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="380">  380   </a>                    i0_qr(b_A := RLinv);
+</span><span><a class="LN" name="381">  381   </a>                    QQ := i0_qr.Q;
+</span><span><a class="LN" name="382">  382   </a>                    RR := i0_qr.b_R;
+</span><span><a class="LN" name="383">  383   </a>                    u_i := 1;
+</span><span><a class="LN" name="384">  384   </a>                    <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="385">  385   </a>                        exitg4 := 0;
+</span><span><a class="LN" name="386">  386   </a>                        <span class="KW">IF</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="387">  387   </a>                            <span class="KW">IF</span> <span class="KW">ABS</span>(RR[(((INT_TO_DINT(DINT_TO_INT(u_i)) - 1) * 5) + INT_TO_DINT(DINT_TO_INT(u_i))) - 1]) &lt; 1.0E-12 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="388">  388   </a>                                c_i := -2;
+</span><span><a class="LN" name="389">  389   </a>                                exitg4 := 1;
+</span><span><a class="LN" name="390">  390   </a>                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="391">  391   </a>                                u_i := u_i + 1;
+</span><span><a class="LN" name="392">  392   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="393">  393   </a>                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="394">  394   </a>                            <span class="KW">FOR</span> u_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="395">  395   </a>                                <span class="KW">FOR</span> f_j := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="396">  396   </a>                                    cMin := 0.0;
+</span><span><a class="LN" name="397">  397   </a>                                    <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="398">  398   </a>                                        cMin := (Implicit_b_Linv[(u_i * 5) + b_H_tmp] * QQ[(f_j * 5) + b_H_tmp]) + cMin;
+</span><span><a class="LN" name="399">  399   </a>                                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="400">  400   </a>                                    TL[u_i + (5 * f_j)] := cMin;
+</span><span><a class="LN" name="401">  401   </a>                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="402">  402   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="403">  403   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="404">  404   </a>                                RLinv[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="405">  405   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="406">  406   </a>                            kNext := nA;
+</span><span><a class="LN" name="407">  407   </a>                            <span class="KW">WHILE</span> kNext &gt; 0 <span class="KW">DO</span>
+</span><span><a class="LN" name="408">  408   </a>                                b_H_tmp := 5 * (INT_TO_DINT(kNext) - 1);
+</span><span><a class="LN" name="409">  409   </a>                                f_j := (INT_TO_DINT(kNext) + b_H_tmp) - 1;
+</span><span><a class="LN" name="410">  410   </a>                                RLinv[f_j] := 1.0;
+</span><span><a class="LN" name="411">  411   </a>                                kDrop := kNext;
+</span><span><a class="LN" name="412">  412   </a>                                <span class="KW">WHILE</span> kDrop &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="413">  413   </a>                                    b_H_tmp_0 := (((INT_TO_DINT(kDrop) - 1) * 5) + INT_TO_DINT(kNext)) - 1;
+</span><span><a class="LN" name="414">  414   </a>                                    RLinv[b_H_tmp_0] := RLinv[b_H_tmp_0] / RR[f_j];
+</span><span><a class="LN" name="415">  415   </a>                                    kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) + 1);
+</span><span><a class="LN" name="416">  416   </a>                                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="417">  417   </a>                                <span class="KW">IF</span> kNext &gt; 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="418">  418   </a>                                    u_i := 1;
+</span><span><a class="LN" name="419">  419   </a>                                    <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(kNext) - 2) <span class="KW">DO</span>
+</span><span><a class="LN" name="420">  420   </a>                                        kDrop := kNext;
+</span><span><a class="LN" name="421">  421   </a>                                        <span class="KW">WHILE</span> kDrop &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="422">  422   </a>                                            f_j := (INT_TO_DINT(kDrop) - 1) * 5;
+</span><span><a class="LN" name="423">  423   </a>                                            b_H_tmp_0 := (f_j + INT_TO_DINT(DINT_TO_INT(u_i))) - 1;
+</span><span><a class="LN" name="424">  424   </a>                                            RLinv[b_H_tmp_0] := RLinv[b_H_tmp_0] - (RR[(b_H_tmp + INT_TO_DINT(DINT_TO_INT(u_i))) - 1] * RLinv[(f_j + INT_TO_DINT(kNext)) - 1]);
+</span><span><a class="LN" name="425">  425   </a>                                            kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) + 1);
+</span><span><a class="LN" name="426">  426   </a>                                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="427">  427   </a>                                        u_i := u_i + 1;
+</span><span><a class="LN" name="428">  428   </a>                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="429">  429   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="430">  430   </a>                                kNext := DINT_TO_INT(INT_TO_DINT(kNext) - 1);
+</span><span><a class="LN" name="431">  431   </a>                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="432">  432   </a>                            <span class="KW">FOR</span> u_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="433">  433   </a>                                kNext := DINT_TO_INT(u_i + 1);
+</span><span><a class="LN" name="434">  434   </a>                                <span class="KW">WHILE</span> kNext &lt;= 5 <span class="KW">DO</span>
+</span><span><a class="LN" name="435">  435   </a>                                    f_j := 5 * (INT_TO_DINT(kNext) - 1);
+</span><span><a class="LN" name="436">  436   </a>                                    b_H[u_i + f_j] := 0.0;
+</span><span><a class="LN" name="437">  437   </a>                                    b_H_tmp := INT_TO_DINT(nA) + 1;
+</span><span><a class="LN" name="438">  438   </a>                                    <span class="KW">IF</span> (INT_TO_DINT(nA) + 1) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="439">  439   </a>                                        b_H_tmp := 32767;
+</span><span><a class="LN" name="440">  440   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="441">  441   </a>                                    kDrop := DINT_TO_INT(b_H_tmp);
+</span><span><a class="LN" name="442">  442   </a>                                    <span class="KW">WHILE</span> kDrop &lt;= 5 <span class="KW">DO</span>
+</span><span><a class="LN" name="443">  443   </a>                                        b_H_tmp := (INT_TO_DINT(kDrop) - 1) * 5;
+</span><span><a class="LN" name="444">  444   </a>                                        b_H_tmp_0 := ((INT_TO_DINT(kNext) - 1) * 5) + u_i;
+</span><span><a class="LN" name="445">  445   </a>                                        b_H[b_H_tmp_0] := b_H[b_H_tmp_0] - (TL[(b_H_tmp + INT_TO_DINT(kNext)) - 1] * TL[b_H_tmp + u_i]);
+</span><span><a class="LN" name="446">  446   </a>                                        kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) + 1);
+</span><span><a class="LN" name="447">  447   </a>                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="448">  448   </a>                                    b_H[(INT_TO_DINT(kNext) + (5 * u_i)) - 1] := b_H[f_j + u_i];
+</span><span><a class="LN" name="449">  449   </a>                                    kNext := DINT_TO_INT(INT_TO_DINT(kNext) + 1);
+</span><span><a class="LN" name="450">  450   </a>                                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="451">  451   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="452">  452   </a>                            u_i := 1;
+</span><span><a class="LN" name="453">  453   </a>                            <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="454">  454   </a>                                <span class="KW">FOR</span> f_j := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="455">  455   </a>                                    b_H_tmp := f_j + (5 * (INT_TO_DINT(DINT_TO_INT(u_i)) - 1));
+</span><span><a class="LN" name="456">  456   </a>                                    b_D[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="457">  457   </a>                                    kNext := DINT_TO_INT(u_i);
+</span><span><a class="LN" name="458">  458   </a>                                    <span class="KW">WHILE</span> kNext &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="459">  459   </a>                                        b_H_tmp_0 := (INT_TO_DINT(kNext) - 1) * 5;
+</span><span><a class="LN" name="460">  460   </a>                                        b_D[b_H_tmp] := (RLinv[(b_H_tmp_0 + INT_TO_DINT(DINT_TO_INT(u_i))) - 1] * TL[b_H_tmp_0 + f_j]) + b_D[b_H_tmp];
+</span><span><a class="LN" name="461">  461   </a>                                        kNext := DINT_TO_INT(INT_TO_DINT(kNext) + 1);
+</span><span><a class="LN" name="462">  462   </a>                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="463">  463   </a>                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="464">  464   </a>                                u_i := u_i + 1;
+</span><span><a class="LN" name="465">  465   </a>                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="466">  466   </a>                            exitg4 := 1;
+</span><span><a class="LN" name="467">  467   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="468">  468   </a>                    <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg4 = 0)
+</span><span><a class="LN" name="469">  469   </a>                    <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="470">  470   </a>                    <span class="KW">IF</span> c_i &lt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="471">  471   </a>                        <span class="KW">IF</span> ColdReset <span class="KW">THEN</span> 
+</span><span><a class="LN" name="472">  472   </a>                            b_i := -2;
+</span><span><a class="LN" name="473">  473   </a>                            exitg3 := 2;
+</span><span><a class="LN" name="474">  474   </a>                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="475">  475   </a>                            nA := 0;
+</span><span><a class="LN" name="476">  476   </a>                            <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="477">  477   </a>                                iA[c_i] := 0;
+</span><span><a class="LN" name="478">  478   </a>                                iC[c_i] := 0;
+</span><span><a class="LN" name="479">  479   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="480">  480   </a>                            ColdReset := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="481">  481   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="482">  482   </a>                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="483">  483   </a>                        c_i := 1;
+</span><span><a class="LN" name="484">  484   </a>                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="485">  485   </a>                            b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="486">  486   </a>                            <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="487">  487   </a>                                b_H_tmp := 32767;
+</span><span><a class="LN" name="488">  488   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="489">  489   </a>                            Rhs[b_H_tmp - 1] := Bc[INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(c_i)) - 1]) - 1];
+</span><span><a class="LN" name="490">  490   </a>                            kNext := DINT_TO_INT(c_i);
+</span><span><a class="LN" name="491">  491   </a>                            <span class="KW">WHILE</span> kNext &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="492">  492   </a>                                b_H_tmp := (INT_TO_DINT(kNext) + (5 * (INT_TO_DINT(DINT_TO_INT(c_i)) - 1))) - 1;
+</span><span><a class="LN" name="493">  493   </a>                                U[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="494">  494   </a>                                u_i := 1;
+</span><span><a class="LN" name="495">  495   </a>                                <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="496">  496   </a>                                    f_j := (INT_TO_DINT(DINT_TO_INT(u_i)) - 1) * 5;
+</span><span><a class="LN" name="497">  497   </a>                                    U[b_H_tmp] := (RLinv[(f_j + INT_TO_DINT(kNext)) - 1] * RLinv[(f_j + INT_TO_DINT(DINT_TO_INT(c_i))) - 1]) + U[b_H_tmp];
+</span><span><a class="LN" name="498">  498   </a>                                    u_i := u_i + 1;
+</span><span><a class="LN" name="499">  499   </a>                                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="500">  500   </a>                                U[(INT_TO_DINT(DINT_TO_INT(c_i)) + (5 * (INT_TO_DINT(kNext) - 1))) - 1] := U[b_H_tmp];
+</span><span><a class="LN" name="501">  501   </a>                                kNext := DINT_TO_INT(INT_TO_DINT(kNext) + 1);
+</span><span><a class="LN" name="502">  502   </a>                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="503">  503   </a>                            c_i := c_i + 1;
+</span><span><a class="LN" name="504">  504   </a>                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="505">  505   </a>                        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="506">  506   </a>                            Xnorm0 := 0.0;
+</span><span><a class="LN" name="507">  507   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="508">  508   </a>                                Xnorm0 := (b_H[c_i + (5 * b_H_tmp)] * Rhs[b_H_tmp]) + Xnorm0;
+</span><span><a class="LN" name="509">  509   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="510">  510   </a>                            Opt[c_i] := Xnorm0;
+</span><span><a class="LN" name="511">  511   </a>                            u_i := 1;
+</span><span><a class="LN" name="512">  512   </a>                            <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="513">  513   </a>                                b_H_tmp := INT_TO_DINT(DINT_TO_INT(u_i)) + 5;
+</span><span><a class="LN" name="514">  514   </a>                                <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(u_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="515">  515   </a>                                    b_H_tmp := 32767;
+</span><span><a class="LN" name="516">  516   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="517">  517   </a>                                Opt[c_i] := (b_D[((INT_TO_DINT(DINT_TO_INT(u_i)) - 1) * 5) + c_i] * Rhs[b_H_tmp - 1]) + Opt[c_i];
+</span><span><a class="LN" name="518">  518   </a>                                u_i := u_i + 1;
+</span><span><a class="LN" name="519">  519   </a>                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="520">  520   </a>                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="521">  521   </a>                        c_i := 1;
+</span><span><a class="LN" name="522">  522   </a>                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="523">  523   </a>                            Xnorm0 := 0.0;
+</span><span><a class="LN" name="524">  524   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="525">  525   </a>                                Xnorm0 := (b_D[((INT_TO_DINT(DINT_TO_INT(c_i)) - 1) * 5) + b_H_tmp] * Rhs[b_H_tmp]) + Xnorm0;
+</span><span><a class="LN" name="526">  526   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="527">  527   </a>                            b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="528">  528   </a>                            <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="529">  529   </a>                                b_H_tmp := 32767;
+</span><span><a class="LN" name="530">  530   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="531">  531   </a>                            Opt[b_H_tmp - 1] := Xnorm0;
+</span><span><a class="LN" name="532">  532   </a>                            u_i := 1;
+</span><span><a class="LN" name="533">  533   </a>                            <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="534">  534   </a>                                b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="535">  535   </a>                                <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="536">  536   </a>                                    b_H_tmp := 32767;
+</span><span><a class="LN" name="537">  537   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="538">  538   </a>                                b_H_tmp_0 := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="539">  539   </a>                                <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="540">  540   </a>                                    b_H_tmp_0 := 32767;
+</span><span><a class="LN" name="541">  541   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="542">  542   </a>                                f_j := INT_TO_DINT(DINT_TO_INT(u_i)) + 5;
+</span><span><a class="LN" name="543">  543   </a>                                <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(u_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="544">  544   </a>                                    f_j := 32767;
+</span><span><a class="LN" name="545">  545   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="546">  546   </a>                                Opt[b_H_tmp - 1] := (U[(((INT_TO_DINT(DINT_TO_INT(u_i)) - 1) * 5) + INT_TO_DINT(DINT_TO_INT(c_i))) - 1] * Rhs[f_j - 1]) + Opt[b_H_tmp_0 - 1];
+</span><span><a class="LN" name="547">  547   </a>                                u_i := u_i + 1;
+</span><span><a class="LN" name="548">  548   </a>                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="549">  549   </a>                            c_i := c_i + 1;
+</span><span><a class="LN" name="550">  550   </a>                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="551">  551   </a>                        Xnorm0 := -1.0E-12;
+</span><span><a class="LN" name="552">  552   </a>                        kDrop := 0;
+</span><span><a class="LN" name="553">  553   </a>                        c_i := 1;
+</span><span><a class="LN" name="554">  554   </a>                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="555">  555   </a>                            b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="556">  556   </a>                            <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="557">  557   </a>                                b_H_tmp := 32767;
+</span><span><a class="LN" name="558">  558   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="559">  559   </a>                            unusedU0[INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(c_i)) - 1]) - 1] := Opt[b_H_tmp - 1];
+</span><span><a class="LN" name="560">  560   </a>                            b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="561">  561   </a>                            <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="562">  562   </a>                                b_H_tmp := 32767;
+</span><span><a class="LN" name="563">  563   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="564">  564   </a>                            <span class="KW">IF</span> Opt[b_H_tmp - 1] &lt; Xnorm0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="565">  565   </a>                                <span class="KW">IF</span> DINT_TO_INT(c_i) &lt;= nA <span class="KW">THEN</span> 
+</span><span><a class="LN" name="566">  566   </a>                                    kDrop := DINT_TO_INT(c_i);
+</span><span><a class="LN" name="567">  567   </a>                                    b_H_tmp := INT_TO_DINT(DINT_TO_INT(c_i)) + 5;
+</span><span><a class="LN" name="568">  568   </a>                                    <span class="KW">IF</span> (INT_TO_DINT(DINT_TO_INT(c_i)) + 5) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="569">  569   </a>                                        b_H_tmp := 32767;
+</span><span><a class="LN" name="570">  570   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="571">  571   </a>                                    Xnorm0 := Opt[b_H_tmp - 1];
+</span><span><a class="LN" name="572">  572   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="573">  573   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="574">  574   </a>                            c_i := c_i + 1;
+</span><span><a class="LN" name="575">  575   </a>                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="576">  576   </a>                        <span class="KW">IF</span> kDrop &lt;= 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="577">  577   </a>                            DualFeasible := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="578">  578   </a>                            <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="579">  579   </a>                                zopt[c_i] := Opt[c_i];
+</span><span><a class="LN" name="580">  580   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="581">  581   </a>                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="582">  582   </a>                            b_i := b_i + 1;
+</span><span><a class="LN" name="583">  583   </a>                            <span class="KW">IF</span> b_i &gt; UINT_TO_DINT(q) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="584">  584   </a>                                nA := 0;
+</span><span><a class="LN" name="585">  585   </a>                                <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="586">  586   </a>                                    iA[c_i] := 0;
+</span><span><a class="LN" name="587">  587   </a>                                    iC[c_i] := 0;
+</span><span><a class="LN" name="588">  588   </a>                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="589">  589   </a>                                ColdReset := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="590">  590   </a>                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="591">  591   </a>                                unusedU0[INT_TO_DINT(iC[INT_TO_DINT(kDrop) - 1]) - 1] := 0.0;
+</span><span><a class="LN" name="592">  592   </a>                                i0_DropConstraint(kDrop := kDrop, iA := iA, nA := nA, iC := iC);
+</span><span><a class="LN" name="593">  593   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="594">  594   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="595">  595   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="596">  596   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="597">  597   </a>                    <span class="KW">IF</span> nA &lt;= 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="598">  598   </a>                        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="599">  599   </a>                            unusedU0[c_i] := 0.0;
+</span><span><a class="LN" name="600">  600   </a>                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="601">  601   </a>                        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="602">  602   </a>                            Xnorm0 := 0.0;
+</span><span><a class="LN" name="603">  603   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="604">  604   </a>                                Xnorm0 := (( -Implicit_b_Hinv[c_i + (5 * b_H_tmp)]) * AcRow[b_H_tmp]) + Xnorm0;
+</span><span><a class="LN" name="605">  605   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="606">  606   </a>                            zopt[c_i] := Xnorm0;
+</span><span><a class="LN" name="607">  607   </a>                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="608">  608   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="609">  609   </a>                    exitg3 := 1;
+</span><span><a class="LN" name="610">  610   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="611">  611   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg3 = 0)
+</span><span><a class="LN" name="612">  612   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="613">  613   </a>            <span class="KW">IF</span> exitg3 = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="614">  614   </a>                temp2 := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="615">  615   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="616">  616   </a>        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="617">  617   </a>            <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="618">  618   </a>                Xnorm0 := 0.0;
+</span><span><a class="LN" name="619">  619   </a>                <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="620">  620   </a>                    Xnorm0 := (( -Implicit_b_Hinv[c_i + (5 * b_H_tmp)]) * AcRow[b_H_tmp]) + Xnorm0;
+</span><span><a class="LN" name="621">  621   </a>                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="622">  622   </a>                zopt[c_i] := Xnorm0;
+</span><span><a class="LN" name="623">  623   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="624">  624   </a>            temp2 := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="625">  625   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="626">  626   </a>        <span class="KW">IF</span> temp2 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="627">  627   </a>            Xnorm0 := norm(x := zopt);
+</span><span><a class="LN" name="628">  628   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="629">  629   </a>                exitg2 := 0;
+</span><span><a class="LN" name="630">  630   </a>                <span class="KW">IF</span> b_i &lt;= 120 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="631">  631   </a>                    cMin := -1.0E-6;
+</span><span><a class="LN" name="632">  632   </a>                    kNext := 0;
+</span><span><a class="LN" name="633">  633   </a>                    <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="634">  634   </a>                        t := cTol[c_i];
+</span><span><a class="LN" name="635">  635   </a>                        <span class="KW">IF</span>  <span class="KW">NOT</span> cTolComputed <span class="KW">THEN</span> 
+</span><span><a class="LN" name="636">  636   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="637">  637   </a>                                AcRow[b_H_tmp] := SINT_TO_LREAL(b_Ac[c_i + (b_H_tmp * 8)]) * zopt[b_H_tmp];
+</span><span><a class="LN" name="638">  638   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="639">  639   </a>                            i0_abs_c(x := AcRow);
+</span><span><a class="LN" name="640">  640   </a>                            temp3 := i0_abs_c.y;
+</span><span><a class="LN" name="641">  641   </a>                            temp4 := maximum(x := temp3);
+</span><span><a class="LN" name="642">  642   </a>                            t := <span class="KW">MAX</span>(t, temp4);
+</span><span><a class="LN" name="643">  643   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="644">  644   </a>                        <span class="KW">IF</span> iA[c_i] = 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="645">  645   </a>                            cVal := 0.0;
+</span><span><a class="LN" name="646">  646   </a>                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="647">  647   </a>                                cVal := (SINT_TO_LREAL(b_Ac[c_i + (b_H_tmp * 8)]) * zopt[b_H_tmp]) + cVal;
+</span><span><a class="LN" name="648">  648   </a>                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="649">  649   </a>                            cVal := (cVal - Bc[c_i]) / t;
+</span><span><a class="LN" name="650">  650   </a>                            <span class="KW">IF</span> cVal &lt; cMin <span class="KW">THEN</span> 
+</span><span><a class="LN" name="651">  651   </a>                                cMin := cVal;
+</span><span><a class="LN" name="652">  652   </a>                                kNext := DINT_TO_INT(c_i + 1);
+</span><span><a class="LN" name="653">  653   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="654">  654   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="655">  655   </a>                        cTol[c_i] := t;
+</span><span><a class="LN" name="656">  656   </a>                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="657">  657   </a>                    cTolComputed := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="658">  658   </a>                    <span class="KW">IF</span> kNext &lt;= 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="659">  659   </a>                        exitg2 := 1;
+</span><span><a class="LN" name="660">  660   </a>                    <span class="KW">ELSIF</span> b_i = 120 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="661">  661   </a>                        b_i := 0;
+</span><span><a class="LN" name="662">  662   </a>                        exitg2 := 1;
+</span><span><a class="LN" name="663">  663   </a>                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="664">  664   </a>                        <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="665">  665   </a>                            exitg1 := 0;
+</span><span><a class="LN" name="666">  666   </a>                            <span class="KW">IF</span> (kNext &gt; 0) <span class="KW">AND</span> (b_i &lt;= 120) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="667">  667   </a>                                <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="668">  668   </a>                                    AcRow[b_H_tmp] := SINT_TO_LREAL(b_Ac[((b_H_tmp * 8) + INT_TO_DINT(kNext)) - 1]);
+</span><span><a class="LN" name="669">  669   </a>                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="670">  670   </a>                                temp2 := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="671">  671   </a>                                <span class="KW">IF</span> nA = 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="672">  672   </a>                                    <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="673">  673   </a>                                        z[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="674">  674   </a>                                        <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="675">  675   </a>                                            z[b_H_tmp] := (Implicit_b_Hinv[(5 * b_H_tmp_0) + b_H_tmp] * AcRow[b_H_tmp_0]) + z[b_H_tmp];
+</span><span><a class="LN" name="676">  676   </a>                                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="677">  677   </a>                                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="678">  678   </a>                                    temp2 := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="679">  679   </a>                                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="680">  680   </a>                                    c_i := 1;
+</span><span><a class="LN" name="681">  681   </a>                                    <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="682">  682   </a>                                        RLinv[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="683">  683   </a>                                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="684">  684   </a>                                    u_i := 1;
+</span><span><a class="LN" name="685">  685   </a>                                    <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="686">  686   </a>                                        iC_0 := INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(u_i)) - 1]);
+</span><span><a class="LN" name="687">  687   </a>                                        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="688">  688   </a>                                            f_j := b_H_tmp + (5 * (INT_TO_DINT(DINT_TO_INT(u_i)) - 1));
+</span><span><a class="LN" name="689">  689   </a>                                            RLinv[f_j] := 0.0;
+</span><span><a class="LN" name="690">  690   </a>                                            <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="691">  691   </a>                                                RLinv[f_j] := (SINT_TO_LREAL(b_Ac[((b_H_tmp_0 * 8) + iC_0) - 1]) * Implicit_b_Linv[(5 * b_H_tmp_0) + b_H_tmp]) + RLinv[f_j];
+</span><span><a class="LN" name="692">  692   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="693">  693   </a>                                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="694">  694   </a>                                        u_i := u_i + 1;
+</span><span><a class="LN" name="695">  695   </a>                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="696">  696   </a>                                    i0_qr(b_A := RLinv);
+</span><span><a class="LN" name="697">  697   </a>                                    QQ := i0_qr.Q;
+</span><span><a class="LN" name="698">  698   </a>                                    RR := i0_qr.b_R;
+</span><span><a class="LN" name="699">  699   </a>                                    u_i := 1;
+</span><span><a class="LN" name="700">  700   </a>                                    <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="701">  701   </a>                                        exitg4 := 0;
+</span><span><a class="LN" name="702">  702   </a>                                        <span class="KW">IF</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="703">  703   </a>                                            <span class="KW">IF</span> <span class="KW">ABS</span>(RR[(((INT_TO_DINT(DINT_TO_INT(u_i)) - 1) * 5) + INT_TO_DINT(DINT_TO_INT(u_i))) - 1]) &lt; 1.0E-12 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="704">  704   </a>                                                c_i := -2;
+</span><span><a class="LN" name="705">  705   </a>                                                exitg4 := 1;
+</span><span><a class="LN" name="706">  706   </a>                                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="707">  707   </a>                                                u_i := u_i + 1;
+</span><span><a class="LN" name="708">  708   </a>                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="709">  709   </a>                                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="710">  710   </a>                                            <span class="KW">FOR</span> u_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="711">  711   </a>                                                <span class="KW">FOR</span> f_j := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="712">  712   </a>                                                    cMin := 0.0;
+</span><span><a class="LN" name="713">  713   </a>                                                    <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="714">  714   </a>                                                        cMin := (Implicit_b_Linv[(u_i * 5) + b_H_tmp] * QQ[(f_j * 5) + b_H_tmp]) + cMin;
+</span><span><a class="LN" name="715">  715   </a>                                                    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="716">  716   </a>                                                    TL[u_i + (5 * f_j)] := cMin;
+</span><span><a class="LN" name="717">  717   </a>                                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="718">  718   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="719">  719   </a>                                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="720">  720   </a>                                                RLinv[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="721">  721   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="722">  722   </a>                                            kDrop := nA;
+</span><span><a class="LN" name="723">  723   </a>                                            <span class="KW">WHILE</span> kDrop &gt; 0 <span class="KW">DO</span>
+</span><span><a class="LN" name="724">  724   </a>                                                b_H_tmp := 5 * (INT_TO_DINT(kDrop) - 1);
+</span><span><a class="LN" name="725">  725   </a>                                                f_j := (INT_TO_DINT(kDrop) + b_H_tmp) - 1;
+</span><span><a class="LN" name="726">  726   </a>                                                RLinv[f_j] := 1.0;
+</span><span><a class="LN" name="727">  727   </a>                                                iSave := kDrop;
+</span><span><a class="LN" name="728">  728   </a>                                                <span class="KW">WHILE</span> iSave &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="729">  729   </a>                                                    b_H_tmp_0 := (((INT_TO_DINT(iSave) - 1) * 5) + INT_TO_DINT(kDrop)) - 1;
+</span><span><a class="LN" name="730">  730   </a>                                                    RLinv[b_H_tmp_0] := RLinv[b_H_tmp_0] / RR[f_j];
+</span><span><a class="LN" name="731">  731   </a>                                                    iSave := DINT_TO_INT(INT_TO_DINT(iSave) + 1);
+</span><span><a class="LN" name="732">  732   </a>                                                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="733">  733   </a>                                                <span class="KW">IF</span> kDrop &gt; 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="734">  734   </a>                                                    u_i := 1;
+</span><span><a class="LN" name="735">  735   </a>                                                    <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(kDrop) - 2) <span class="KW">DO</span>
+</span><span><a class="LN" name="736">  736   </a>                                                        iSave := kDrop;
+</span><span><a class="LN" name="737">  737   </a>                                                        <span class="KW">WHILE</span> iSave &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="738">  738   </a>                                                            f_j := (INT_TO_DINT(iSave) - 1) * 5;
+</span><span><a class="LN" name="739">  739   </a>                                                            b_H_tmp_0 := (f_j + INT_TO_DINT(DINT_TO_INT(u_i))) - 1;
+</span><span><a class="LN" name="740">  740   </a>                                                            RLinv[b_H_tmp_0] := RLinv[b_H_tmp_0] - (RR[(b_H_tmp + INT_TO_DINT(DINT_TO_INT(u_i))) - 1] * RLinv[(f_j + INT_TO_DINT(kDrop)) - 1]);
+</span><span><a class="LN" name="741">  741   </a>                                                            iSave := DINT_TO_INT(INT_TO_DINT(iSave) + 1);
+</span><span><a class="LN" name="742">  742   </a>                                                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="743">  743   </a>                                                        u_i := u_i + 1;
+</span><span><a class="LN" name="744">  744   </a>                                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="745">  745   </a>                                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="746">  746   </a>                                                kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) - 1);
+</span><span><a class="LN" name="747">  747   </a>                                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="748">  748   </a>                                            <span class="KW">FOR</span> u_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="749">  749   </a>                                                kDrop := DINT_TO_INT(u_i + 1);
+</span><span><a class="LN" name="750">  750   </a>                                                <span class="KW">WHILE</span> kDrop &lt;= 5 <span class="KW">DO</span>
+</span><span><a class="LN" name="751">  751   </a>                                                    f_j := 5 * (INT_TO_DINT(kDrop) - 1);
+</span><span><a class="LN" name="752">  752   </a>                                                    b_H[u_i + f_j] := 0.0;
+</span><span><a class="LN" name="753">  753   </a>                                                    b_H_tmp := INT_TO_DINT(nA) + 1;
+</span><span><a class="LN" name="754">  754   </a>                                                    <span class="KW">IF</span> (INT_TO_DINT(nA) + 1) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="755">  755   </a>                                                        b_H_tmp := 32767;
+</span><span><a class="LN" name="756">  756   </a>                                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="757">  757   </a>                                                    iSave := DINT_TO_INT(b_H_tmp);
+</span><span><a class="LN" name="758">  758   </a>                                                    <span class="KW">WHILE</span> iSave &lt;= 5 <span class="KW">DO</span>
+</span><span><a class="LN" name="759">  759   </a>                                                        b_H_tmp := (INT_TO_DINT(iSave) - 1) * 5;
+</span><span><a class="LN" name="760">  760   </a>                                                        b_H_tmp_0 := ((INT_TO_DINT(kDrop) - 1) * 5) + u_i;
+</span><span><a class="LN" name="761">  761   </a>                                                        b_H[b_H_tmp_0] := b_H[b_H_tmp_0] - (TL[(b_H_tmp + INT_TO_DINT(kDrop)) - 1] * TL[b_H_tmp + u_i]);
+</span><span><a class="LN" name="762">  762   </a>                                                        iSave := DINT_TO_INT(INT_TO_DINT(iSave) + 1);
+</span><span><a class="LN" name="763">  763   </a>                                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="764">  764   </a>                                                    b_H[(INT_TO_DINT(kDrop) + (5 * u_i)) - 1] := b_H[f_j + u_i];
+</span><span><a class="LN" name="765">  765   </a>                                                    kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) + 1);
+</span><span><a class="LN" name="766">  766   </a>                                                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="767">  767   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="768">  768   </a>                                            u_i := 1;
+</span><span><a class="LN" name="769">  769   </a>                                            <span class="KW">WHILE</span> (u_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="770">  770   </a>                                                <span class="KW">FOR</span> f_j := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="771">  771   </a>                                                    b_H_tmp := f_j + (5 * (INT_TO_DINT(DINT_TO_INT(u_i)) - 1));
+</span><span><a class="LN" name="772">  772   </a>                                                    b_D[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="773">  773   </a>                                                    kDrop := DINT_TO_INT(u_i);
+</span><span><a class="LN" name="774">  774   </a>                                                    <span class="KW">WHILE</span> kDrop &lt;= nA <span class="KW">DO</span>
+</span><span><a class="LN" name="775">  775   </a>                                                        b_H_tmp_0 := (INT_TO_DINT(kDrop) - 1) * 5;
+</span><span><a class="LN" name="776">  776   </a>                                                        b_D[b_H_tmp] := (RLinv[(b_H_tmp_0 + INT_TO_DINT(DINT_TO_INT(u_i))) - 1] * TL[b_H_tmp_0 + f_j]) + b_D[b_H_tmp];
+</span><span><a class="LN" name="777">  777   </a>                                                        kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) + 1);
+</span><span><a class="LN" name="778">  778   </a>                                                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="779">  779   </a>                                                <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="780">  780   </a>                                                u_i := u_i + 1;
+</span><span><a class="LN" name="781">  781   </a>                                            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="782">  782   </a>                                            exitg4 := 1;
+</span><span><a class="LN" name="783">  783   </a>                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="784">  784   </a>                                    <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg4 = 0)
+</span><span><a class="LN" name="785">  785   </a>                                    <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="786">  786   </a>                                    <span class="KW">IF</span> c_i &lt;= 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="787">  787   </a>                                        b_i := -2;
+</span><span><a class="LN" name="788">  788   </a>                                        exitg1 := 1;
+</span><span><a class="LN" name="789">  789   </a>                                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="790">  790   </a>                                        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="791">  791   </a>                                            U[b_H_tmp] :=  -b_H[b_H_tmp];
+</span><span><a class="LN" name="792">  792   </a>                                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="793">  793   </a>                                        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="794">  794   </a>                                            z[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="795">  795   </a>                                            <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="796">  796   </a>                                                z[b_H_tmp] := (U[(5 * b_H_tmp_0) + b_H_tmp] * AcRow[b_H_tmp_0]) + z[b_H_tmp];
+</span><span><a class="LN" name="797">  797   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="798">  798   </a>                                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="799">  799   </a>                                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="800">  800   </a>                                            t := 0.0;
+</span><span><a class="LN" name="801">  801   </a>                                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="802">  802   </a>                                                t := (b_D[((INT_TO_DINT(DINT_TO_INT(c_i)) - 1) * 5) + b_H_tmp] * AcRow[b_H_tmp]) + t;
+</span><span><a class="LN" name="803">  803   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="804">  804   </a>                                            b_r[INT_TO_DINT(DINT_TO_INT(c_i)) - 1] := t;
+</span><span><a class="LN" name="805">  805   </a>                                            c_i := c_i + 1;
+</span><span><a class="LN" name="806">  806   </a>                                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="807">  807   </a>                                        temp2 := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="808">  808   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="809">  809   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="810">  810   </a>                                <span class="KW">IF</span> temp2 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="811">  811   </a>                                    kDrop := 0;
+</span><span><a class="LN" name="812">  812   </a>                                    cMin := 0.0;
+</span><span><a class="LN" name="813">  813   </a>                                    DualFeasible := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="814">  814   </a>                                    ColdReset := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="815">  815   </a>                                    <span class="KW">IF</span> nA &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="816">  816   </a>                                        c_i := 0;
+</span><span><a class="LN" name="817">  817   </a>                                        <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="818">  818   </a>                                            exitg4 := 0;
+</span><span><a class="LN" name="819">  819   </a>                                            <span class="KW">IF</span> c_i &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="820">  820   </a>                                                <span class="KW">IF</span> b_r[c_i] &gt;= 1.0E-12 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="821">  821   </a>                                                    ColdReset := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="822">  822   </a>                                                    exitg4 := 1;
+</span><span><a class="LN" name="823">  823   </a>                                                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="824">  824   </a>                                                    c_i := c_i + 1;
+</span><span><a class="LN" name="825">  825   </a>                                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="826">  826   </a>                                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="827">  827   </a>                                                exitg4 := 1;
+</span><span><a class="LN" name="828">  828   </a>                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="829">  829   </a>                                        <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg4 = 0)
+</span><span><a class="LN" name="830">  830   </a>                                        <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="831">  831   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="832">  832   </a>                                    <span class="KW">IF</span> (nA &lt;&gt; 0) <span class="KW">AND</span> ( <span class="KW">NOT</span> ColdReset) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="833">  833   </a>                                        c_i := 1;
+</span><span><a class="LN" name="834">  834   </a>                                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="835">  835   </a>                                            cVal := b_r[INT_TO_DINT(DINT_TO_INT(c_i)) - 1];
+</span><span><a class="LN" name="836">  836   </a>                                            <span class="KW">IF</span> cVal &gt; 1.0E-12 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="837">  837   </a>                                                cVal := unusedU0[INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(c_i)) - 1]) - 1] / cVal;
+</span><span><a class="LN" name="838">  838   </a>                                                <span class="KW">IF</span> (kDrop = 0) <span class="KW">OR</span> (cVal &lt; rMin) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="839">  839   </a>                                                    rMin := cVal;
+</span><span><a class="LN" name="840">  840   </a>                                                    kDrop := DINT_TO_INT(c_i);
+</span><span><a class="LN" name="841">  841   </a>                                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="842">  842   </a>                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="843">  843   </a>                                            c_i := c_i + 1;
+</span><span><a class="LN" name="844">  844   </a>                                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="845">  845   </a>                                        <span class="KW">IF</span> kDrop &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="846">  846   </a>                                            cMin := rMin;
+</span><span><a class="LN" name="847">  847   </a>                                            DualFeasible := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="848">  848   </a>                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="849">  849   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="850">  850   </a>                                    cVal := mtimes(b_A := z, B := AcRow);
+</span><span><a class="LN" name="851">  851   </a>                                    <span class="KW">IF</span> cVal &lt;= 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="852">  852   </a>                                        cVal := 0.0;
+</span><span><a class="LN" name="853">  853   </a>                                        ColdReset := <span class="KW">TRUE</span>;
+</span><span><a class="LN" name="854">  854   </a>                                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="855">  855   </a>                                        t := 0.0;
+</span><span><a class="LN" name="856">  856   </a>                                        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="857">  857   </a>                                            t := (AcRow[b_H_tmp] * zopt[b_H_tmp]) + t;
+</span><span><a class="LN" name="858">  858   </a>                                        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="859">  859   </a>                                        cVal := (Bc[INT_TO_DINT(kNext) - 1] - t) / cVal;
+</span><span><a class="LN" name="860">  860   </a>                                        ColdReset := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="861">  861   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="862">  862   </a>                                    <span class="KW">IF</span> DualFeasible <span class="KW">AND</span> ColdReset <span class="KW">THEN</span> 
+</span><span><a class="LN" name="863">  863   </a>                                        b_i := -1;
+</span><span><a class="LN" name="864">  864   </a>                                        exitg1 := 1;
+</span><span><a class="LN" name="865">  865   </a>                                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="866">  866   </a>                                        <span class="KW">IF</span> ColdReset <span class="KW">THEN</span> 
+</span><span><a class="LN" name="867">  867   </a>                                            t := cMin;
+</span><span><a class="LN" name="868">  868   </a>                                        <span class="KW">ELSIF</span> DualFeasible <span class="KW">THEN</span> 
+</span><span><a class="LN" name="869">  869   </a>                                            t := cVal;
+</span><span><a class="LN" name="870">  870   </a>                                        <span class="KW">ELSIF</span> cMin &lt; cVal <span class="KW">THEN</span> 
+</span><span><a class="LN" name="871">  871   </a>                                            t := cMin;
+</span><span><a class="LN" name="872">  872   </a>                                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="873">  873   </a>                                            t := cVal;
+</span><span><a class="LN" name="874">  874   </a>                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="875">  875   </a>                                        c_i := 1;
+</span><span><a class="LN" name="876">  876   </a>                                        <span class="KW">WHILE</span> (c_i - 1) &lt;= (INT_TO_DINT(nA) - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="877">  877   </a>                                            u_i := INT_TO_DINT(iC[INT_TO_DINT(DINT_TO_INT(c_i)) - 1]);
+</span><span><a class="LN" name="878">  878   </a>                                            unusedU0[u_i - 1] := unusedU0[u_i - 1] - (b_r[INT_TO_DINT(DINT_TO_INT(c_i)) - 1] * t);
+</span><span><a class="LN" name="879">  879   </a>                                            <span class="KW">IF</span> u_i &lt;= 8 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="880">  880   </a>                                                <span class="KW">IF</span> unusedU0[u_i - 1] &lt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="881">  881   </a>                                                    unusedU0[u_i - 1] := 0.0;
+</span><span><a class="LN" name="882">  882   </a>                                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="883">  883   </a>                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="884">  884   </a>                                            c_i := c_i + 1;
+</span><span><a class="LN" name="885">  885   </a>                                        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="886">  886   </a>                                        unusedU0[INT_TO_DINT(kNext) - 1] := unusedU0[INT_TO_DINT(kNext) - 1] + t;
+</span><span><a class="LN" name="887">  887   </a>                                        <span class="KW">IF</span> t = cMin <span class="KW">THEN</span> 
+</span><span><a class="LN" name="888">  888   </a>                                            i0_DropConstraint(kDrop := kDrop, iA := iA, nA := nA, iC := iC);
+</span><span><a class="LN" name="889">  889   </a>                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="890">  890   </a>                                        <span class="KW">IF</span>  <span class="KW">NOT</span> ColdReset <span class="KW">THEN</span> 
+</span><span><a class="LN" name="891">  891   </a>                                            <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="892">  892   </a>                                                zopt[b_H_tmp] := (t * z[b_H_tmp]) + zopt[b_H_tmp];
+</span><span><a class="LN" name="893">  893   </a>                                            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="894">  894   </a>                                            <span class="KW">IF</span> t = cVal <span class="KW">THEN</span> 
+</span><span><a class="LN" name="895">  895   </a>                                                <span class="KW">IF</span> nA = 5 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="896">  896   </a>                                                    b_i := -1;
+</span><span><a class="LN" name="897">  897   </a>                                                    exitg1 := 1;
+</span><span><a class="LN" name="898">  898   </a>                                                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="899">  899   </a>                                                    b_H_tmp := INT_TO_DINT(nA) + 1;
+</span><span><a class="LN" name="900">  900   </a>                                                    <span class="KW">IF</span> (INT_TO_DINT(nA) + 1) &gt; 32767 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="901">  901   </a>                                                        b_H_tmp := 32767;
+</span><span><a class="LN" name="902">  902   </a>                                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="903">  903   </a>                                                    nA := DINT_TO_INT(b_H_tmp);
+</span><span><a class="LN" name="904">  904   </a>                                                    iC[INT_TO_DINT(DINT_TO_INT(b_H_tmp)) - 1] := kNext;
+</span><span><a class="LN" name="905">  905   </a>                                                    kDrop := DINT_TO_INT(b_H_tmp);
+</span><span><a class="LN" name="906">  906   </a>                                                    <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="907">  907   </a>                                                        exitg4 := 0;
+</span><span><a class="LN" name="908">  908   </a>                                                        <span class="KW">IF</span> kDrop &gt; 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="909">  909   </a>                                                            iSave := iC[INT_TO_DINT(kDrop) - 1];
+</span><span><a class="LN" name="910">  910   </a>                                                            temp1 := iC[INT_TO_DINT(kDrop) - 2];
+</span><span><a class="LN" name="911">  911   </a>                                                            <span class="KW">IF</span> iSave &gt; temp1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="912">  912   </a>                                                                exitg4 := 1;
+</span><span><a class="LN" name="913">  913   </a>                                                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="914">  914   </a>                                                                iC[INT_TO_DINT(kDrop) - 1] := temp1;
+</span><span><a class="LN" name="915">  915   </a>                                                                iC[INT_TO_DINT(kDrop) - 2] := iSave;
+</span><span><a class="LN" name="916">  916   </a>                                                                kDrop := DINT_TO_INT(INT_TO_DINT(kDrop) - 1);
+</span><span><a class="LN" name="917">  917   </a>                                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="918">  918   </a>                                                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="919">  919   </a>                                                            exitg4 := 1;
+</span><span><a class="LN" name="920">  920   </a>                                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="921">  921   </a>                                                    <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg4 = 0)
+</span><span><a class="LN" name="922">  922   </a>                                                    <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="923">  923   </a>                                                    iA[INT_TO_DINT(kNext) - 1] := 1;
+</span><span><a class="LN" name="924">  924   </a>                                                    kNext := 0;
+</span><span><a class="LN" name="925">  925   </a>                                                    b_i := b_i + 1;
+</span><span><a class="LN" name="926">  926   </a>                                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="927">  927   </a>                                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="928">  928   </a>                                                b_i := b_i + 1;
+</span><span><a class="LN" name="929">  929   </a>                                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="930">  930   </a>                                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="931">  931   </a>                                            b_i := b_i + 1;
+</span><span><a class="LN" name="932">  932   </a>                                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="933">  933   </a>                                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="934">  934   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="935">  935   </a>                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="936">  936   </a>                                cMin := norm(x := zopt);
+</span><span><a class="LN" name="937">  937   </a>                                <span class="KW">IF</span> <span class="KW">ABS</span>(cMin - Xnorm0) &gt; 0.001 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="938">  938   </a>                                    Xnorm0 := cMin;
+</span><span><a class="LN" name="939">  939   </a>                                    i0_abs_c3(x := Bc);
+</span><span><a class="LN" name="940">  940   </a>                                    temp5 := i0_abs_c3.y;
+</span><span><a class="LN" name="941">  941   </a>                                    i0_maximum2(x := temp5, y := 1.0);
+</span><span><a class="LN" name="942">  942   </a>                                    cTol := i0_maximum2.ex;
+</span><span><a class="LN" name="943">  943   </a>                                    cTolComputed := <span class="KW">FALSE</span>;
+</span><span><a class="LN" name="944">  944   </a>                                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="945">  945   </a>                                exitg1 := 2;
+</span><span><a class="LN" name="946">  946   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="947">  947   </a>                        <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg1 = 0)
+</span><span><a class="LN" name="948">  948   </a>                        <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="949">  949   </a>                        <span class="KW">IF</span> exitg1 = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="950">  950   </a>                            exitg2 := 1;
+</span><span><a class="LN" name="951">  951   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="952">  952   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="953">  953   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="954">  954   </a>                    exitg2 := 1;
+</span><span><a class="LN" name="955">  955   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="956">  956   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg2 = 0)
+</span><span><a class="LN" name="957">  957   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="958">  958   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="959">  959   </a>        <span class="KW">IF</span> (b_i &lt; 0) <span class="KW">OR</span> (b_i = 0) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="960">  960   </a>            <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="961">  961   </a>                zopt[c_i] := 0.0;
+</span><span><a class="LN" name="962">  962   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="963">  963   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="964">  964   </a>        mv[0] := old_u_idx_0 + zopt[0];
+</span><span><a class="LN" name="965">  965   </a>        mv[1] := old_u_idx_1 + zopt[1];
+</span><span><a class="LN" name="966">  966   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="967">  967   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:154')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:154</i></font></a>' if return_xseq || return_ovseq *)</span>
+</span><span><a class="LN" name="968">  968   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:156')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:156</i></font></a>' else *)</span>
+</span><span><a class="LN" name="969">  969   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:157')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:157</i></font></a>' yseq = zeros(p+1,ny,'like',rseq); *)</span>
+</span><span><a class="LN" name="970">  970   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:158')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:158</i></font></a>' xseq = zeros(p+1,nxQP,'like',rseq); *)</span>
+</span><span><a class="LN" name="971">  971   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:161')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:161</i></font></a>' if CustomEstimation==ONE *)</span>
+</span><span><a class="LN" name="972">  972   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:163')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:163</i></font></a>' else *)</span>
+</span><span><a class="LN" name="973">  973   </a>        <span class="CT">(* update x[k+1|k], assuming that above u and v will be applied. *)</span>
+</span><span><a class="LN" name="974">  974   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:165')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:165</i></font></a>' xk1 = A*xk + Bu*(u - uoff) + Bv*v + L*y_innov; *)</span>
+</span><span><a class="LN" name="975">  975   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:167')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:167</i></font></a>' xk1 = xk1 + xoff; *)</span>
+</span><span><a class="LN" name="976">  976   </a>        <span class="CT">(* Updated state must include offset *)</span>
+</span><span><a class="LN" name="977">  977   </a>        <span class="CT">(* return xest in original value *)</span>
+</span><span><a class="LN" name="978">  978   </a>        <span class="CT">(* '<a href="matlab:coder.internal.code2model('sim_mixed:4:85:1:170')" name="code2model"><font color="#117755"><i>&lt;S24&gt;:1:170</i></font></a>' xest = xest + xoff; *)</span>
+</span><span><a class="LN" name="979">  979   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="980">  980   </a>        <span class="CT">(* Update for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:79')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Memory</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="981">  981   </a><span class="CT">         *  MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="982">  982   </a>        <span class="KW">FOR</span> c_i := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="983">  983   </a>            Memory_PreviousInput[c_i] := iA[c_i] &lt;&gt; 0;
+</span><span><a class="LN" name="984">  984   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="985">  985   </a>        <span class="CT">(* End of Update for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:79')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/Memory</i></font></a>' *)</span>
+</span><span><a class="LN" name="986">  986   </a>        
+</span><span><a class="LN" name="987">  987   </a>        <span class="CT">(* Update for UnitDelay: '<a href="matlab:coder.internal.code2model('sim_mixed:4:1925')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_mv</i></font></a>' *)</span>
+</span><span><a class="LN" name="988">  988   </a>        last_mv_DSTATE[0] := mv[0];
+</span><span><a class="LN" name="989">  989   </a>        <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="990">  990   </a><span class="CT">         *  UnitDelay: '<a href="matlab:coder.internal.code2model('sim_mixed:4:1925')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_mv</i></font></a>' *)</span>
+</span><span><a class="LN" name="991">  991   </a>        old_u_idx_0 := mv[0];
+</span><span><a class="LN" name="992">  992   </a>        <span class="CT">(* Update for UnitDelay: '<a href="matlab:coder.internal.code2model('sim_mixed:4:1925')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_mv</i></font></a>' *)</span>
+</span><span><a class="LN" name="993">  993   </a>        old_u_idx_1 := mv[1];
+</span><span><a class="LN" name="994">  994   </a>        last_mv_DSTATE[1] := mv[1];
+</span><span><a class="LN" name="995">  995   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="996">  996   </a>        <span class="CT">(* Outputs for Atomic SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="997">  997   </a>        <span class="KW">FOR</span> b_H_tmp := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="998">  998   </a>            <span class="CT">(* MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="999">  999   </a>            rtb_xest[b_H_tmp] := 0.0;
+</span><span><a class="LN" name="1000"> 1000   </a>            <span class="KW">FOR</span> b_H_tmp_0 := 0 <span class="KW">TO</span> 5 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1001"> 1001   </a>                rtb_xest[b_H_tmp] := (Implicit_d_a[(6 * b_H_tmp_0) + b_H_tmp] * xk[b_H_tmp_0]) + rtb_xest[b_H_tmp];
+</span><span><a class="LN" name="1002"> 1002   </a>            <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1003"> 1003   </a>            <span class="CT">(* Update for Memory: '<a href="matlab:coder.internal.code2model('sim_mixed:4:2572')" name="code2model"><font color="#117755"><i>&lt;S3&gt;/last_x</i></font></a>' incorporates:</span>
+</span><span><a class="LN" name="1004"> 1004   </a><span class="CT">             *  MATLAB Function: '<a href="matlab:coder.internal.code2model('sim_mixed:4:85')" name="code2model"><font color="#117755"><i>&lt;S23&gt;/optimizer</i></font></a>' *)</span>
+</span><span><a class="LN" name="1005"> 1005   </a>            last_x_PreviousInput[b_H_tmp] := ((Implicit_f_a[b_H_tmp + 6] * y_innov[1]) + (Implicit_f_a[b_H_tmp] * y_innov[0])) + (rtb_xest[b_H_tmp] + ((Implicit_e_a[b_H_tmp + 6] * old_u_idx_1) + (Implicit_e_a[b_H_tmp] * old_u_idx_0)));
+</span><span><a class="LN" name="1006"> 1006   </a>        <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1007"> 1007   </a>        <span class="CT">(* End of Outputs for SubSystem: '&lt;Root&gt;/Implicit Controller' *)</span>
+</span><span><a class="LN" name="1008"> 1008   </a><span class="KW">END_CASE</span>;
+</span><span><a class="LN" name="1009"> 1009   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1010"> 1010   </a><span class="KW">FUNCTION</span> mtimes: <span class="KW">LREAL</span>
+</span><span><a class="LN" name="1011"> 1011   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1012"> 1012   </a>    b_A: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1013"> 1013   </a>    B: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1014"> 1014   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1015"> 1015   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1016"> 1016   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1017"> 1017   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1018"> 1018   </a>mtimes := 0.0;
+</span><span><a class="LN" name="1019"> 1019   </a><span class="KW">FOR</span> k := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1020"> 1020   </a>    mtimes := (b_A[k] * B[k]) + mtimes;
+</span><span><a class="LN" name="1021"> 1021   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1022"> 1022   </a><span class="KW">END_FUNCTION</span>
+</span><span><a class="LN" name="1023"> 1023   </a><span class="KW">FUNCTION_BLOCK</span> qr
+</span><span><a class="LN" name="1024"> 1024   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1025"> 1025   </a>    b_A: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1026"> 1026   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1027"> 1027   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="1028"> 1028   </a>    Q: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1029"> 1029   </a>    b_R: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1030"> 1030   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1031"> 1031   </a><span class="KW">VAR</span>
+</span><span><a class="LN" name="1032"> 1032   </a>    i0_xgerc: xgerc;
+</span><span><a class="LN" name="1033"> 1033   </a>    i0_xgemv: xgemv;
+</span><span><a class="LN" name="1034"> 1034   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1035"> 1035   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1036"> 1036   </a>    c_A: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1037"> 1037   </a>    tau: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1038"> 1038   </a>    itau: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1039"> 1039   </a>    work: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1040"> 1040   </a>    ii: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1041"> 1041   </a>    b_atmp: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1042"> 1042   </a>    beta1: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1043"> 1043   </a>    knt: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1044"> 1044   </a>    c_lastc: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1045"> 1045   </a>    coltop: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1046"> 1046   </a>    ia: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1047"> 1047   </a>    b_coltop: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1048"> 1048   </a>    a: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1049"> 1049   </a>    exitg1: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1050"> 1050   </a>    exitg2: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1051"> 1051   </a>    temp6: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1052"> 1052   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1053"> 1053   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1054"> 1054   </a>    tau[itau] := 0.0;
+</span><span><a class="LN" name="1055"> 1055   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1056"> 1056   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 24 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1057"> 1057   </a>    c_A[itau] := b_A[itau];
+</span><span><a class="LN" name="1058"> 1058   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1059"> 1059   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1060"> 1060   </a>    work[itau] := 0.0;
+</span><span><a class="LN" name="1061"> 1061   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1062"> 1062   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1063"> 1063   </a>    ii := (itau * 5) + itau;
+</span><span><a class="LN" name="1064"> 1064   </a>    <span class="KW">IF</span> (itau + 1) &lt; 5 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1065"> 1065   </a>        b_atmp := c_A[ii];
+</span><span><a class="LN" name="1066"> 1066   </a>        tau[itau] := 0.0;
+</span><span><a class="LN" name="1067"> 1067   </a>        beta1 := xnrm2(b_n := 4 - itau, x := c_A, ix0 := ii + 2);
+</span><span><a class="LN" name="1068"> 1068   </a>        <span class="KW">IF</span> beta1 &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1069"> 1069   </a>            a := <span class="KW">ABS</span>(c_A[ii]);
+</span><span><a class="LN" name="1070"> 1070   </a>            beta1 := <span class="KW">ABS</span>(beta1);
+</span><span><a class="LN" name="1071"> 1071   </a>            <span class="KW">IF</span> a &lt; beta1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1072"> 1072   </a>                a := a / beta1;
+</span><span><a class="LN" name="1073"> 1073   </a>                beta1 := <span class="KW">SQRT</span>((a * a) + 1.0) * beta1;
+</span><span><a class="LN" name="1074"> 1074   </a>            <span class="KW">ELSIF</span> a &gt; beta1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1075"> 1075   </a>                beta1 := beta1 / a;
+</span><span><a class="LN" name="1076"> 1076   </a>                beta1 := <span class="KW">SQRT</span>((beta1 * beta1) + 1.0) * a;
+</span><span><a class="LN" name="1077"> 1077   </a>            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1078"> 1078   </a>                beta1 := a * 1.4142135623730951;
+</span><span><a class="LN" name="1079"> 1079   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1080"> 1080   </a>            <span class="KW">IF</span> c_A[ii] &gt;= 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1081"> 1081   </a>                beta1 :=  -beta1;
+</span><span><a class="LN" name="1082"> 1082   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1083"> 1083   </a>            <span class="KW">IF</span> <span class="KW">ABS</span>(beta1) &lt; 1.0020841800044864E-292 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1084"> 1084   </a>                knt := -1;
+</span><span><a class="LN" name="1085"> 1085   </a>                c_lastc := ii - itau;
+</span><span><a class="LN" name="1086"> 1086   </a>                <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1087"> 1087   </a>                    knt := knt + 1;
+</span><span><a class="LN" name="1088"> 1088   </a>                    b_coltop := ii + 1;
+</span><span><a class="LN" name="1089"> 1089   </a>                    <span class="KW">WHILE</span> (b_coltop + 1) &lt;= (c_lastc + 5) <span class="KW">DO</span>
+</span><span><a class="LN" name="1090"> 1090   </a>                        c_A[b_coltop] := 9.9792015476736E+291 * c_A[b_coltop];
+</span><span><a class="LN" name="1091"> 1091   </a>                        b_coltop := b_coltop + 1;
+</span><span><a class="LN" name="1092"> 1092   </a>                    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1093"> 1093   </a>                    beta1 := beta1 * 9.9792015476736E+291;
+</span><span><a class="LN" name="1094"> 1094   </a>                    b_atmp := b_atmp * 9.9792015476736E+291;
+</span><span><a class="LN" name="1095"> 1095   </a>                <span class="KW">UNTIL</span> <span class="KW">NOT</span>(<span class="KW">ABS</span>(beta1) &lt; 1.0020841800044864E-292)
+</span><span><a class="LN" name="1096"> 1096   </a>                <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1097"> 1097   </a>                a := <span class="KW">ABS</span>(b_atmp);
+</span><span><a class="LN" name="1098"> 1098   </a>                temp6 := xnrm2(b_n := 4 - itau, x := c_A, ix0 := ii + 2);
+</span><span><a class="LN" name="1099"> 1099   </a>                beta1 := <span class="KW">ABS</span>(temp6);
+</span><span><a class="LN" name="1100"> 1100   </a>                <span class="KW">IF</span> a &lt; beta1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1101"> 1101   </a>                    a := a / beta1;
+</span><span><a class="LN" name="1102"> 1102   </a>                    beta1 := <span class="KW">SQRT</span>((a * a) + 1.0) * beta1;
+</span><span><a class="LN" name="1103"> 1103   </a>                <span class="KW">ELSIF</span> a &gt; beta1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1104"> 1104   </a>                    beta1 := beta1 / a;
+</span><span><a class="LN" name="1105"> 1105   </a>                    beta1 := <span class="KW">SQRT</span>((beta1 * beta1) + 1.0) * a;
+</span><span><a class="LN" name="1106"> 1106   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1107"> 1107   </a>                    beta1 := a * 1.4142135623730951;
+</span><span><a class="LN" name="1108"> 1108   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1109"> 1109   </a>                <span class="KW">IF</span> b_atmp &gt;= 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1110"> 1110   </a>                    beta1 :=  -beta1;
+</span><span><a class="LN" name="1111"> 1111   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1112"> 1112   </a>                tau[itau] := (beta1 - b_atmp) / beta1;
+</span><span><a class="LN" name="1113"> 1113   </a>                b_atmp := 1.0 / (b_atmp - beta1);
+</span><span><a class="LN" name="1114"> 1114   </a>                c_lastc := ii - itau;
+</span><span><a class="LN" name="1115"> 1115   </a>                b_coltop := ii + 1;
+</span><span><a class="LN" name="1116"> 1116   </a>                <span class="KW">WHILE</span> (b_coltop + 1) &lt;= (c_lastc + 5) <span class="KW">DO</span>
+</span><span><a class="LN" name="1117"> 1117   </a>                    c_A[b_coltop] := b_atmp * c_A[b_coltop];
+</span><span><a class="LN" name="1118"> 1118   </a>                    b_coltop := b_coltop + 1;
+</span><span><a class="LN" name="1119"> 1119   </a>                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1120"> 1120   </a>                c_lastc := 0;
+</span><span><a class="LN" name="1121"> 1121   </a>                <span class="KW">WHILE</span> c_lastc &lt;= knt <span class="KW">DO</span>
+</span><span><a class="LN" name="1122"> 1122   </a>                    beta1 := beta1 * 1.0020841800044864E-292;
+</span><span><a class="LN" name="1123"> 1123   </a>                    c_lastc := c_lastc + 1;
+</span><span><a class="LN" name="1124"> 1124   </a>                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1125"> 1125   </a>                b_atmp := beta1;
+</span><span><a class="LN" name="1126"> 1126   </a>            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1127"> 1127   </a>                tau[itau] := (beta1 - c_A[ii]) / beta1;
+</span><span><a class="LN" name="1128"> 1128   </a>                b_atmp := 1.0 / (c_A[ii] - beta1);
+</span><span><a class="LN" name="1129"> 1129   </a>                knt := ii - itau;
+</span><span><a class="LN" name="1130"> 1130   </a>                c_lastc := ii + 1;
+</span><span><a class="LN" name="1131"> 1131   </a>                <span class="KW">WHILE</span> (c_lastc + 1) &lt;= (knt + 5) <span class="KW">DO</span>
+</span><span><a class="LN" name="1132"> 1132   </a>                    c_A[c_lastc] := b_atmp * c_A[c_lastc];
+</span><span><a class="LN" name="1133"> 1133   </a>                    c_lastc := c_lastc + 1;
+</span><span><a class="LN" name="1134"> 1134   </a>                <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1135"> 1135   </a>                b_atmp := beta1;
+</span><span><a class="LN" name="1136"> 1136   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1137"> 1137   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1138"> 1138   </a>        c_A[ii] := b_atmp;
+</span><span><a class="LN" name="1139"> 1139   </a>        b_atmp := c_A[ii];
+</span><span><a class="LN" name="1140"> 1140   </a>        c_A[ii] := 1.0;
+</span><span><a class="LN" name="1141"> 1141   </a>        <span class="KW">IF</span> tau[itau] &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1142"> 1142   </a>            knt := 5 - itau;
+</span><span><a class="LN" name="1143"> 1143   </a>            c_lastc := ii - itau;
+</span><span><a class="LN" name="1144"> 1144   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1145"> 1145   </a>                exitg1 := 0;
+</span><span><a class="LN" name="1146"> 1146   </a>                <span class="KW">IF</span> knt &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1147"> 1147   </a>                    <span class="KW">IF</span> c_A[c_lastc + 4] = 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1148"> 1148   </a>                        knt := knt - 1;
+</span><span><a class="LN" name="1149"> 1149   </a>                        c_lastc := c_lastc - 1;
+</span><span><a class="LN" name="1150"> 1150   </a>                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1151"> 1151   </a>                        exitg1 := 1;
+</span><span><a class="LN" name="1152"> 1152   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1153"> 1153   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1154"> 1154   </a>                    exitg1 := 1;
+</span><span><a class="LN" name="1155"> 1155   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1156"> 1156   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg1 = 0)
+</span><span><a class="LN" name="1157"> 1157   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1158"> 1158   </a>            c_lastc := 4 - itau;
+</span><span><a class="LN" name="1159"> 1159   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1160"> 1160   </a>                exitg2 := 0;
+</span><span><a class="LN" name="1161"> 1161   </a>                <span class="KW">IF</span> c_lastc &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1162"> 1162   </a>                    b_coltop := (((c_lastc - 1) * 5) + ii) + 5;
+</span><span><a class="LN" name="1163"> 1163   </a>                    coltop := b_coltop;
+</span><span><a class="LN" name="1164"> 1164   </a>                    <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1165"> 1165   </a>                        exitg1 := 0;
+</span><span><a class="LN" name="1166"> 1166   </a>                        <span class="KW">IF</span> (coltop + 1) &lt;= (b_coltop + knt) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1167"> 1167   </a>                            <span class="KW">IF</span> c_A[coltop] &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1168"> 1168   </a>                                exitg1 := 1;
+</span><span><a class="LN" name="1169"> 1169   </a>                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1170"> 1170   </a>                                coltop := coltop + 1;
+</span><span><a class="LN" name="1171"> 1171   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1172"> 1172   </a>                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1173"> 1173   </a>                            c_lastc := c_lastc - 1;
+</span><span><a class="LN" name="1174"> 1174   </a>                            exitg1 := 2;
+</span><span><a class="LN" name="1175"> 1175   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1176"> 1176   </a>                    <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg1 = 0)
+</span><span><a class="LN" name="1177"> 1177   </a>                    <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1178"> 1178   </a>                    <span class="KW">IF</span> exitg1 = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1179"> 1179   </a>                        exitg2 := 1;
+</span><span><a class="LN" name="1180"> 1180   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1181"> 1181   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1182"> 1182   </a>                    exitg2 := 1;
+</span><span><a class="LN" name="1183"> 1183   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1184"> 1184   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg2 = 0)
+</span><span><a class="LN" name="1185"> 1185   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1186"> 1186   </a>        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1187"> 1187   </a>            knt := 0;
+</span><span><a class="LN" name="1188"> 1188   </a>            c_lastc := 0;
+</span><span><a class="LN" name="1189"> 1189   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1190"> 1190   </a>        <span class="KW">IF</span> knt &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1191"> 1191   </a>            i0_xgemv(b_m := knt, b_n := c_lastc, b_A := c_A, ia0 := ii + 6, x := c_A, ix0 := ii + 1, y := work);
+</span><span><a class="LN" name="1192"> 1192   </a>            i0_xgerc(b_m := knt, b_n := c_lastc, alpha1 :=  -tau[itau], ix0 := ii + 1, y := work, b_A := c_A, ia0 := ii + 6);
+</span><span><a class="LN" name="1193"> 1193   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1194"> 1194   </a>        c_A[ii] := b_atmp;
+</span><span><a class="LN" name="1195"> 1195   </a>    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1196"> 1196   </a>        tau[4] := 0.0;
+</span><span><a class="LN" name="1197"> 1197   </a>    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1198"> 1198   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1199"> 1199   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1200"> 1200   </a>    ii := 0;
+</span><span><a class="LN" name="1201"> 1201   </a>    <span class="KW">WHILE</span> ii &lt;= itau <span class="KW">DO</span>
+</span><span><a class="LN" name="1202"> 1202   </a>        b_R[ii + (5 * itau)] := c_A[(5 * itau) + ii];
+</span><span><a class="LN" name="1203"> 1203   </a>        ii := ii + 1;
+</span><span><a class="LN" name="1204"> 1204   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1205"> 1205   </a>    ii := itau + 1;
+</span><span><a class="LN" name="1206"> 1206   </a>    <span class="KW">WHILE</span> (ii + 1) &lt; 6 <span class="KW">DO</span>
+</span><span><a class="LN" name="1207"> 1207   </a>        b_R[ii + (5 * itau)] := 0.0;
+</span><span><a class="LN" name="1208"> 1208   </a>        ii := ii + 1;
+</span><span><a class="LN" name="1209"> 1209   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1210"> 1210   </a>    work[itau] := 0.0;
+</span><span><a class="LN" name="1211"> 1211   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1212"> 1212   </a>itau := 4;
+</span><span><a class="LN" name="1213"> 1213   </a><span class="KW">FOR</span> ii := 4 <span class="KW">TO</span> 0 <span class="KW">BY</span> -1 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1214"> 1214   </a>    knt := ((ii * 5) + ii) + 6;
+</span><span><a class="LN" name="1215"> 1215   </a>    <span class="KW">IF</span> (ii + 1) &lt; 5 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1216"> 1216   </a>        c_A[knt - 6] := 1.0;
+</span><span><a class="LN" name="1217"> 1217   </a>        <span class="KW">IF</span> tau[itau] &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1218"> 1218   </a>            c_lastc := 5 - ii;
+</span><span><a class="LN" name="1219"> 1219   </a>            b_coltop := knt - ii;
+</span><span><a class="LN" name="1220"> 1220   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1221"> 1221   </a>                exitg1 := 0;
+</span><span><a class="LN" name="1222"> 1222   </a>                <span class="KW">IF</span> c_lastc &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1223"> 1223   </a>                    <span class="KW">IF</span> c_A[b_coltop - 2] = 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1224"> 1224   </a>                        c_lastc := c_lastc - 1;
+</span><span><a class="LN" name="1225"> 1225   </a>                        b_coltop := b_coltop - 1;
+</span><span><a class="LN" name="1226"> 1226   </a>                    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1227"> 1227   </a>                        exitg1 := 1;
+</span><span><a class="LN" name="1228"> 1228   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1229"> 1229   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1230"> 1230   </a>                    exitg1 := 1;
+</span><span><a class="LN" name="1231"> 1231   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1232"> 1232   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg1 = 0)
+</span><span><a class="LN" name="1233"> 1233   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1234"> 1234   </a>            b_coltop := 4 - ii;
+</span><span><a class="LN" name="1235"> 1235   </a>            <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1236"> 1236   </a>                exitg2 := 0;
+</span><span><a class="LN" name="1237"> 1237   </a>                <span class="KW">IF</span> b_coltop &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1238"> 1238   </a>                    coltop := ((b_coltop - 1) * 5) + knt;
+</span><span><a class="LN" name="1239"> 1239   </a>                    ia := coltop;
+</span><span><a class="LN" name="1240"> 1240   </a>                    <span class="KW">REPEAT</span> 
+</span><span><a class="LN" name="1241"> 1241   </a>                        exitg1 := 0;
+</span><span><a class="LN" name="1242"> 1242   </a>                        <span class="KW">IF</span> ia &lt;= ((coltop + c_lastc) - 1) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1243"> 1243   </a>                            <span class="KW">IF</span> c_A[ia - 1] &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1244"> 1244   </a>                                exitg1 := 1;
+</span><span><a class="LN" name="1245"> 1245   </a>                            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1246"> 1246   </a>                                ia := ia + 1;
+</span><span><a class="LN" name="1247"> 1247   </a>                            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1248"> 1248   </a>                        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1249"> 1249   </a>                            b_coltop := b_coltop - 1;
+</span><span><a class="LN" name="1250"> 1250   </a>                            exitg1 := 2;
+</span><span><a class="LN" name="1251"> 1251   </a>                        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1252"> 1252   </a>                    <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg1 = 0)
+</span><span><a class="LN" name="1253"> 1253   </a>                    <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1254"> 1254   </a>                    <span class="KW">IF</span> exitg1 = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1255"> 1255   </a>                        exitg2 := 1;
+</span><span><a class="LN" name="1256"> 1256   </a>                    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1257"> 1257   </a>                <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1258"> 1258   </a>                    exitg2 := 1;
+</span><span><a class="LN" name="1259"> 1259   </a>                <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1260"> 1260   </a>            <span class="KW">UNTIL</span> <span class="KW">NOT</span>(exitg2 = 0)
+</span><span><a class="LN" name="1261"> 1261   </a>            <span class="KW">END_REPEAT</span>;
+</span><span><a class="LN" name="1262"> 1262   </a>        <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1263"> 1263   </a>            c_lastc := 0;
+</span><span><a class="LN" name="1264"> 1264   </a>            b_coltop := 0;
+</span><span><a class="LN" name="1265"> 1265   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1266"> 1266   </a>        <span class="KW">IF</span> c_lastc &gt; 0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1267"> 1267   </a>            i0_xgemv(b_m := c_lastc, b_n := b_coltop, b_A := c_A, ia0 := knt, x := c_A, ix0 := knt - 5, y := work);
+</span><span><a class="LN" name="1268"> 1268   </a>            i0_xgerc(b_m := c_lastc, b_n := b_coltop, alpha1 :=  -tau[itau], ix0 := knt - 5, y := work, b_A := c_A, ia0 := knt);
+</span><span><a class="LN" name="1269"> 1269   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1270"> 1270   </a>        c_lastc := (knt - ii) - 1;
+</span><span><a class="LN" name="1271"> 1271   </a>        b_coltop := knt - 5;
+</span><span><a class="LN" name="1272"> 1272   </a>        <span class="KW">WHILE</span> (b_coltop + 1) &lt;= c_lastc <span class="KW">DO</span>
+</span><span><a class="LN" name="1273"> 1273   </a>            c_A[b_coltop] := ( -tau[itau]) * c_A[b_coltop];
+</span><span><a class="LN" name="1274"> 1274   </a>            b_coltop := b_coltop + 1;
+</span><span><a class="LN" name="1275"> 1275   </a>        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1276"> 1276   </a>    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1277"> 1277   </a>    c_A[knt - 6] := 1.0 - tau[itau];
+</span><span><a class="LN" name="1278"> 1278   </a>    c_lastc := 0;
+</span><span><a class="LN" name="1279"> 1279   </a>    <span class="KW">WHILE</span> c_lastc &lt;= (ii - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="1280"> 1280   </a>        c_A[(knt - c_lastc) - 7] := 0.0;
+</span><span><a class="LN" name="1281"> 1281   </a>        c_lastc := c_lastc + 1;
+</span><span><a class="LN" name="1282"> 1282   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1283"> 1283   </a>    itau := itau - 1;
+</span><span><a class="LN" name="1284"> 1284   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1285"> 1285   </a><span class="KW">FOR</span> itau := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1286"> 1286   </a>    <span class="KW">FOR</span> ii := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1287"> 1287   </a>        Q[ii + (5 * itau)] := c_A[(5 * itau) + ii];
+</span><span><a class="LN" name="1288"> 1288   </a>    <span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1289"> 1289   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1290"> 1290   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1291"> 1291   </a><span class="KW">FUNCTION_BLOCK</span> xgerc
+</span><span><a class="LN" name="1292"> 1292   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1293"> 1293   </a>    b_m: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1294"> 1294   </a>    b_n: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1295"> 1295   </a>    alpha1: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1296"> 1296   </a>    ix0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1297"> 1297   </a>    y: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1298"> 1298   </a>    ia0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1299"> 1299   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1300"> 1300   </a><span class="KW">VAR_IN_OUT</span>
+</span><span><a class="LN" name="1301"> 1301   </a>    b_A: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1302"> 1302   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1303"> 1303   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1304"> 1304   </a>    jA: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1305"> 1305   </a>    jy: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1306"> 1306   </a>    temp: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1307"> 1307   </a>    ix: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1308"> 1308   </a>    j: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1309"> 1309   </a>    b: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1310"> 1310   </a>    ijA: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1311"> 1311   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1312"> 1312   </a><span class="KW">IF</span> alpha1 &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1313"> 1313   </a>    jA := ia0 - 1;
+</span><span><a class="LN" name="1314"> 1314   </a>    jy := 0;
+</span><span><a class="LN" name="1315"> 1315   </a>    j := 0;
+</span><span><a class="LN" name="1316"> 1316   </a>    <span class="KW">WHILE</span> j &lt;= (b_n - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="1317"> 1317   </a>        <span class="KW">IF</span> y[jy] &lt;&gt; 0.0 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1318"> 1318   </a>            temp := y[jy] * alpha1;
+</span><span><a class="LN" name="1319"> 1319   </a>            ix := ix0;
+</span><span><a class="LN" name="1320"> 1320   </a>            b := b_m + jA;
+</span><span><a class="LN" name="1321"> 1321   </a>            ijA := jA;
+</span><span><a class="LN" name="1322"> 1322   </a>            <span class="KW">WHILE</span> (ijA + 1) &lt;= b <span class="KW">DO</span>
+</span><span><a class="LN" name="1323"> 1323   </a>                b_A[ijA] := (b_A[ix - 1] * temp) + b_A[ijA];
+</span><span><a class="LN" name="1324"> 1324   </a>                ix := ix + 1;
+</span><span><a class="LN" name="1325"> 1325   </a>                ijA := ijA + 1;
+</span><span><a class="LN" name="1326"> 1326   </a>            <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1327"> 1327   </a>        <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1328"> 1328   </a>        jy := jy + 1;
+</span><span><a class="LN" name="1329"> 1329   </a>        jA := jA + 5;
+</span><span><a class="LN" name="1330"> 1330   </a>        j := j + 1;
+</span><span><a class="LN" name="1331"> 1331   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1332"> 1332   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1333"> 1333   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1334"> 1334   </a><span class="KW">FUNCTION_BLOCK</span> xgemv
+</span><span><a class="LN" name="1335"> 1335   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1336"> 1336   </a>    b_m: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1337"> 1337   </a>    b_n: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1338"> 1338   </a>    b_A: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1339"> 1339   </a>    ia0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1340"> 1340   </a>    x: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1341"> 1341   </a>    ix0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1342"> 1342   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1343"> 1343   </a><span class="KW">VAR_IN_OUT</span>
+</span><span><a class="LN" name="1344"> 1344   </a>    y: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1345"> 1345   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1346"> 1346   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1347"> 1347   </a>    ix: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1348"> 1348   </a>    b_c: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1349"> 1349   </a>    b_iy: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1350"> 1350   </a>    b: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1351"> 1351   </a>    iac: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1352"> 1352   </a>    b_d: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1353"> 1353   </a>    ia: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1354"> 1354   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1355"> 1355   </a><span class="KW">IF</span> (b_m &lt;&gt; 0) <span class="KW">AND</span> (b_n &lt;&gt; 0) <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1356"> 1356   </a>    b_iy := 0;
+</span><span><a class="LN" name="1357"> 1357   </a>    <span class="KW">WHILE</span> b_iy &lt;= (b_n - 1) <span class="KW">DO</span>
+</span><span><a class="LN" name="1358"> 1358   </a>        y[b_iy] := 0.0;
+</span><span><a class="LN" name="1359"> 1359   </a>        b_iy := b_iy + 1;
+</span><span><a class="LN" name="1360"> 1360   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1361"> 1361   </a>    b_iy := 0;
+</span><span><a class="LN" name="1362"> 1362   </a>    b := ((b_n - 1) * 5) + ia0;
+</span><span><a class="LN" name="1363"> 1363   </a>    iac := ia0;
+</span><span><a class="LN" name="1364"> 1364   </a>    <span class="KW">WHILE</span> iac &lt;= b <span class="KW">DO</span>
+</span><span><a class="LN" name="1365"> 1365   </a>        ix := ix0;
+</span><span><a class="LN" name="1366"> 1366   </a>        b_c := 0.0;
+</span><span><a class="LN" name="1367"> 1367   </a>        b_d := (iac + b_m) - 1;
+</span><span><a class="LN" name="1368"> 1368   </a>        ia := iac;
+</span><span><a class="LN" name="1369"> 1369   </a>        <span class="KW">WHILE</span> ia &lt;= b_d <span class="KW">DO</span>
+</span><span><a class="LN" name="1370"> 1370   </a>            b_c := (b_A[ia - 1] * x[ix - 1]) + b_c;
+</span><span><a class="LN" name="1371"> 1371   </a>            ix := ix + 1;
+</span><span><a class="LN" name="1372"> 1372   </a>            ia := ia + 1;
+</span><span><a class="LN" name="1373"> 1373   </a>        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1374"> 1374   </a>        y[b_iy] := y[b_iy] + b_c;
+</span><span><a class="LN" name="1375"> 1375   </a>        b_iy := b_iy + 1;
+</span><span><a class="LN" name="1376"> 1376   </a>        iac := iac + 5;
+</span><span><a class="LN" name="1377"> 1377   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1378"> 1378   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1379"> 1379   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1380"> 1380   </a><span class="KW">FUNCTION</span> xnrm2: <span class="KW">LREAL</span>
+</span><span><a class="LN" name="1381"> 1381   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1382"> 1382   </a>    b_n: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1383"> 1383   </a>    x: <span class="KW">ARRAY</span> [0..24] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1384"> 1384   </a>    ix0: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1385"> 1385   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1386"> 1386   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1387"> 1387   </a>    scale: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1388"> 1388   </a>    kend: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1389"> 1389   </a>    absxk: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1390"> 1390   </a>    t: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1391"> 1391   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1392"> 1392   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1393"> 1393   </a>xnrm2 := 0.0;
+</span><span><a class="LN" name="1394"> 1394   </a><span class="KW">IF</span> b_n &gt;= 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1395"> 1395   </a>    <span class="KW">IF</span> b_n = 1 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1396"> 1396   </a>        xnrm2 := <span class="KW">ABS</span>(x[ix0 - 1]);
+</span><span><a class="LN" name="1397"> 1397   </a>    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1398"> 1398   </a>        scale := 3.3121686421112381E-170;
+</span><span><a class="LN" name="1399"> 1399   </a>        kend := (ix0 + b_n) - 1;
+</span><span><a class="LN" name="1400"> 1400   </a>        k := ix0;
+</span><span><a class="LN" name="1401"> 1401   </a>        <span class="KW">WHILE</span> k &lt;= kend <span class="KW">DO</span>
+</span><span><a class="LN" name="1402"> 1402   </a>            absxk := <span class="KW">ABS</span>(x[k - 1]);
+</span><span><a class="LN" name="1403"> 1403   </a>            <span class="KW">IF</span> absxk &gt; scale <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1404"> 1404   </a>                t := scale / absxk;
+</span><span><a class="LN" name="1405"> 1405   </a>                xnrm2 := ((xnrm2 * t) * t) + 1.0;
+</span><span><a class="LN" name="1406"> 1406   </a>                scale := absxk;
+</span><span><a class="LN" name="1407"> 1407   </a>            <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1408"> 1408   </a>                t := absxk / scale;
+</span><span><a class="LN" name="1409"> 1409   </a>                xnrm2 := (t * t) + xnrm2;
+</span><span><a class="LN" name="1410"> 1410   </a>            <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1411"> 1411   </a>            k := k + 1;
+</span><span><a class="LN" name="1412"> 1412   </a>        <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1413"> 1413   </a>        xnrm2 := scale * <span class="KW">SQRT</span>(xnrm2);
+</span><span><a class="LN" name="1414"> 1414   </a>    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1415"> 1415   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1416"> 1416   </a><span class="KW">END_FUNCTION</span>
+</span><span><a class="LN" name="1417"> 1417   </a><span class="KW">FUNCTION</span> norm: <span class="KW">LREAL</span>
+</span><span><a class="LN" name="1418"> 1418   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1419"> 1419   </a>    x: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1420"> 1420   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1421"> 1421   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1422"> 1422   </a>    scale: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1423"> 1423   </a>    absxk: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1424"> 1424   </a>    t: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1425"> 1425   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1426"> 1426   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1427"> 1427   </a>norm := 0.0;
+</span><span><a class="LN" name="1428"> 1428   </a>scale := 3.3121686421112381E-170;
+</span><span><a class="LN" name="1429"> 1429   </a><span class="KW">FOR</span> k := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1430"> 1430   </a>    absxk := <span class="KW">ABS</span>(x[k]);
+</span><span><a class="LN" name="1431"> 1431   </a>    <span class="KW">IF</span> absxk &gt; scale <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1432"> 1432   </a>        t := scale / absxk;
+</span><span><a class="LN" name="1433"> 1433   </a>        norm := ((norm * t) * t) + 1.0;
+</span><span><a class="LN" name="1434"> 1434   </a>        scale := absxk;
+</span><span><a class="LN" name="1435"> 1435   </a>    <span class="KW">ELSE</span> 
+</span><span><a class="LN" name="1436"> 1436   </a>        t := absxk / scale;
+</span><span><a class="LN" name="1437"> 1437   </a>        norm := (t * t) + norm;
+</span><span><a class="LN" name="1438"> 1438   </a>    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1439"> 1439   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1440"> 1440   </a>norm := scale * <span class="KW">SQRT</span>(norm);
+</span><span><a class="LN" name="1441"> 1441   </a><span class="KW">END_FUNCTION</span>
+</span><span><a class="LN" name="1442"> 1442   </a><span class="KW">FUNCTION_BLOCK</span> mpcblock_refmd
+</span><span><a class="LN" name="1443"> 1443   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1444"> 1444   </a>    ref: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1445"> 1445   </a>    b_yoff: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1446"> 1446   </a>    b_RYscale: <span class="KW">ARRAY</span> [0..1] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1447"> 1447   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1448"> 1448   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="1449"> 1449   </a>    rseq: <span class="KW">ARRAY</span> [0..5] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1450"> 1450   </a>    vseq: <span class="KW">ARRAY</span> [0..3] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1451"> 1451   </a>    v: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1452"> 1452   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1453"> 1453   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1454"> 1454   </a>    i: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1455"> 1455   </a>    rseq_tmp: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1456"> 1456   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1457"> 1457   </a>vseq[0] := 1.0;
+</span><span><a class="LN" name="1458"> 1458   </a>vseq[1] := 1.0;
+</span><span><a class="LN" name="1459"> 1459   </a>vseq[2] := 1.0;
+</span><span><a class="LN" name="1460"> 1460   </a>vseq[3] := 1.0;
+</span><span><a class="LN" name="1461"> 1461   </a><span class="KW">FOR</span> i := 0 <span class="KW">TO</span> 2 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1462"> 1462   </a>    rseq_tmp := DWORD_TO_DINT(<span class="KW">SHL</span>(DINT_TO_DWORD(i), 1));
+</span><span><a class="LN" name="1463"> 1463   </a>    rseq[rseq_tmp] := (ref[0] * b_RYscale[0]) - b_yoff[0];
+</span><span><a class="LN" name="1464"> 1464   </a>    rseq[rseq_tmp + 1] := (ref[1] * b_RYscale[1]) - b_yoff[1];
+</span><span><a class="LN" name="1465"> 1465   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1466"> 1466   </a>v := 1.0;
+</span><span><a class="LN" name="1467"> 1467   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1468"> 1468   </a><span class="KW">FUNCTION_BLOCK</span> DropConstraint
+</span><span><a class="LN" name="1469"> 1469   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1470"> 1470   </a>    kDrop: <span class="KW">INT</span>;
+</span><span><a class="LN" name="1471"> 1471   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1472"> 1472   </a><span class="KW">VAR_IN_OUT</span>
+</span><span><a class="LN" name="1473"> 1473   </a>    iA: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">INT</span>;
+</span><span><a class="LN" name="1474"> 1474   </a>    nA: <span class="KW">INT</span>;
+</span><span><a class="LN" name="1475"> 1475   </a>    iC: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">INT</span>;
+</span><span><a class="LN" name="1476"> 1476   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1477"> 1477   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1478"> 1478   </a>    i: <span class="KW">INT</span>;
+</span><span><a class="LN" name="1479"> 1479   </a>    tmp: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1480"> 1480   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1481"> 1481   </a>iA[INT_TO_DINT(iC[INT_TO_DINT(kDrop) - 1]) - 1] := 0;
+</span><span><a class="LN" name="1482"> 1482   </a><span class="KW">IF</span> kDrop &lt; nA <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1483"> 1483   </a>    tmp := INT_TO_DINT(nA) - 1;
+</span><span><a class="LN" name="1484"> 1484   </a>    <span class="KW">IF</span> (INT_TO_DINT(nA) - 1) &lt; -32768 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1485"> 1485   </a>        tmp := -32768;
+</span><span><a class="LN" name="1486"> 1486   </a>    <span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1487"> 1487   </a>    i := kDrop;
+</span><span><a class="LN" name="1488"> 1488   </a>    <span class="KW">WHILE</span> i &lt;= DINT_TO_INT(tmp) <span class="KW">DO</span>
+</span><span><a class="LN" name="1489"> 1489   </a>        iC[INT_TO_DINT(i) - 1] := iC[INT_TO_DINT(i)];
+</span><span><a class="LN" name="1490"> 1490   </a>        i := DINT_TO_INT(INT_TO_DINT(i) + 1);
+</span><span><a class="LN" name="1491"> 1491   </a>    <span class="KW">END_WHILE</span>;
+</span><span><a class="LN" name="1492"> 1492   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1493"> 1493   </a>iC[INT_TO_DINT(nA) - 1] := 0;
+</span><span><a class="LN" name="1494"> 1494   </a>tmp := INT_TO_DINT(nA) - 1;
+</span><span><a class="LN" name="1495"> 1495   </a><span class="KW">IF</span> (INT_TO_DINT(nA) - 1) &lt; -32768 <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1496"> 1496   </a>    tmp := -32768;
+</span><span><a class="LN" name="1497"> 1497   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1498"> 1498   </a>nA := DINT_TO_INT(tmp);
+</span><span><a class="LN" name="1499"> 1499   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1500"> 1500   </a><span class="KW">FUNCTION</span> maximum: <span class="KW">LREAL</span>
+</span><span><a class="LN" name="1501"> 1501   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1502"> 1502   </a>    x: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1503"> 1503   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1504"> 1504   </a>maximum := x[0];
+</span><span><a class="LN" name="1505"> 1505   </a><span class="KW">IF</span> x[0] &lt; x[1] <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1506"> 1506   </a>    maximum := x[1];
+</span><span><a class="LN" name="1507"> 1507   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1508"> 1508   </a><span class="KW">IF</span> maximum &lt; x[2] <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1509"> 1509   </a>    maximum := x[2];
+</span><span><a class="LN" name="1510"> 1510   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1511"> 1511   </a><span class="KW">IF</span> maximum &lt; x[3] <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1512"> 1512   </a>    maximum := x[3];
+</span><span><a class="LN" name="1513"> 1513   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1514"> 1514   </a><span class="KW">IF</span> maximum &lt; x[4] <span class="KW">THEN</span> 
+</span><span><a class="LN" name="1515"> 1515   </a>    maximum := x[4];
+</span><span><a class="LN" name="1516"> 1516   </a><span class="KW">END_IF</span>;
+</span><span><a class="LN" name="1517"> 1517   </a><span class="KW">END_FUNCTION</span>
+</span><span><a class="LN" name="1518"> 1518   </a><span class="KW">FUNCTION_BLOCK</span> maximum2
+</span><span><a class="LN" name="1519"> 1519   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1520"> 1520   </a>    x: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1521"> 1521   </a>    y: <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1522"> 1522   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1523"> 1523   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="1524"> 1524   </a>    ex: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1525"> 1525   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1526"> 1526   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1527"> 1527   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1528"> 1528   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1529"> 1529   </a><span class="KW">FOR</span> k := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1530"> 1530   </a>    ex[k] := <span class="KW">MAX</span>(x[k], y);
+</span><span><a class="LN" name="1531"> 1531   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1532"> 1532   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1533"> 1533   </a><span class="KW">FUNCTION_BLOCK</span> abs_c
+</span><span><a class="LN" name="1534"> 1534   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1535"> 1535   </a>    x: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1536"> 1536   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1537"> 1537   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="1538"> 1538   </a>    y: <span class="KW">ARRAY</span> [0..4] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1539"> 1539   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1540"> 1540   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1541"> 1541   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1542"> 1542   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1543"> 1543   </a><span class="KW">FOR</span> k := 0 <span class="KW">TO</span> 4 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1544"> 1544   </a>    y[k] := <span class="KW">ABS</span>(x[k]);
+</span><span><a class="LN" name="1545"> 1545   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1546"> 1546   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1547"> 1547   </a><span class="KW">FUNCTION_BLOCK</span> abs_c3
+</span><span><a class="LN" name="1548"> 1548   </a><span class="KW">VAR_INPUT</span>
+</span><span><a class="LN" name="1549"> 1549   </a>    x: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1550"> 1550   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1551"> 1551   </a><span class="KW">VAR_OUTPUT</span>
+</span><span><a class="LN" name="1552"> 1552   </a>    y: <span class="KW">ARRAY</span> [0..7] <span class="KW">OF</span> <span class="KW">LREAL</span>;
+</span><span><a class="LN" name="1553"> 1553   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1554"> 1554   </a><span class="KW">VAR_TEMP</span>
+</span><span><a class="LN" name="1555"> 1555   </a>    k: <span class="KW">DINT</span>;
+</span><span><a class="LN" name="1556"> 1556   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1557"> 1557   </a><span class="KW">FOR</span> k := 0 <span class="KW">TO</span> 7 <span class="KW">DO</span> 
+</span><span><a class="LN" name="1558"> 1558   </a>    y[k] := <span class="KW">ABS</span>(x[k]);
+</span><span><a class="LN" name="1559"> 1559   </a><span class="KW">END_FOR</span>;
+</span><span><a class="LN" name="1560"> 1560   </a><span class="KW">END_FUNCTION_BLOCK</span>
+</span><span><a class="LN" name="1561"> 1561   </a><span class="KW">VAR_GLOBAL</span> <span class="KW">CONSTANT</span>
+</span><span><a class="LN" name="1562"> 1562   </a>    SS_INITIALIZE: <span class="KW">SINT</span> := 0;
+</span><span><a class="LN" name="1563"> 1563   </a>    SS_STEP: <span class="KW">SINT</span> := 1;
+</span><span><a class="LN" name="1564"> 1564   </a><span class="KW">END_VAR</span>
+</span><span><a class="LN" name="1565"> 1565   </a>
+</span></pre>
+</td></tr></table>
+</p>
+</body>
+</html>
