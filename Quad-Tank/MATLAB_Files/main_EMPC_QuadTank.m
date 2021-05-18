@@ -13,7 +13,7 @@ clc
 
 %% Implicit MPC
 % Generate continuous time state space matrices
-[A_ct, B_ct, C_ct, D_ct, G] = quad_tank_setup();
+[A_ct, B_ct, C_ct, D_ct, G, L10, L20, L30, L40, Vp10, Vp20] = quad_tank_setup();
 
 % Create Final State-Space representation
 plant = ss(A_ct, B_ct, C_ct, D_ct);
@@ -45,16 +45,16 @@ range = generateExplicitRange(mpcobj);
 
 % Set range of state variables 
 % (state defined as x - x0, where x0 is the operating in cm)
-range.State.Min(:) = [-10, -10, -14, -14, -100, -100];
-range.State.Max(:) = [ 20,  20,  16,  16,  100,  100];
+range.State.Min(:) = [0 - L10,  0 - L20,    0 - L30,    0 - L40,    -100,   -100];
+range.State.Max(:) = [30 - L10, 30 - L20,   30 - L30,   30 - L40,   100,    100];
 
 % Reference Bounds (cm)
-range.Reference.Min = [0, 0];
-range.Reference.Max = [20, 20];
+range.Reference.Min = [0 - L10, 0 - L20];
+range.Reference.Max = [22 - L10, 22 - L20];
 
 % Range of manipulated variable must contain the constraints (V)
-range.ManipulatedVariable.Min = [0; 0];
-range.ManipulatedVariable.Max = [23; 23];
+range.ManipulatedVariable.Min = [0 - Vp10; 0 - Vp20];
+range.ManipulatedVariable.Max = [23 - Vp10; 23 - Vp20];
 
 mpcobjExplicit = generateExplicitMPC(mpcobj, range);
 

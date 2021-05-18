@@ -3,7 +3,7 @@
 % The College of New Jersey
 % Department of Electrical and Computer Engineering
 
-function [Ac, Bc, Cc, Dc, G] = quad_tank_setup()
+function [Ac, Bc, Cc, Dc, G, L10, L20, L30, L40, Vp10, Vp20] = quad_tank_setup()
 %-------------------------------------------------------------------------
 % Specifying Tank Parameters
 %-------------------------------------------------------------------------
@@ -71,13 +71,6 @@ Vp20 = Ao1*(1-gamma1)*sqrt(2*g*L10)/(((1-gamma1)*(1-gamma2)-gamma1*gamma2)*Kp)-A
 Vp10 = Ao1*sqrt(2*g*L10)/(gamma1*Kp)-(1-gamma2)*Vp20/gamma1;
 L30  = ((1-gamma2)*Kp*Vp20/Ao3)^2/(2*g);
 L40  = ((1-gamma1)*Kp*Vp10/Ao4)^2/(2*g);
-
-fprintf("L10: %d\n", L10);
-fprintf("L20: %d\n", L20);
-fprintf("Vp20: %d\n", Vp20);
-fprintf("Vp10: %d\n", Vp10);
-fprintf("L30: %d\n", L30);
-fprintf("L40: %d\n", L40);
 
 % Transfer function Time constants
 T1 = sqrt(2*L10/g)*At1/Ao1;
