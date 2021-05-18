@@ -3,17 +3,14 @@
   <POU Name="MAIN" Id="{e32b1aa3-a44f-4c6b-8682-15ba4b138c6b}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	heartbeat : DINT;
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[heartbeat := heartbeat + 1;
-
+      <ST><![CDATA[
 
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
-      <LineId Id="2" Count="0" />
       <LineId Id="10" Count="0" />
       <LineId Id="9" Count="0" />
       <LineId Id="7" Count="0" />
