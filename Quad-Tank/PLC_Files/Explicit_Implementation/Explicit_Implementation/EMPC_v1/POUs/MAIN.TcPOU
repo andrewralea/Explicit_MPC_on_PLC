@@ -3,7 +3,7 @@
   <POU Name="MAIN" Id="{e2108546-6930-465e-b0bb-ff1f27d3f82a}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	ref_Big_R: ARRAY [0..1] OF LREAL := [0.45, 0.15]; 
+	ref_Big_R: ARRAY [0..1] OF LREAL := [L10, L20]; 
 	ref_Little_r: ARRAY [0..1] OF LREAL; 
 	mv: ARRAY [0..1] OF LREAL;
 	MeasuredTankOutputs: ARRAY [0..1] OF LREAL;
@@ -25,10 +25,10 @@ IF GVL.rAI_2 < 0
 	THEN GVL.rAI_2 := 0;
 END_IF
 
-IF GVL.rAI_1 < (L10 * 0.8 / 6.536) AND GVL.rAI_2 < (L20 * 0.8 / 6.536)	// If not at operating point output 5 V
+IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536)	// If not at operating point output 5 V
 	THEN 	
-			GVL.rAO_1 := 6;
-			GVL.rAO_2 := 6;
+			GVL.rAO_1 := Vp10 / 3;
+			GVL.rAO_2 := Vp20 / 3;
 	ELSE	
 			// Call Controller
 			// ------------------------------------------------------------------
@@ -58,8 +58,10 @@ IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));
 
 GVL.fActualValueToScope_1 	:= GVL.rAI_1;
 GVL.fActualValueToScope_2   := GVL.rAI_2;
-GVL.fOutToScope_1			:= GVL.rAO_1;
-GVL.fOutToScope_2			:= GVL.rAO_2;
+
+GVL.fOutToScope_1			:= GVL.rAO_1 * 3;
+GVL.fOutToScope_2			:= GVL.rAO_2 * 3;
+
 GVL.fSetpointValueToScope_1 := ref_Big_R[0];
 GVL.fSetpointValueToScope_2 := ref_Big_R[1];
 ]]></ST>
@@ -85,8 +87,10 @@ GVL.fSetpointValueToScope_2 := ref_Big_R[1];
       <LineId Id="947" Count="0" />
       <LineId Id="946" Count="0" />
       <LineId Id="952" Count="0" />
+      <LineId Id="964" Count="0" />
       <LineId Id="949" Count="0" />
       <LineId Id="904" Count="0" />
+      <LineId Id="965" Count="0" />
       <LineId Id="950" Count="1" />
       <LineId Id="2" Count="0" />
     </LineIds>
