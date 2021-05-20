@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <POU Name="MAIN" Id="{e2108546-6930-465e-b0bb-ff1f27d3f82a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	ref_Big_R: ARRAY [0..1] OF LREAL := [0.45, 0.15]; 
+	ref_Little_r: ARRAY [0..1] OF LREAL; 
+	mv: ARRAY [0..1] OF LREAL;
+	MeasuredTankOutputs: ARRAY [0..1] OF LREAL;
+	ssMethodType: SINT := 0;	// set to 1 to leave init state and begin control
+	
+	// Controller
+	Controller : Explicit_Controller_FCN_BLK;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Scale 12 bit digital voltage reading to V in range of EL3004 (0, +10)
+GVL.rAI_1 := (INT_TO_REAL(IO.ai_tank_1_V)/(32767.0 - 0.0)) * 10.0;
+GVL.rAI_2 := (INT_TO_REAL(IO.ai_tank_2_V)/(32767.0 - 0.0)) * 10.0;
+
+IF GVL.rAI_1 < 0
+	THEN GVL.rAI_1 := 0;
+END_IF
+IF GVL.rAI_2 < 0
+	THEN GVL.rAI_2 := 0;
+END_IF
+
+IF GVL.rAI_1 < (L10 * 0.8 / 6.536) AND GVL.rAI_2 < (L20 * 0.8 / 6.536)	// If not at operating point output 5 V
+	THEN 	
+			GVL.rAO_1 := 6;
+			GVL.rAO_2 := 6;
+	ELSE	
+			// Call Controller
+			// ------------------------------------------------------------------
+			// Scale references (R -> r)
+			ref_Little_r[0] := ref_Big_R[0] - (L10 / 6.536);
+			ref_Little_r[1] := ref_Big_R[1] - (L20 / 6.536);
+			
+			// Scale Y to y
+			MeasuredTankOutputs[0] := GVL.rAI_1 - (L10 / 6.536);
+			MeasuredTankOutputs[1] := GVL.rAI_2 - (L20 / 6.536);
+			
+			Controller(		ssMethodType := ssMethodType,
+							MeasuredTankOutputs := MeasuredTankOutputs,
+							ref := ref_Little_r,
+							mv => mv
+			);
+			
+			// Scale u to V, then divide by 3 since it is going to the amplifier
+			GVL.rAO_1 := (mv[0] + Vp10) / 3;
+			GVL.rAO_2 := (mv[1] + Vp20) / 3;
+			// ------------------------------------------------------------------
+END_IF
+
+// Unscale real V output to 12 bit digital value 
+IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
+IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));
+
+GVL.fActualValueToScope_1 	:= GVL.rAI_1;
+GVL.fSetpointValueToScope_2 := GVL.rAI_2;
+GVL.fOutToScope_1			:= GVL.rAO_1;
+GVL.fOutToScope_2			:= GVL.rAO_2;
+GVL.fSetpointValueToScope_1 := ref_Big_R[0];
+GVL.fSetpointValueToScope_2 := ref_Big_R[1];
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="6" Count="2" />
+      <LineId Id="898" Count="0" />
+      <LineId Id="897" Count="0" />
+      <LineId Id="899" Count="1" />
+      <LineId Id="902" Count="1" />
+      <LineId Id="901" Count="0" />
+      <LineId Id="907" Count="0" />
+      <LineId Id="906" Count="0" />
+      <LineId Id="908" Count="0" />
+      <LineId Id="937" Count="0" />
+      <LineId Id="912" Count="0" />
+      <LineId Id="914" Count="0" />
+      <LineId Id="938" Count="0" />
+      <LineId Id="915" Count="18" />
+      <LineId Id="911" Count="0" />
+      <LineId Id="943" Count="2" />
+      <LineId Id="942" Count="0" />
+      <LineId Id="947" Count="0" />
+      <LineId Id="946" Count="0" />
+      <LineId Id="948" Count="1" />
+      <LineId Id="904" Count="0" />
+      <LineId Id="950" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

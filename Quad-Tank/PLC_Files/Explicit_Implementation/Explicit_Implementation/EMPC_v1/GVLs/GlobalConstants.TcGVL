@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <GVL Name="GlobalConstants" Id="{40940fec-8433-48ef-a8dd-2378465e6869}">
+    <Declaration><![CDATA[VAR_GLOBAL CONSTANT
+	// Operating Points
+	L10:  REAL := 10;		// cm
+	L20:  REAL := 14;		// cm
+	L30:  REAL := 2.609; 	// cm
+	L40:  REAL := 0.757; 	// cm
+	Vp10: REAL := 5.78; 	// V
+	Vp20: REAL := 10.73; 	// V
+	
+    SS_INITIALIZE: SINT := 0;
+    SS_STEP: SINT := 1;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

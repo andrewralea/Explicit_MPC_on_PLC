@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <GVL Name="GVL" Id="{7b417c9a-9300-4690-b7d3-66da759ea804}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	// To hold real value of analog input channels in V
+	rAI_1 : REAL;
+	rAI_2 : REAL;
+	
+	// To hold real value of analog output channels in V
+	rAO_1 : REAL;
+	rAO_2 : REAL;
+	
+	// Variables used to plot plant behaviour
+	fSetpointValueToScope_1	: LREAL;
+	fActualValueToScope_1 	: LREAL;
+	fOutToScope_1 			: LREAL;
+	
+	fSetpointValueToScope_2 : LREAL;
+	fActualValueToScope_2 	: LREAL;
+	fOutToScope_2 			: LREAL;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

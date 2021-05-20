@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <GVL Name="IO" Id="{b9c29863-87ee-4ba9-b02a-1ea499398842}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	// Temp 2 EL3004 4-Channel Analog Input, (-10, 10) V, 12 Bit resolution
+	ai_tank_1_V AT %I* : INT;
+	ai_tank_2_V AT %I* : INT;
+	
+	// Temp 2 El4002 2-Channel Analog Output, (0, 10) V, 12 Bit resolution
+	ao_motor_1_V AT %Q* : INT;
+	ao_motor_2_V AT %Q* : INT;
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -32,6 +32,9 @@
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
 				</Task>
+				<Task Id="4" Priority="1" CycleTime="500000" AmsPort="351" AdtTasks="true">
+					<Name>PID_Task</Name>
+				</Task>
 			</Tasks>
 		</System>
 		<Plc>
@@ -40,7 +43,7 @@
 					<Name>Test_Project1 Instance</Name>
 					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
 					<Vars VarGrpType="1">
-						<Name>PlcTask Inputs</Name>
+						<Name>PID_Task Inputs</Name>
 						<Var>
 							<Name>IO.ai_tank_1_V</Name>
 							<Comment><![CDATA[ Temp 2 EL3004 4-Channel Analog Input, (-10, 10) V, 12 Bit resolution]]></Comment>
@@ -52,7 +55,7 @@
 						</Var>
 					</Vars>
 					<Vars VarGrpType="2" AreaNo="1">
-						<Name>PlcTask Outputs</Name>
+						<Name>PID_Task Outputs</Name>
 						<Var>
 							<Name>IO.ao_motor_1_V</Name>
 							<Comment><![CDATA[ Temp 2 El4002 2-Channel Analog Output, (0, 10) V, 12 Bit resolution]]></Comment>
@@ -66,6 +69,15 @@
 					<Contexts>
 						<Context>
 							<Id NeedCalleeCall="true">0</Id>
+							<Name>PID_Task</Name>
+							<ManualConfig>
+								<OTCID>#x02010040</OTCID>
+							</ManualConfig>
+							<Priority>1</Priority>
+							<CycleTime>50000000</CycleTime>
+						</Context>
+						<Context>
+							<Id NeedCalleeCall="true">1</Id>
 							<Name>PlcTask</Name>
 							<ManualConfig>
 								<OTCID>#x02010030</OTCID>
@@ -75,7 +87,8 @@
 						</Context>
 					</Contexts>
 					<TaskPouOids>
-						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+						<TaskPouOid Prio="1" OTCID="#x08502001"/>
+						<TaskPouOid Prio="20" OTCID="#x08502002"/>
 					</TaskPouOids>
 				</Instance>
 			</Project>
@@ -346,4 +359,17 @@ Bit1: Value bigger/equal Limit2]]></Comment>
 			</Device>
 		</Io>
 	</Project>
+	<Mappings>
+		<MappingInfo Identifier="{00000000-2001-0850-0020-500810000403}" Id="#x02030010"/>
+		<OwnerA Name="TIPC^Test_Project1^Test_Project1 Instance">
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1200)^Term 2 (EL3004)">
+				<Link VarA="PID_Task Inputs^IO.ai_tank_1_V" VarB="AI Standard Channel 1^Value"/>
+				<Link VarA="PID_Task Inputs^IO.ai_tank_2_V" VarB="AI Standard Channel 2^Value"/>
+			</OwnerB>
+			<OwnerB Name="TIID^Device 1 (EtherCAT)^Term 1 (EK1200)^Term 3 (EL4002)">
+				<Link VarA="PID_Task Outputs^IO.ao_motor_1_V" VarB="AO Outputs Channel 1^Analog output"/>
+				<Link VarA="PID_Task Outputs^IO.ao_motor_2_V" VarB="AO Outputs Channel 2^Analog output"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
 </TcSmProject>
