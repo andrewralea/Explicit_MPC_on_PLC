@@ -8,3 +8,5 @@ Location to store all important work related to my research on embedded explicit
 4. Generate structured text with Simulink PLC Coder
 5. Update Explicit_Controller Function Block accordingly
 6. Run on Quad-Tank
+
+<img src="https://github.com/andrewralea/Explicit_MPC_on_PLC/blob/master/PLC_Documentation/Figures/CX9020.png" width="400">
