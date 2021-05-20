@@ -10,6 +10,9 @@ All code relating to explicit MPC on the quad-tank.
 > EL3004 A/D Input Module  (4 channel)
 > 
 > EL4002 D/A Output Module (2 channel)
+> > For quad-tank implementation, the EL4002 only outputs up to 10 V so for reasonable performance, an amplifier of at least 3x is needed
+
+#### Quanser Coupled-Tanks (x2)
 
 
 # How to use the files:
@@ -17,13 +20,12 @@ All code relating to explicit MPC on the quad-tank.
 ### MATLAB Portion
 Run *main_EMPC_QuadTank.m* (Top Level) 
 >*quad_tank_setup.m* to create the continuous time SS 
->
->*discretizer.m* to discretize the SS
->
->*observer_calc.m* is called to generate the observer matrices
+>Generate implicit controller object
+>Convert to explicit formulation
 
 Run *Sim_Main.slx* (Top simulation)
+> Generate structured text from Explicit MPC Controller Block
 
 ### PLC Portion
-Copy and paste PWA_Solution.txt into a GVL in TwinCAT 3
+Import generated structured text and update explicit controller function block accordingly
 
