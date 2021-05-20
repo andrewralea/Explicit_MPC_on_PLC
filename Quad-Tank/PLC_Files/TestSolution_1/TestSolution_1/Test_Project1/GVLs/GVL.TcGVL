@@ -12,9 +12,12 @@ VAR_GLOBAL
 	rAO_1 : REAL;
 	rAO_2 : REAL;
 	
-	fSetpointValueToScope : LREAL;
-	fActualValueToScope : LREAL;
-	fOutToScope : LREAL;
+	fSetpointValueToScope_1 : LREAL;
+	fActualValueToScope_1 : LREAL;
+	fOutToScope_1 : LREAL;
+	fSetpointValueToScope_2 : LREAL;
+	fActualValueToScope_2 : LREAL;
+	fOutToScope_2 : LREAL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>

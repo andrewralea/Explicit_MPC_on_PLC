@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
+  <POU Name="PRG_FB_CTRL_PID_1" Id="{ab4b9d68-903a-4dd7-8d89-3218bcdb26f1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_FB_CTRL_PID_1
+VAR
+	fSetpointValue					: LREAL		:= 1;
+	fActualValue					: LREAL;
+	fManSyncValue					: LREAL;
+	bSync							: BOOL;
+
+	fOut							: LREAL;
+	bHold							: BOOL;
+
+	eMode							: E_CTRL_MODE;
+	stCTRL_PID_PARAMS				: ST_CTRL_PID_PARAMS;
+
+	eErrorId						: E_CTRL_ERRORCODES;
+	bError							: BOOL;
+	bARWactive						: BOOL;
+
+	(* controller *)
+	fbCTRL_PID						: FB_CTRL_PID;
+
+	bInit							: BOOL	:= TRUE;
+	fbTON							: TON;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bInit THEN
+	(* init parameter struct *)
+	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#50MS;
+	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#50MS;
+	stCTRL_PID_PARAMS.fKp					:= 2.0;			(* proportional gain Kp				*)
+	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
+	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
+	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:= 7;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMinLimit			:= 0;			(* minimum output limit				*)
+
+	(* set the mode to ACTIVE --> normal operation *)
+	eMode := eCTRL_MODE_ACTIVE;
+
+	(* reset the init flag *)
+	bInit := FALSE;
+END_IF
+
+
+(* copy var to scope var *)
+GVL.fSetpointValueToScope_1 	:= fSetpointValue;
+GVL.fActualValueToScope_1 	:= fActualValue;
+
+fActualValue := GVL.rAI_1;
+
+(* call controller *)
+fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
+				fActualValue		:= fActualValue,
+				fManSyncValue		:= fManSyncValue,
+				bSync				:= bSync,
+				eMode				:= eMode,
+				bHold				:= bHold,
+				stParams			:= stCTRL_PID_PARAMS,
+				fOut				=> fOut,
+				bARWactive			=> bARWactive,
+				eErrorId			=> eErrorId,
+				bError				=> bError
+				);
+
+GVL.rAO_1 := fOut;
+
+(* copy var to scope var *)
+GVL.fOutToScope_1 := fOut;]]></ST>
+    </Implementation>
+    <LineIds Name="PRG_FB_CTRL_PID_1">
+      <LineId Id="123" Count="41" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

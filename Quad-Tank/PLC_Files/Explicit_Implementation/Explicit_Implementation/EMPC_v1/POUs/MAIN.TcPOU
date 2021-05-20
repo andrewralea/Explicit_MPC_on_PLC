@@ -57,7 +57,7 @@ IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
 IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));
 
 GVL.fActualValueToScope_1 	:= GVL.rAI_1;
-GVL.fSetpointValueToScope_2 := GVL.rAI_2;
+GVL.fActualValueToScope_2   := GVL.rAI_2;
 GVL.fOutToScope_1			:= GVL.rAO_1;
 GVL.fOutToScope_2			:= GVL.rAO_2;
 GVL.fSetpointValueToScope_1 := ref_Big_R[0];
@@ -84,7 +84,8 @@ GVL.fSetpointValueToScope_2 := ref_Big_R[1];
       <LineId Id="942" Count="0" />
       <LineId Id="947" Count="0" />
       <LineId Id="946" Count="0" />
-      <LineId Id="948" Count="1" />
+      <LineId Id="952" Count="0" />
+      <LineId Id="949" Count="0" />
       <LineId Id="904" Count="0" />
       <LineId Id="950" Count="1" />
       <LineId Id="2" Count="0" />

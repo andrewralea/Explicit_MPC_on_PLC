@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
-  <POU Name="PRG_FB_CTRL_PID" Id="{ab4b9d68-903a-4dd7-8d89-3218bcdb26f1}" SpecialFunc="None">
-    <Declaration><![CDATA[PROGRAM PRG_FB_CTRL_PID
+  <POU Name="PRG_FB_CTRL_PID_2" Id="{31af41b1-bb13-4fa8-a729-ffc743fa7b4a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_FB_CTRL_PID_2
 VAR
-	fSetpointValue					: LREAL		:= 2.0;
+	fSetpointValue					: LREAL		:= 1;
 	fActualValue					: LREAL;
 	fManSyncValue					: LREAL;
 	bSync							: BOOL;
@@ -34,7 +34,7 @@ END_VAR
 	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
 	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
 	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:= 9;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:= 7;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:= 0;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
@@ -46,10 +46,10 @@ END_IF
 
 
 (* copy var to scope var *)
-GVL.fSetpointValueToScope 	:= fSetpointValue;
-GVL.fActualValueToScope 	:= fActualValue;
+GVL.fSetpointValueToScope_2 	:= fSetpointValue;
+GVL.fActualValueToScope_2 	:= fActualValue;
 
-fActualValue := GVL.rAI_1;
+fActualValue := GVL.rAI_2;
 
 (* call controller *)
 fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
@@ -65,18 +65,13 @@ fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
 				bError				=> bError
 				);
 
-GVL.rAO_1 := PRG_FB_CTRL_PID.fOut;
+GVL.rAO_2 := fOut;
 
 (* copy var to scope var *)
-GVL.fOutToScope := fOut;]]></ST>
+GVL.fOutToScope_2 := fOut;]]></ST>
     </Implementation>
-    <LineIds Name="PRG_FB_CTRL_PID">
-      <LineId Id="3" Count="16" />
-      <LineId Id="29" Count="6" />
-      <LineId Id="75" Count="0" />
-      <LineId Id="36" Count="14" />
-      <LineId Id="76" Count="0" />
-      <LineId Id="51" Count="0" />
+    <LineIds Name="PRG_FB_CTRL_PID_2">
+      <LineId Id="188" Count="41" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>

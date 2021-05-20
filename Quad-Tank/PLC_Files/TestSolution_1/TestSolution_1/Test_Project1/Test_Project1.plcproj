@@ -34,7 +34,10 @@
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\PID\PRG_FB_CTRL_PID.TcPOU">
+    <Compile Include="POUs\PID\PRG_FB_CTRL_PID_1.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\PID\PRG_FB_CTRL_PID_2.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\PID\PRG_PID_CALL.TcPOU">

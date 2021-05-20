@@ -12,14 +12,17 @@ END_VAR
 GVL.rAI_1 := (INT_TO_REAL(IO.ai_tank_1_V)/(32767.0 - 0.0)) * 10.0;
 GVL.rAI_2 := (INT_TO_REAL(IO.ai_tank_2_V)/(32767.0 - 0.0)) * 10.0;
 
-PRG_FB_CTRL_PID();
+PRG_FB_CTRL_PID_1();
+PRG_FB_CTRL_PID_2();
 
 // Unscale real V output to 12 bit digital value 
 IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
 IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));]]></ST>
     </Implementation>
     <LineIds Name="PRG_PID_CALL">
-      <LineId Id="6" Count="9" />
+      <LineId Id="6" Count="6" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="13" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
   </POU>
