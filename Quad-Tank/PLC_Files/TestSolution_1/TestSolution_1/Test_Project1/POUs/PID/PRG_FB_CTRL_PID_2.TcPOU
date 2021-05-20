@@ -30,7 +30,7 @@ END_VAR
 	(* init parameter struct *)
 	stCTRL_PID_PARAMS.tCtrlCycleTime		:= T#50MS;
 	stCTRL_PID_PARAMS.tTaskCycleTime		:= T#50MS;
-	stCTRL_PID_PARAMS.fKp					:= 2.0;			(* proportional gain Kp				*)
+	stCTRL_PID_PARAMS.fKp					:= 5.0;			(* proportional gain Kp				*)
 	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
 	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
 	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
@@ -65,13 +65,18 @@ fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
 				bError				=> bError
 				);
 
-GVL.rAO_2 := fOut;
+GVL.rAO_2 := fOut - (GVL.rAO_1 * 0.5623) + SQRT(fSetpointValue);
+IF GVL.rAO_2 > 7
+	THEN GVL.rAO_2 := 7;
+END_IF
 
 (* copy var to scope var *)
-GVL.fOutToScope_2 := fOut;]]></ST>
+GVL.fOutToScope_2 := GVL.rAO_2 * 3;]]></ST>
     </Implementation>
     <LineIds Name="PRG_FB_CTRL_PID_2">
-      <LineId Id="188" Count="41" />
+      <LineId Id="188" Count="39" />
+      <LineId Id="253" Count="2" />
+      <LineId Id="228" Count="1" />
       <LineId Id="2" Count="0" />
     </LineIds>
   </POU>
