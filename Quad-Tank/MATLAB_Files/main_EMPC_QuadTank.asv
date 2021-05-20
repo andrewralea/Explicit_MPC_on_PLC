@@ -26,10 +26,17 @@ m = 2;          % control horizon
 mpcobj = mpc(plant,Ts, p, m);
 
 % Specify constraints of the manipulated variable (V)
-mpcobj.MV = struct('Min', {0 - (L10/6.53), 0 - (L20/6.53)},'Max', {22- (L10/6.53), 22- (L20/6.53)});
+mpcobj.MV = struct('Min', {0 - , 0},'Max', {22, 22});
 
 % Create discrete model for simulation
 plant_discrete = c2d(plant,Ts);
+
+% Simulation
+Tstop = 30;                             % simulation time
+Nf = round(Tstop/Ts);                   % number of simulation steps
+r = ones(Nf,2);                         % output reference signal
+
+% sim(mpcobj,Nf,r)                      % simulate plant and controller in closed loop
 
 %% Explicit MPC
 
@@ -39,14 +46,14 @@ range = generateExplicitRange(mpcobj);
 % Set range of state variables 
 % (state defined as x - x0, where x0 is the operating in cm)
 range.State.Min(:) = [0 - L10,  0 - L20,    0 - L30,    0 - L40,    -1,   -1];
-range.State.Max(:) = [30 - L10, 30 - L20,   30 - L30,   30 - L40,    1,   1];
+range.State.Max(:) = [30 - L10, 30 - L20,   30 - L30,   30 - L40,    1,    1];
 
-% Reference Bounds (cm), slightly broader than practical range
-range.Reference.Min = [0 - L10, 0 - L20] * 1.25;
-range.Reference.Max = [30 - L10, 30 - L20] * 1.25;
+% Reference Bounds (cm)
+range.Reference.Min = [0 - L10, 0 - L20];
+range.Reference.Max = [30 - L10, 30 - L20];
 
 % Range of manipulated variable must contain the constraints (V)
-range.ManipulatedVariable.Min = [-1 - Vp10; -1 - Vp20];
+range.ManipulatedVariable.Min = [0 - Vp10; 0 - Vp20];
 range.ManipulatedVariable.Max = [23 - Vp10; 23 - Vp20];
 
 mpcobjExplicit = generateExplicitMPC(mpcobj, range);
