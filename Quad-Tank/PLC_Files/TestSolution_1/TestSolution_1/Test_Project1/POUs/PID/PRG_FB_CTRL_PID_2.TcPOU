@@ -65,7 +65,7 @@ fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
 				bError				=> bError
 				);
 
-GVL.rAO_2 := fOut - (GVL.rAO_1 * 0.5623) + SQRT(fSetpointValue);
+GVL.rAO_2 := fOut - (GVL.rAO_1 * 0.5623) + SQRT(fSetpointValue * 3.7);
 IF GVL.rAO_2 > 7
 	THEN GVL.rAO_2 := 7;
 END_IF
