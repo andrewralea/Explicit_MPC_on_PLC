@@ -65,8 +65,8 @@ END_IF
 IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
 IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));
 
-GVL.fActualValueToScope_1 	:= GVL.rAI_1;
-GVL.fActualValueToScope_2   := GVL.rAI_2;
+GVL.fActualValueToScope_1 	:= GVL.rAI_1 * 6.536;
+GVL.fActualValueToScope_2   := GVL.rAI_2 * 6.536;
 
 GVL.fOutToScope_1			:= GVL.rAO_1 * 3;
 GVL.fOutToScope_2			:= GVL.rAO_2 * 3;
