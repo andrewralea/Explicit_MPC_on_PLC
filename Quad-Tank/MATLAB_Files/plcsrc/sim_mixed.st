@@ -13,7 +13,7 @@
  * Subsystem name                  : sim_mixed/Explicit Controller
  * Subsystem sample time           : 0.5s
  * Simulink PLC Coder version      : 3.3 (R2020b) 29-Jul-2020
- * ST code generated on            : Fri May 21 13:02:10 2021
+ * ST code generated on            : Fri May 21 13:06:49 2021
  *
  * Target IDE selection            : Beckhoff TwinCAT 3
  * Test Bench included             : No
