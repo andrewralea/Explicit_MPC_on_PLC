@@ -64,11 +64,6 @@
       <SubType>Content</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="POUs\sim_mixed.st">
-      <SubType>Content</SubType>
-    </Content>
-  </ItemGroup>
   <ProjectExtensions>
     <PlcProjectOptions>
       <XmlArchive>

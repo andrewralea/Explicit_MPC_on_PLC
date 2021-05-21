@@ -7,10 +7,12 @@ VAR
 	ref_Little_r: ARRAY [0..1] OF LREAL; 
 	mv: ARRAY [0..1] OF LREAL;
 	MeasuredTankOutputs: ARRAY [0..1] OF LREAL;
-	ssMethodType: SINT := 0;	// set to 1 to leave init state and begin control
+	ssMethodType: SINT;	// set to 1 to leave init state and begin control
 	
 	// Controller
 	Controller : Explicit_Controller_FCN_BLK;
+	First_Run : BOOL := TRUE;
+	search_status : BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -25,11 +27,17 @@ IF GVL.rAI_2 < 0
 	THEN GVL.rAI_2 := 0;
 END_IF
 
-IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536)	// If not at operating point output 5 V
+IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536) AND First_Run // If not at operating point output
 	THEN 	
 			GVL.rAO_1 := Vp10 / 3;
 			GVL.rAO_2 := Vp20 / 3;
 	ELSE	
+			IF First_Run THEN
+				ssMethodType := 0;
+			ELSE
+				ssMethodType := 1;
+			END_IF
+			First_Run := FALSE;
 			// Call Controller
 			// ------------------------------------------------------------------
 			// Scale references (R -> r)
@@ -43,7 +51,8 @@ IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536)	// If not at operatin
 			Controller(		ssMethodType := ssMethodType,
 							MeasuredTankOutputs := MeasuredTankOutputs,
 							ref := ref_Little_r,
-							mv => mv
+							mv => mv,
+							search_status => search_status
 			);
 			
 			// Scale u to V, then divide by 3 since it is going to the amplifier
@@ -78,9 +87,16 @@ GVL.fSetpointValueToScope_2 := ref_Big_R[1];
       <LineId Id="908" Count="0" />
       <LineId Id="937" Count="0" />
       <LineId Id="912" Count="0" />
-      <LineId Id="914" Count="0" />
+      <LineId Id="980" Count="0" />
+      <LineId Id="984" Count="0" />
+      <LineId Id="986" Count="0" />
+      <LineId Id="988" Count="1" />
+      <LineId Id="987" Count="0" />
       <LineId Id="938" Count="0" />
-      <LineId Id="915" Count="18" />
+      <LineId Id="981" Count="0" />
+      <LineId Id="915" Count="12" />
+      <LineId Id="982" Count="0" />
+      <LineId Id="928" Count="5" />
       <LineId Id="911" Count="0" />
       <LineId Id="943" Count="2" />
       <LineId Id="942" Count="0" />

@@ -10,6 +10,7 @@ END_VAR
 
 VAR_OUTPUT
     mv: ARRAY [0..1] OF LREAL;
+	search_status : BOOL;
 END_VAR
 
 VAR
@@ -542,6 +543,7 @@ END_VAR]]></Declaration>
                     betamin := beta;
                     regionmin := b_k + 1;
                 END_IF;
+				
             END_WHILE;
             IF  NOT found THEN 
                 b_k := regionmin - 1;
@@ -556,6 +558,12 @@ END_VAR]]></Declaration>
                 du[regionmin] := Explicit_b_G[regionmin + b_k] + betamin;
             END_FOR;
         END_IF;
+		
+		IF FOUND THEN
+			search_status := TRUE;
+		ELSE 
+			search_status := FALSE;
+		END_IF
 		
         betamin := last_mv_DSTATE[0] + du[0];
         beta := betamin;
@@ -603,8 +611,14 @@ END_CASE;
       <LineId Id="21873" Count="0" />
       <LineId Id="21792" Count="7" />
       <LineId Id="21874" Count="0" />
-      <LineId Id="21800" Count="40" />
+      <LineId Id="21800" Count="26" />
+      <LineId Id="21880" Count="0" />
+      <LineId Id="21827" Count="13" />
       <LineId Id="21875" Count="0" />
+      <LineId Id="21883" Count="1" />
+      <LineId Id="21886" Count="1" />
+      <LineId Id="21885" Count="0" />
+      <LineId Id="21882" Count="0" />
       <LineId Id="21841" Count="3" />
       <LineId Id="21846" Count="1" />
       <LineId Id="21849" Count="3" />
