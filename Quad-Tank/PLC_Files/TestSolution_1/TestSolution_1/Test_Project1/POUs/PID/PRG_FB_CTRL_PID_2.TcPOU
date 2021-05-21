@@ -3,7 +3,7 @@
   <POU Name="PRG_FB_CTRL_PID_2" Id="{31af41b1-bb13-4fa8-a729-ffc743fa7b4a}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_FB_CTRL_PID_2
 VAR
-	fSetpointValue					: LREAL		:= 1;
+	fSetpointValue					: LREAL		:= 2.14;
 	fActualValue					: LREAL;
 	fManSyncValue					: LREAL;
 	bSync							: BOOL;

@@ -3,6 +3,12 @@
   <POU Name="PRG_PID_CALL" Id="{54b85479-030f-46b0-98d4-c25718c13426}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM PRG_PID_CALL
 VAR
+	// Operating Points
+	L10:  REAL := 10;		// cm
+	L20:  REAL := 14;		// cm
+	Vp10: REAL := 5.78; 	// V
+	Vp20: REAL := 10.73; 	// V
+	First_Run: BOOL;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -11,17 +17,34 @@ END_VAR
 // Scale 12 bit digital voltage reading to V in range of EL3004 (0, +10)
 GVL.rAI_1 := (INT_TO_REAL(IO.ai_tank_1_V)/(32767.0 - 0.0)) * 10.0;
 GVL.rAI_2 := (INT_TO_REAL(IO.ai_tank_2_V)/(32767.0 - 0.0)) * 10.0;
+IF GVL.rAI_1 < 0
+	THEN GVL.rAI_1 := 0;
+END_IF
+IF GVL.rAI_2 < 0
+	THEN GVL.rAI_2 := 0;
+END_IF
 
-PRG_FB_CTRL_PID_1();
-PRG_FB_CTRL_PID_2();
+IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536) AND First_Run // If not at operating point output
+	THEN 	
+			GVL.rAO_1 := Vp10 / 3;
+			GVL.rAO_2 := Vp20 / 3;
+	ELSE	
+			First_Run := FALSE;
+			PRG_FB_CTRL_PID_1();
+			PRG_FB_CTRL_PID_2();
+END_IF
 
 // Unscale real V output to 12 bit digital value 
 IO.ao_motor_1_V := REAL_TO_INT((GVL.rAO_1 / (10.0 - 0)) * (32767.0 - 0.0));
 IO.ao_motor_2_V := REAL_TO_INT((GVL.rAO_2 / (10.0 - 0)) * (32767.0 - 0.0));]]></ST>
     </Implementation>
     <LineIds Name="PRG_PID_CALL">
-      <LineId Id="6" Count="6" />
-      <LineId Id="19" Count="0" />
+      <LineId Id="6" Count="4" />
+      <LineId Id="23" Count="11" />
+      <LineId Id="40" Count="0" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="67" Count="0" />
+      <LineId Id="11" Count="0" />
       <LineId Id="13" Count="2" />
       <LineId Id="5" Count="0" />
     </LineIds>
