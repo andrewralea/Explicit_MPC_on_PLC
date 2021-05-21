@@ -33,8 +33,8 @@ IF GVL.rAI_1 < (L10 / 6.536) AND GVL.rAI_2 < (L20 / 6.536)	// If not at operatin
 			// Call Controller
 			// ------------------------------------------------------------------
 			// Scale references (R -> r)
-			ref_Little_r[0] := ref_Big_R[0] - (L10 / 6.536);
-			ref_Little_r[1] := ref_Big_R[1] - (L20 / 6.536);
+			ref_Little_r[0] := (ref_Big_R[0] - L10) / 6.536;
+			ref_Little_r[1] := (ref_Big_R[1] - L20) / 6.536;
 			
 			// Scale Y to y
 			MeasuredTankOutputs[0] := GVL.rAI_1 - (L10 / 6.536);

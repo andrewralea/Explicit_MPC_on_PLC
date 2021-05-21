@@ -1,40 +1,56 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
-  <POU Name="Explicit_Controller_FCN_BLK" Id="{5ccb6c6a-4b07-466d-8aa3-23f01e644d56}" SpecialFunc="None">
-    <Declaration><![CDATA[FUNCTION_BLOCK Explicit_Controller_FCN_BLK
+(*
+ *
+ * File: sim_mixed.st
+ *
+ * IEC 61131-3 Structured Text (ST) code generated for subsystem "sim_mixed/Explicit Controller"
+ *
+ * Model name                      : sim_mixed
+ * Model version                   : 1.160
+ * Model creator                   : andrewralea
+ * Model last modified by          : andrewralea
+ * Model last modified on          : Fri May 21 15:39:33 2021
+ * Model sample time               : 0s
+ * Subsystem name                  : sim_mixed/Explicit Controller
+ * Subsystem sample time           : 0.5s
+ * Simulink PLC Coder version      : 3.3 (R2020b) 29-Jul-2020
+ * ST code generated on            : Fri May 21 15:41:12 2021
+ *
+ * Target IDE selection            : Beckhoff TwinCAT 3
+ * Test Bench included             : No
+ *
+ *)
+FUNCTION_BLOCK Explicit
 VAR_INPUT
     ssMethodType: SINT;
     MeasuredTankOutputs: ARRAY [0..1] OF LREAL;
     ref: ARRAY [0..1] OF LREAL;
 END_VAR
-
 VAR_OUTPUT
     mv: ARRAY [0..1] OF LREAL;
 END_VAR
-
 VAR
     last_x_PreviousInput: ARRAY [0..5] OF LREAL;
     last_mv_DSTATE: ARRAY [0..1] OF LREAL;
-    Explicit_b_M: ARRAY [0..11] OF LREAL := [1.23046367255072E-5,1.0600898470460902E-6,2.3336033090402565E-6,
+    Explicit_b_M: ARRAY [0..11] OF LREAL := 1.23046367255072E-5,1.0600898470460902E-6,2.3336033090402565E-6,
         8.7638681898692419E-6,0.39038774660580289,5.7642544662640772E-8,2.7337306073553671E-6,1.2817201955703276E-5,
-        8.74919612830075E-6,2.5558076546081948E-6,-1.9842244313224275E-7,0.39038772758565754];
-    Explicit_b_Cm: ARRAY [0..11] OF LREAL := [0.15299877600979192,0.0,0.0,0.15299877600979192,0.0,0.0,0.0,0.0,1.0,
-        0.0,0.0,1.0];
-    Explicit_b_thmin: ARRAY [0..9] OF LREAL := [-12.5,-17.5,-3.260954352640991,-0.9466686383552787,-1.25,-1.25,-12.5,
-        -17.5,-44.314868949193837,-76.652836957418671];
-    Explicit_b_thmax: ARRAY [0..9] OF LREAL := [30.0,25.0,39.239045647359006,41.553331361644723,1.25,1.25,25.0,20.0,
-        112.54913105080617,80.211163042581333];
-    b_i1: ARRAY [0..17] OF INT := [1,24,44,66,88,108,129,149,167,187,206,225,247,265,285,305,324,343];
-    b_i2: ARRAY [0..17] OF INT := [23,43,65,87,107,128,148,166,186,205,224,246,264,284,304,323,342,362];
-    Explicit_b_L: ARRAY [0..11] OF LREAL := [1.19928863023028E-5,2.1952511223334454E-6,2.1569802942442451E-6,
+        8.74919612830075E-6,2.5558076546081948E-6,-1.9842244313224275E-7,0.39038772758565754;
+    Explicit_b_Cm: ARRAY [0..11] OF LREAL := 0.15299877600979192,0.0,0.0,0.15299877600979192,0.0,0.0,0.0,0.0,1.0,
+        0.0,0.0,1.0;
+    Explicit_b_thmin: ARRAY [0..9] OF LREAL := -12.5,-17.5,-3.260954352640991,-0.9466686383552787,-1.25,-1.25,-12.5,
+        -17.5,-44.314868949193837,-76.652836957418671;
+    Explicit_b_thmax: ARRAY [0..9] OF LREAL := 30.0,25.0,39.239045647359006,41.553331361644723,1.25,1.25,25.0,20.0,
+        112.54913105080617,80.211163042581333;
+    b_i1: ARRAY [0..17] OF INT := 1,24,44,66,88,108,129,149,167,187,206,225,247,265,285,305,324,343;
+    b_i2: ARRAY [0..17] OF INT := 23,43,65,87,107,128,148,166,186,205,224,246,264,284,304,323,342,362;
+    Explicit_b_L: ARRAY [0..11] OF LREAL := 1.19928863023028E-5,2.1952511223334454E-6,2.1569802942442451E-6,
         7.5728062260383986E-6,0.39038774660580267,5.7642544623488507E-8,3.2749111187589827E-6,1.2730433289085341E-5,
-        8.0869972913321024E-6,2.2084581488572959E-6,-1.9842244312551109E-7,0.39038772758565737];
-    Explicit_b_Bu: ARRAY [0..11] OF LREAL := [0.010205131094390857,0.00040302205517911383,0.0,0.0054488837150258882,
-        0.0,0.0,0.00022154024327610144,0.010236745349900997,0.0056320000157246437,0.0,0.0,0.0];
-    Explicit_b_A: ARRAY [0..35] OF LREAL := [0.96059819818356329,0.0,0.0,0.0,0.0,0.0,0.0,0.96659623833897423,0.0,0.0,
+        8.0869972913321024E-6,2.2084581488572959E-6,-1.9842244312551109E-7,0.39038772758565737;
+    Explicit_b_Bu: ARRAY [0..11] OF LREAL := 0.010205131094390857,0.00040302205517911383,0.0,0.0054488837150258882,
+        0.0,0.0,0.00022154024327610144,0.010236745349900997,0.0056320000157246437,0.0,0.0,0.0;
+    Explicit_b_A: ARRAY [0..35] OF LREAL := 0.96059819818356329,0.0,0.0,0.0,0.0,0.0,0.0,0.96659623833897423,0.0,0.0,
         0.0,0.0,0.074166176359097585,0.0,0.92431317949013092,0.0,0.0,0.0,0.0,0.1335679905776915,0.0,
-        0.86409403496045134,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0];
-    Explicit_c_K: ARRAY [0..361] OF LREAL := [64.073659065205348,6.1157780706709453,8.535501903373758,
+        0.86409403496045134,0.0,0.0,0.0,0.0,0.0,0.0,1.0,0.0,0.0,0.0,0.0,0.0,0.0,1.0;
+    Explicit_c_K: ARRAY [0..361] OF LREAL := 64.073659065205348,6.1157780706709453,8.535501903373758,
         4.5659924651677031,6.3684686411554026,30.0,25.0,39.239045647359006,41.553331361644723,1.25,1.25,25.0,20.0,
         112.54913105080617,80.211163042581333,12.5,17.5,3.260954352640991,0.9466686383552787,1.25,1.25,12.5,17.5,
         -64.073659065205362,8.5049408201897876,6.3334010454427938,30.0,25.0,39.239045647359006,41.553331361644723,
@@ -76,8 +92,8 @@ VAR
         41.553331361644723,1.25,1.25,12.5,17.5,3.260954352640991,0.9466686383552787,1.25,1.25,12.5,17.5,
         76.652836957418671,-8.4227285579748177,-11.77094480871067,-0.00021930041221698891,-0.00028980074266229082,
         30.0,25.0,39.239045647359006,41.553331361644723,1.25,1.25,12.5,17.5,3.260954352640991,0.9466686383552787,
-        1.25,1.25,12.5,17.5,44.314868949193837,76.652836957418671];
-    Explicit_g_H: ARRAY [0..3619] OF LREAL := [-0.086723451313597114,0.077479713254561391,0.0036978538943621794,
+        1.25,1.25,12.5,17.5,44.314868949193837,76.652836957418671;
+    Explicit_g_H: ARRAY [0..3619] OF LREAL := -0.086723451313597114,0.077479713254561391,0.0036978538943621794,
         0.086723451313597114,0.0037560427220009562,1.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,-1.0,-0.0,-0.0,-0.0,-0.0,
         -0.0,-0.0,-0.0,0.086723451313597114,0.0037385799151411956,0.0038028608038221182,1.0,0.0,0.0,0.0,0.0,0.0,0.0,
         0.0,0.0,0.0,-1.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0774797132545614,0.0037344342802691551,
@@ -357,14 +373,14 @@ VAR
         0.0,0.0,0.0,0.0,0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,0.83949183414948236,
         -3.0303048904117654E-20,9.9019336990684889E-19,9.1194436839776206E-20,0.0,0.0,0.0,0.0,0.0,0.0,-0.0,-0.0,
         -0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-1.0,-1.2565098028230003E-19,0.8394894108401102,4.1101738305057012E-22,
-        -1.2191675716050928E-18,0.0,0.0,0.0,0.0,0.0,0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-1.0];
-    Explicit_b_G: ARRAY [0..35] OF LREAL := [0.0,0.0,70.092072607175609,-0.049542666742871166,-10.0,
+        -1.2191675716050928E-18,0.0,0.0,0.0,0.0,0.0,0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-0.0,-1.0;
+    Explicit_b_G: ARRAY [0..35] OF LREAL := 0.0,0.0,70.092072607175609,-0.049542666742871166,-10.0,
         0.0047551814774649389,0.0066574539010132933,-14.000000000000002,-4.9948743377783194,0.003530490475377057,
         0.005126810483123528,-6.9927504038254336,70.093790352972277,-14.0,70.093386720661556,-7.0041501846772727,
         -10.0,-14.000000000000004,-10.0,-6.9916496582306316,-4.9931500569849234,-13.999999999999998,
         0.0066642206890649616,-14.000000000000002,-4.99355250349257,-6.9919373739570769,-10.0,-14.000000000000004,
-        -10.000000000000002,-14.000000000000002,-10.0,-6.9916485483955846,-4.9931482021999116,-14.0,-10.0,-14.0];
-    Explicit_b_F: ARRAY [0..359] OF LREAL := [-0.12668823551025507,-0.0060652501876436614,-0.031818884595996862,
+        -10.000000000000002,-14.000000000000002,-10.0,-6.9916485483955846,-4.9931482021999116,-14.0,-10.0,-14.0;
+    Explicit_b_F: ARRAY [0..359] OF LREAL := -0.12668823551025507,-0.0060652501876436614,-0.031818884595996862,
         -0.0061323059966906946,-8.91078660511524E-18,-0.0061254927427347693,-0.12669111973336381,
         -1.0842021724855044E-19,-0.031818884595996862,-0.0061323059966906946,-0.12669125923860913,
         -0.0019410139322708761,-0.031819639678256767,9.2665404429620457E-19,-0.031819673649245116,
@@ -445,9 +461,8 @@ VAR
         -2.8835462972366666E-5,-0.50017293035853727,0.0,-1.0000000000000002,1.0842021724855044E-19,
         -0.50017292927692092,-5.4210108624275222E-20,-1.0,-5.4210108624275222E-20,-1.0,-2.8835462972366666E-5,
         -0.50017293035853727,-5.4210108624275222E-20,-1.0000000000000002,0.0,-1.0000000000000002,
-        1.6263032587282567E-19,-0.50017293202207591,0.0,-1.0,5.4210108624275222E-20,-1.0];
+        1.6263032587282567E-19,-0.50017293202207591,0.0,-1.0,5.4210108624275222E-20,-1.0;
 END_VAR
-
 VAR_TEMP
     new_x: ARRAY [0..5] OF LREAL;
     y_innov: ARRAY [0..1] OF LREAL;
@@ -462,25 +477,52 @@ VAR_TEMP
     b_h: DINT;
     rtb_xest: ARRAY [0..5] OF LREAL;
     i: DINT;
-    rtb_last_mv_idx_0: LREAL;
-    rtb_last_mv_idx_1: LREAL;
-END_VAR]]></Declaration>
-    <Implementation>
-      <ST><![CDATA[CASE ssMethodType OF
+END_VAR
+CASE ssMethodType OF
     SS_INITIALIZE: 
+        (* SystemInitialize for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* InitializeConditions for Memory: '<S3>/last_x' *)
         FOR i := 0 TO 5 DO 
             last_x_PreviousInput[i] := 0.0;
         END_FOR;
+        (* End of InitializeConditions for Memory: '<S3>/last_x' *)
+        
+        (* InitializeConditions for UnitDelay: '<S3>/last_mv' *)
         last_mv_DSTATE[0] := 0.0;
         last_mv_DSTATE[1] := 0.0;
+        (* End of SystemInitialize for SubSystem: '<Root>/Explicit Controller' *)
     SS_STEP: 
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
+        (* MATLAB Function 'Explicit MPC Controller/MPC/Explicit MPC Evaluation': '<S4>:1' *)
+        (* '<S4>:1:6' coder.extrinsic('mpcblock_pwa_evaluate_double_mex'); *)
+        (* '<S4>:1:7' coder.extrinsic('mpcblock_pwa_evaluate_single_mex'); *)
+        (* Parameters *)
+        (* '<S4>:1:10' isSimulation = coder.target('Sfun') && ~coder.target('RtwForRapid') && ~coder.target('RtwForSim'); *)
+        (* '<S4>:1:11' isDouble = isa(r,'double'); *)
+        (* '<S4>:1:12' ZERO = zeros('like',r); *)
+        (* '<S4>:1:13' ONE = ones('like',r); *)
+        (* Pre-allocate all the MEX block outputs for the simulation mode *)
+        (* '<S4>:1:18' if isSimulation *)
+        (* '<S4>:1:26' if isSimulation *)
+        (* '<S4>:1:39' else *)
+        (* When doing code generation, use M code directly *)
+        (* '<S4>:1:41' [u, status, region, new_x, xest] = mpcblock_pwa_evaluate(old_x, r, v, ym, ext_u, old_u, no_mv, nu, nx, nv, uoff, ... *)
+        (* '<S4>:1:42'         openloopflag, F, G, H, K, i1, i2, nr, np, xunfindex, refunfindex, uunfindex, mdunfindex,thmin,thmax,... *)
+        (* '<S4>:1:43'         CustomEstimation, RMYscale, myoff, xoff, A, Bu, Bv, Cm, Dvm, M, L, ... *)
+        (* '<S4>:1:44'         switch_in, switch_inport, no_switch, enable_value); *)
         regionmin := 1;
         b_k := -1;
-
+        (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* MATLAB Function: '<S3>/Explicit MPC Evaluation' incorporates:
+         *  Memory: '<S3>/last_x' *)
         FOR i := 0 TO 5 DO 
             new_x[i] := last_x_PreviousInput[i];
         END_FOR;
-		
+        (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
         FOR i := 0 TO 1 DO 
             betamin := 0.0;
             FOR b_h := 0 TO 5 DO 
@@ -488,24 +530,26 @@ END_VAR]]></Declaration>
             END_FOR;
             y_innov[i] := MeasuredTankOutputs[i] - betamin;
         END_FOR;
-
+        (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
         FOR i := 0 TO 5 DO 
             rtb_xest[i] := ((Explicit_b_M[i + 6] * y_innov[1]) + (Explicit_b_M[i] * y_innov[0])) + new_x[i];
         END_FOR;
-
+        (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
+        (* MATLAB Function: '<S3>/Explicit MPC Evaluation' incorporates:
+         *  UnitDelay: '<S3>/last_mv' *)
         FOR i := 0 TO 9 DO 
             th[i] := 0.0;
         END_FOR;
-		
         FOR b_h := 0 TO 5 DO 
             th[b_h] := rtb_xest[b_h];
         END_FOR;
-		
         th[6] := ref[0];
         th[8] := last_mv_DSTATE[0];
         th[7] := ref[1];
         th[9] := last_mv_DSTATE[1];
-		
         FOR b_h := 0 TO 9 DO 
             betamin := th[b_h];
             IF betamin < Explicit_b_thmin[b_h] THEN 
@@ -514,7 +558,6 @@ END_VAR]]></Declaration>
                 regionmin := 0;
             END_IF;
         END_FOR;
-		
         du[0] := 0.0;
         du[1] := 0.0;
         IF regionmin = 1 THEN 
@@ -556,17 +599,20 @@ END_VAR]]></Declaration>
                 du[regionmin] := Explicit_b_G[regionmin + b_k] + betamin;
             END_FOR;
         END_IF;
-		
         betamin := last_mv_DSTATE[0] + du[0];
         beta := betamin;
         mv[0] := betamin;
         betamin := last_mv_DSTATE[1] + du[1];
-
+        (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
+        (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
         FOR i := 0 TO 5 DO 
+            (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
             rtb_xest[i] := 0.0;
             FOR b_h := 0 TO 5 DO 
                 rtb_xest[i] := (Explicit_b_A[(6 * b_h) + i] * new_x[b_h]) + rtb_xest[i];
             END_FOR;
+            (* Update for Memory: '<S3>/last_x' incorporates:
+             *  MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
             last_x_PreviousInput[i] := ((Explicit_b_L[i + 6] * y_innov[1]) + (Explicit_b_L[i] * y_innov[0])) + (rtb_xest[i] + ((Explicit_b_Bu[i + 6] * betamin) + (Explicit_b_Bu[i] * beta)));
         END_FOR;
         (* Update for UnitDelay: '<S3>/last_mv' *)
@@ -582,35 +628,8 @@ END_VAR]]></Declaration>
         mv[1] := 0.15299877600979192 * betamin;
         (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
 END_CASE;
-]]></ST>
-    </Implementation>
-    <LineIds Name="Explicit_Controller_FCN_BLK">
-      <LineId Id="21720" Count="1" />
-      <LineId Id="21724" Count="2" />
-      <LineId Id="21730" Count="1" />
-      <LineId Id="21733" Count="0" />
-      <LineId Id="21753" Count="1" />
-      <LineId Id="21869" Count="0" />
-      <LineId Id="21759" Count="2" />
-      <LineId Id="21870" Count="0" />
-      <LineId Id="21765" Count="6" />
-      <LineId Id="21774" Count="3" />
-      <LineId Id="21781" Count="3" />
-      <LineId Id="21871" Count="0" />
-      <LineId Id="21785" Count="2" />
-      <LineId Id="21872" Count="0" />
-      <LineId Id="21788" Count="3" />
-      <LineId Id="21873" Count="0" />
-      <LineId Id="21792" Count="7" />
-      <LineId Id="21874" Count="0" />
-      <LineId Id="21800" Count="40" />
-      <LineId Id="21875" Count="0" />
-      <LineId Id="21841" Count="3" />
-      <LineId Id="21846" Count="1" />
-      <LineId Id="21849" Count="3" />
-      <LineId Id="21855" Count="13" />
-      <LineId Id="3630" Count="0" />
-      <LineId Id="1848" Count="0" />
-    </LineIds>
-  </POU>
-</TcPlcObject>
+END_FUNCTION_BLOCK
+VAR_GLOBAL CONSTANT
+    SS_INITIALIZE: SINT := 0;
+    SS_STEP: SINT := 1;
+END_VAR

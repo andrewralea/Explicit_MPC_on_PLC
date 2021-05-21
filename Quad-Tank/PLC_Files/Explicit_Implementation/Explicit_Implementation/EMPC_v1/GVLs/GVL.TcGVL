@@ -20,6 +20,8 @@ VAR_GLOBAL
 	fSetpointValueToScope_2 : LREAL;
 	fActualValueToScope_2 	: LREAL;
 	fOutToScope_2 			: LREAL;
+	
+	Search_Status_toScope 	: LREAL;
 END_VAR]]></Declaration>
   </GVL>
 </TcPlcObject>
