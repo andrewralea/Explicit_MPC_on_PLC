@@ -34,7 +34,7 @@ END_VAR
 	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
 	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
 	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:= 7;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:= 5.7;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:= 0;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
@@ -66,8 +66,8 @@ fbCTRL_PID(		fSetpointValue		:= fSetpointValue,
 				);
 
 GVL.rAO_1 := fOut - (GVL.rAO_2 * 0.5623) + SQRT(fSetpointValue * 3.7);
-IF GVL.rAO_1 > 7
-	THEN GVL.rAO_2 := 1;
+IF GVL.rAO_1 > 5.7
+	THEN GVL.rAO_1 := 5.7;
 END_IF
 
 (* copy var to scope var *)
