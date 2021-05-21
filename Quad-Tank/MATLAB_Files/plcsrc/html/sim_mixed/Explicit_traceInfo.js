@@ -1,19 +1,15 @@
 function RTW_Sid2UrlHash() {
 	this.urlHashMap = new Array();
-	/* <S1>/Search_Status */
-	this.urlHashMap["sim_mixed:160"] = "msg=&block=sim_mixed:160";
-	/* <S1>/Estimated_States */
-	this.urlHashMap["sim_mixed:162"] = "msg=&block=sim_mixed:162";
+	/* <S2>/est.state_terminator */
+	this.urlHashMap["sim_mixed:15:2312"] = "msg=&block=sim_mixed:15:2312";
 	/* <S2>/ext.mv_zero */
 	this.urlHashMap["sim_mixed:15:2189"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2189";
 	/* <S2>/md_zero */
 	this.urlHashMap["sim_mixed:15:2307"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2307";
+	/* <S2>/status_terminator */
+	this.urlHashMap["sim_mixed:15:2311"] = "msg=&block=sim_mixed:15:2311";
 	/* <S2>/switch_zero */
 	this.urlHashMap["sim_mixed:15:2306"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2306";
-	/* <S2>/status */
-	this.urlHashMap["sim_mixed:15:2309"] = "msg=&block=sim_mixed:15:2309";
-	/* <S2>/est.state */
-	this.urlHashMap["sim_mixed:15:2310"] = "msg=&block=sim_mixed:15:2310";
 	/* <S3>/Data Type Conversion1 */
 	this.urlHashMap["sim_mixed:15:1358"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:1358";
 	/* <S3>/Data Type Conversion2 */
@@ -23,19 +19,19 @@ function RTW_Sid2UrlHash() {
 	/* <S3>/Data Type Conversion8 */
 	this.urlHashMap["sim_mixed:15:2302"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2302";
 	/* <S3>/Explicit MPC Evaluation */
-	this.urlHashMap["sim_mixed:15:85"] = "sim_mixed.st:371,393,400,410,416,485,491,507";
+	this.urlHashMap["sim_mixed:15:85"] = "sim_mixed.st:368,390,397,407,413,481,487";
 	/* <S3>/constant */
 	this.urlHashMap["sim_mixed:15:2297"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2297";
 	/* <S3>/ext.mv_scale */
 	this.urlHashMap["sim_mixed:15:2041"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2041";
 	/* <S3>/ext.mv_scale1 */
-	this.urlHashMap["sim_mixed:15:2046"] = "sim_mixed.st:497,503";
+	this.urlHashMap["sim_mixed:15:2046"] = "sim_mixed.st:493,499";
 	/* <S3>/ext_mv_bias */
 	this.urlHashMap["sim_mixed:15:82"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:82";
 	/* <S3>/last_mv */
-	this.urlHashMap["sim_mixed:15:1925"] = "sim_mixed.st:365,417,494,498,500,504";
+	this.urlHashMap["sim_mixed:15:1925"] = "sim_mixed.st:362,414,490,494,496";
 	/* <S3>/last_x */
-	this.urlHashMap["sim_mixed:15:2185"] = "sim_mixed.st:359,363,394,490";
+	this.urlHashMap["sim_mixed:15:2185"] = "sim_mixed.st:356,360,391,486";
 	/* <S3>/mo or x Conversion */
 	this.urlHashMap["sim_mixed:15:1357"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:1357";
 	/* <S3>/mo_bias1 */
@@ -51,33 +47,33 @@ function RTW_Sid2UrlHash() {
 	/* <S3>/umin_scale2 */
 	this.urlHashMap["sim_mixed:15:2298"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2298";
 	/* <S4>:1 */
-	this.urlHashMap["sim_mixed:15:85:1"] = "sim_mixed.st:372";
+	this.urlHashMap["sim_mixed:15:85:1"] = "sim_mixed.st:369";
 	/* <S4>:1:6 */
-	this.urlHashMap["sim_mixed:15:85:1:6"] = "sim_mixed.st:373";
+	this.urlHashMap["sim_mixed:15:85:1:6"] = "sim_mixed.st:370";
 	/* <S4>:1:7 */
-	this.urlHashMap["sim_mixed:15:85:1:7"] = "sim_mixed.st:374";
+	this.urlHashMap["sim_mixed:15:85:1:7"] = "sim_mixed.st:371";
 	/* <S4>:1:10 */
-	this.urlHashMap["sim_mixed:15:85:1:10"] = "sim_mixed.st:376";
+	this.urlHashMap["sim_mixed:15:85:1:10"] = "sim_mixed.st:373";
 	/* <S4>:1:11 */
-	this.urlHashMap["sim_mixed:15:85:1:11"] = "sim_mixed.st:377";
+	this.urlHashMap["sim_mixed:15:85:1:11"] = "sim_mixed.st:374";
 	/* <S4>:1:12 */
-	this.urlHashMap["sim_mixed:15:85:1:12"] = "sim_mixed.st:378";
+	this.urlHashMap["sim_mixed:15:85:1:12"] = "sim_mixed.st:375";
 	/* <S4>:1:13 */
-	this.urlHashMap["sim_mixed:15:85:1:13"] = "sim_mixed.st:379";
+	this.urlHashMap["sim_mixed:15:85:1:13"] = "sim_mixed.st:376";
 	/* <S4>:1:18 */
-	this.urlHashMap["sim_mixed:15:85:1:18"] = "sim_mixed.st:381";
+	this.urlHashMap["sim_mixed:15:85:1:18"] = "sim_mixed.st:378";
 	/* <S4>:1:26 */
-	this.urlHashMap["sim_mixed:15:85:1:26"] = "sim_mixed.st:382";
+	this.urlHashMap["sim_mixed:15:85:1:26"] = "sim_mixed.st:379";
 	/* <S4>:1:39 */
-	this.urlHashMap["sim_mixed:15:85:1:39"] = "sim_mixed.st:383";
+	this.urlHashMap["sim_mixed:15:85:1:39"] = "sim_mixed.st:380";
 	/* <S4>:1:41 */
-	this.urlHashMap["sim_mixed:15:85:1:41"] = "sim_mixed.st:385";
+	this.urlHashMap["sim_mixed:15:85:1:41"] = "sim_mixed.st:382";
 	/* <S4>:1:42 */
-	this.urlHashMap["sim_mixed:15:85:1:42"] = "sim_mixed.st:386";
+	this.urlHashMap["sim_mixed:15:85:1:42"] = "sim_mixed.st:383";
 	/* <S4>:1:43 */
-	this.urlHashMap["sim_mixed:15:85:1:43"] = "sim_mixed.st:387";
+	this.urlHashMap["sim_mixed:15:85:1:43"] = "sim_mixed.st:384";
 	/* <S4>:1:44 */
-	this.urlHashMap["sim_mixed:15:85:1:44"] = "sim_mixed.st:388";
+	this.urlHashMap["sim_mixed:15:85:1:44"] = "sim_mixed.st:385";
 	/* <S5>/Vector Dimension Check */
 	this.urlHashMap["sim_mixed:15:2303:17"] = "msg=rtwMsg_notTraceable&block=sim_mixed:15:2303:17";
 	/* <S6>/Vector Dimension Check */
@@ -104,32 +100,28 @@ function RTW_rtwnameSIDMap() {
 	this.sidHashMap["sim_mixed:15"] = {rtwname: "<S1>/Explicit MPC Controller"};
 	this.rtwnameHashMap["<S1>/mv"] = {sid: "sim_mixed:30"};
 	this.sidHashMap["sim_mixed:30"] = {rtwname: "<S1>/mv"};
-	this.rtwnameHashMap["<S1>/Search_Status"] = {sid: "sim_mixed:160"};
-	this.sidHashMap["sim_mixed:160"] = {rtwname: "<S1>/Search_Status"};
-	this.rtwnameHashMap["<S1>/Estimated_States"] = {sid: "sim_mixed:162"};
-	this.sidHashMap["sim_mixed:162"] = {rtwname: "<S1>/Estimated_States"};
 	this.rtwnameHashMap["<S2>/mo or x"] = {sid: "sim_mixed:15:116"};
 	this.sidHashMap["sim_mixed:15:116"] = {rtwname: "<S2>/mo or x"};
 	this.rtwnameHashMap["<S2>/ref"] = {sid: "sim_mixed:15:117"};
 	this.sidHashMap["sim_mixed:15:117"] = {rtwname: "<S2>/ref"};
 	this.rtwnameHashMap["<S2>/MPC"] = {sid: "sim_mixed:15:72"};
 	this.sidHashMap["sim_mixed:15:72"] = {rtwname: "<S2>/MPC"};
+	this.rtwnameHashMap["<S2>/est.state_terminator"] = {sid: "sim_mixed:15:2312"};
+	this.sidHashMap["sim_mixed:15:2312"] = {rtwname: "<S2>/est.state_terminator"};
 	this.rtwnameHashMap["<S2>/ext.mv_zero"] = {sid: "sim_mixed:15:2189"};
 	this.sidHashMap["sim_mixed:15:2189"] = {rtwname: "<S2>/ext.mv_zero"};
 	this.rtwnameHashMap["<S2>/md_zero"] = {sid: "sim_mixed:15:2307"};
 	this.sidHashMap["sim_mixed:15:2307"] = {rtwname: "<S2>/md_zero"};
 	this.rtwnameHashMap["<S2>/region_terminator"] = {sid: "sim_mixed:15:1927"};
 	this.sidHashMap["sim_mixed:15:1927"] = {rtwname: "<S2>/region_terminator"};
+	this.rtwnameHashMap["<S2>/status_terminator"] = {sid: "sim_mixed:15:2311"};
+	this.sidHashMap["sim_mixed:15:2311"] = {rtwname: "<S2>/status_terminator"};
 	this.rtwnameHashMap["<S2>/switch_zero"] = {sid: "sim_mixed:15:2306"};
 	this.sidHashMap["sim_mixed:15:2306"] = {rtwname: "<S2>/switch_zero"};
 	this.rtwnameHashMap["<S2>/u0_terminator"] = {sid: "sim_mixed:15:2300"};
 	this.sidHashMap["sim_mixed:15:2300"] = {rtwname: "<S2>/u0_terminator"};
 	this.rtwnameHashMap["<S2>/mv"] = {sid: "sim_mixed:15:128"};
 	this.sidHashMap["sim_mixed:15:128"] = {rtwname: "<S2>/mv"};
-	this.rtwnameHashMap["<S2>/status"] = {sid: "sim_mixed:15:2309"};
-	this.sidHashMap["sim_mixed:15:2309"] = {rtwname: "<S2>/status"};
-	this.rtwnameHashMap["<S2>/est.state"] = {sid: "sim_mixed:15:2310"};
-	this.sidHashMap["sim_mixed:15:2310"] = {rtwname: "<S2>/est.state"};
 	this.rtwnameHashMap["<S3>/mo or x"] = {sid: "sim_mixed:15:75"};
 	this.sidHashMap["sim_mixed:15:75"] = {rtwname: "<S3>/mo or x"};
 	this.rtwnameHashMap["<S3>/ref"] = {sid: "sim_mixed:15:76"};

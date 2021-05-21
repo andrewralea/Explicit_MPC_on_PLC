@@ -5,15 +5,15 @@
  * IEC 61131-3 Structured Text (ST) code generated for subsystem "sim_mixed/Explicit Controller"
  *
  * Model name                      : sim_mixed
- * Model version                   : 1.143
+ * Model version                   : 1.145
  * Model creator                   : andrewralea
  * Model last modified by          : andrewralea
- * Model last modified on          : Thu May 20 20:52:32 2021
+ * Model last modified on          : Thu May 20 21:06:45 2021
  * Model sample time               : 0s
  * Subsystem name                  : sim_mixed/Explicit Controller
  * Subsystem sample time           : 0.1s
  * Simulink PLC Coder version      : 3.3 (R2020b) 29-Jul-2020
- * ST code generated on            : Thu May 20 20:55:38 2021
+ * ST code generated on            : Thu May 20 21:07:04 2021
  *
  * Target IDE selection            : Beckhoff TwinCAT 3
  * Test Bench included             : No
@@ -27,8 +27,6 @@ VAR_INPUT
 END_VAR
 VAR_OUTPUT
     mv: ARRAY [0..1] OF LREAL;
-    Search_Status: LREAL;
-    Estimated_States: ARRAY [0..5] OF LREAL;
 END_VAR
 VAR
     last_x_PreviousInput: ARRAY [0..5] OF LREAL;
@@ -338,7 +336,6 @@ VAR
         -6.7762635780344027E-21,-0.99999999999999956,-1.0541348306936956E-6,-0.5000146333512806;
 END_VAR
 VAR_TEMP
-    status: DINT;
     new_x: ARRAY [0..5] OF LREAL;
     y_innov: ARRAY [0..1] OF LREAL;
     th: ARRAY [0..9] OF LREAL;
@@ -350,8 +347,8 @@ VAR_TEMP
     beta: LREAL;
     betah: LREAL;
     b_h: DINT;
+    rtb_xest: ARRAY [0..5] OF LREAL;
     i: DINT;
-    b_A: ARRAY [0..5] OF LREAL;
 END_VAR
 CASE ssMethodType OF
     SS_INITIALIZE: 
@@ -386,7 +383,7 @@ CASE ssMethodType OF
         (* '<S4>:1:42'         openloopflag, F, G, H, K, i1, i2, nr, np, xunfindex, refunfindex, uunfindex, mdunfindex,thmin,thmax,... *)
         (* '<S4>:1:43'         CustomEstimation, RMYscale, myoff, xoff, A, Bu, Bv, Cm, Dvm, M, L, ... *)
         (* '<S4>:1:44'         switch_in, switch_inport, no_switch, enable_value); *)
-        status := 1;
+        regionmin := 1;
         b_k := -1;
         (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
         (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
@@ -400,8 +397,8 @@ CASE ssMethodType OF
         (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
         FOR i := 0 TO 1 DO 
             betamin := 0.0;
-            FOR regionmin := 0 TO 5 DO 
-                betamin := (Explicit_b_Cm[(regionmin * 2) + i] * new_x[regionmin]) + betamin;
+            FOR b_h := 0 TO 5 DO 
+                betamin := (Explicit_b_Cm[(b_h * 2) + i] * new_x[b_h]) + betamin;
             END_FOR;
             y_innov[i] := MeasuredTankOutputs[i] - betamin;
         END_FOR;
@@ -409,7 +406,7 @@ CASE ssMethodType OF
         (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
         (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
         FOR i := 0 TO 5 DO 
-            Estimated_States[i] := ((Explicit_b_M[i + 6] * y_innov[1]) + (Explicit_b_M[i] * y_innov[0])) + new_x[i];
+            rtb_xest[i] := ((Explicit_b_M[i + 6] * y_innov[1]) + (Explicit_b_M[i] * y_innov[0])) + new_x[i];
         END_FOR;
         (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
         (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
@@ -418,24 +415,24 @@ CASE ssMethodType OF
         FOR i := 0 TO 9 DO 
             th[i] := 0.0;
         END_FOR;
-        FOR regionmin := 0 TO 5 DO 
-            th[regionmin] := Estimated_States[regionmin];
+        FOR b_h := 0 TO 5 DO 
+            th[b_h] := rtb_xest[b_h];
         END_FOR;
         th[6] := ref[0];
         th[8] := last_mv_DSTATE[0];
         th[7] := ref[1];
         th[9] := last_mv_DSTATE[1];
-        FOR regionmin := 0 TO 9 DO 
-            betamin := th[regionmin];
-            IF betamin < Explicit_b_thmin[regionmin] THEN 
-                status := 0;
-            ELSIF betamin > Explicit_b_thmax[regionmin] THEN 
-                status := 0;
+        FOR b_h := 0 TO 9 DO 
+            betamin := th[b_h];
+            IF betamin < Explicit_b_thmin[b_h] THEN 
+                regionmin := 0;
+            ELSIF betamin > Explicit_b_thmax[b_h] THEN 
+                regionmin := 0;
             END_IF;
         END_FOR;
         du[0] := 0.0;
         du[1] := 0.0;
-        IF status = 1 THEN 
+        IF regionmin = 1 THEN 
             found := FALSE;
             regionmin := 0;
             betamin := 1.797693134862316E+307;
@@ -463,7 +460,6 @@ CASE ssMethodType OF
             END_WHILE;
             IF  NOT found THEN 
                 b_k := regionmin - 1;
-                status := -1;
             END_IF;
             b_k := DWORD_TO_DINT(SHL(DINT_TO_DWORD(b_k), 1));
             FOR regionmin := 0 TO 1 DO 
@@ -475,21 +471,21 @@ CASE ssMethodType OF
                 du[regionmin] := Explicit_b_G[regionmin + b_k] + betamin;
             END_FOR;
         END_IF;
-        mv[0] := last_mv_DSTATE[0] + du[0];
-        mv[1] := last_mv_DSTATE[1] + du[1];
-        betamin := mv[0];
-        beta := mv[1];
+        betamin := last_mv_DSTATE[0] + du[0];
+        beta := betamin;
+        mv[0] := betamin;
+        betamin := last_mv_DSTATE[1] + du[1];
         (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
         (* Outputs for Atomic SubSystem: '<Root>/Explicit Controller' *)
         FOR i := 0 TO 5 DO 
             (* MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
-            b_A[i] := 0.0;
-            FOR regionmin := 0 TO 5 DO 
-                b_A[i] := (Explicit_b_A[(6 * regionmin) + i] * new_x[regionmin]) + b_A[i];
+            rtb_xest[i] := 0.0;
+            FOR b_h := 0 TO 5 DO 
+                rtb_xest[i] := (Explicit_b_A[(6 * b_h) + i] * new_x[b_h]) + rtb_xest[i];
             END_FOR;
             (* Update for Memory: '<S3>/last_x' incorporates:
              *  MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
-            last_x_PreviousInput[i] := ((Explicit_b_L[i + 6] * y_innov[1]) + (Explicit_b_L[i] * y_innov[0])) + (b_A[i] + ((Explicit_b_Bu[i + 6] * beta) + (Explicit_b_Bu[i] * betamin)));
+            last_x_PreviousInput[i] := ((Explicit_b_L[i + 6] * y_innov[1]) + (Explicit_b_L[i] * y_innov[0])) + (rtb_xest[i] + ((Explicit_b_Bu[i + 6] * betamin) + (Explicit_b_Bu[i] * beta)));
         END_FOR;
         (* Update for UnitDelay: '<S3>/last_mv' *)
         last_mv_DSTATE[0] := mv[0];
@@ -498,14 +494,10 @@ CASE ssMethodType OF
          *  UnitDelay: '<S3>/last_mv' *)
         mv[0] := 0.15299877600979192 * mv[0];
         (* Update for UnitDelay: '<S3>/last_mv' *)
-        last_mv_DSTATE[1] := mv[1];
+        last_mv_DSTATE[1] := betamin;
         (* Outport: '<Root>/mv' incorporates:
-         *  Gain: '<S3>/ext.mv_scale1'
-         *  UnitDelay: '<S3>/last_mv' *)
-        mv[1] := 0.15299877600979192 * mv[1];
-        (* Outport: '<Root>/Search_Status' incorporates:
-         *  MATLAB Function: '<S3>/Explicit MPC Evaluation' *)
-        Search_Status := DINT_TO_LREAL(status);
+         *  Gain: '<S3>/ext.mv_scale1' *)
+        mv[1] := 0.15299877600979192 * betamin;
         (* End of Outputs for SubSystem: '<Root>/Explicit Controller' *)
 END_CASE;
 END_FUNCTION_BLOCK
