@@ -20,8 +20,8 @@ plant = ss(A_ct, B_ct, C_ct, D_ct);
 
 % Creating Controller
 Ts = 0.5;       % sampling period
-p = 5;          % prediction horizon
-m = 4;          % control horizon
+p = 3;          % prediction horizon
+m = 2;          % control horizon
 
 mpcobj = mpc(plant,Ts, p, m);
 
