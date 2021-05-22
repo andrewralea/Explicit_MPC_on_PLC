@@ -1,37 +1,26 @@
-## Welcome to GitHub Pages
+# Explicit MPC on PLC
+[Michael Ralea - Email](mailto:raleam1@tcnj.edu)
 
-You can use the [editor on GitHub](https://github.com/andrewralea/Explicit_MPC_on_PLC/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[Dr. Adegbege- Email](mailto:adegbega@tcnj.edu)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## What is Explicit MPC?
+Implicit MPC performs an online optimization problem at every sample time to compute an optimal control action, using the current state of the plant as well as predicted state behaviour. Explicit MPC is similar in that it predicts, but differs in that the computation is done offline. Rather than compute a time-consuming quadratic program online, explicit MPC precomputes all possible state regions where the optimal control action is a linear function of the states *x*. 
 
-### Markdown
+### Where to start?
+[MATLAB Explicit MPC](https://www.mathworks.com/help/mpc/ug/explicit-mpc.html)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## What is a PLC?
 
-```markdown
-Syntax highlighted code block
+### Where to start?
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+### Quad Tank Specific
+[MATLAB Files](https://github.com/andrewralea/Explicit_MPC_on_PLC/tree/master/Quad-Tank/MATLAB_Files)
 
-1. Numbered
-2. List
+[PLC Files](https://github.com/andrewralea/Explicit_MPC_on_PLC/tree/master/Quad-Tank/PLC_Files)
 
-**Bold** and _Italic_ and `Code` text
+[Control Derivations](https://github.com/andrewralea/Explicit_MPC_on_PLC/tree/master/Quad-Tank/Derivations)
 
-[Link](url) and ![Image](src)
-```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/andrewralea/Explicit_MPC_on_PLC/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+### Related works
+- J. Velagić and B. Šabić, "Design, implementation and experimental validation of explicit MPC in programmable logic controller," 2014 IEEE 23rd International Symposium on Industrial Electronics (ISIE), 2014, pp. 93-98, doi: 10.1109/ISIE.2014.6864592.
