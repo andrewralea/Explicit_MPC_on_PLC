@@ -8,3 +8,5 @@
 > Function that generates all quad-tank related variables from measured values, and returns a 
 > state space representation, transfer function, and variables corresponding to the linearzed operating point
 
+## *sim_mixed.slx*
+> Simulates implicit and explicit controller objects, with relevant scaling. Requires that *main_EMPC_QuadTank.m* is run first
