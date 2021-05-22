@@ -44,7 +44,7 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
           <Comment></Comment>
           <ContextMask>0</ContextMask>
@@ -67,7 +67,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>715b1215-8353-4f02-977c-7b3ab2673739</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409424</IndexOffset>
+          <IndexOffset>386144</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fActualValueToScope_1</Name>
@@ -125,7 +125,7 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
           <Comment></Comment>
           <ContextMask>0</ContextMask>
@@ -148,7 +148,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>32c962f5-61ec-4017-99a2-47e26882b1d6</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409448</IndexOffset>
+          <IndexOffset>386168</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fActualValueToScope_2</Name>
@@ -206,7 +206,7 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
           <Comment></Comment>
           <ContextMask>0</ContextMask>
@@ -229,7 +229,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>6c33d7a9-08b3-4a1c-b84e-3df3f293d5cf</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409432</IndexOffset>
+          <IndexOffset>386152</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fOutToScope_1</Name>
@@ -287,7 +287,7 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
           <Comment></Comment>
           <ContextMask>0</ContextMask>
@@ -310,7 +310,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>551e936f-8482-4753-b1a2-f28718c63e18</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409456</IndexOffset>
+          <IndexOffset>386176</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fOutToScope_2</Name>
@@ -368,9 +368,9 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
-          <Comment> Variables used to plot plant behaviour</Comment>
+          <Comment></Comment>
           <ContextMask>0</ContextMask>
           <DataAccess>
             <DataAccessMode>
@@ -391,7 +391,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>88c2e312-939c-4abf-a4ad-89b4fedab7b2</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409416</IndexOffset>
+          <IndexOffset>386136</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fSetpointValueToScope_1</Name>
@@ -449,7 +449,7 @@
           <AmsNetId>5.84.189.16.1.1</AmsNetId>
           <Area>Local</Area>
           <ArrayLength>0</ArrayLength>
-          <BaseSampleTime>100000</BaseSampleTime>
+          <BaseSampleTime>500000</BaseSampleTime>
           <ChannelStyleInformation />
           <Comment></Comment>
           <ContextMask>0</ContextMask>
@@ -472,7 +472,7 @@
           <ForceOversampling>false</ForceOversampling>
           <Guid>dc5e194d-2149-48b4-9cee-ab3e302a2e05</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409440</IndexOffset>
+          <IndexOffset>386160</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fSetpointValueToScope_2</Name>
