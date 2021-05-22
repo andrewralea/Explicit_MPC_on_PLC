@@ -37,3 +37,5 @@ Import generated structured text and update explicit controller function block a
 ## My Tips
 > If you are doing the MATLAB formulations on a separate computer from that which has the PLC program, and you need to change the generated regions regularly, set up GitHub accordingly and just push and pull when a new .st file is generated rather than email which is what I used to do. This is a must if you are working on a mac and cannot get your PLC software locally. If you are a TCNJ student / faculty, mount your H drive on your mac so you can git pull the new .st locally and still update your other computer
 
+> Try to understand some math before you blindly jump in... the progress you think you're making? You're not lol
+
