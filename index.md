@@ -10,6 +10,7 @@ Implicit MPC performs an online optimization problem at every sample time to com
 [MATLAB Explicit MPC](https://www.mathworks.com/help/mpc/ug/explicit-mpc.html)
 
 ## What is a PLC?
+<img src="https://github.com/andrewralea/Explicit_MPC_on_PLC/blob/master/PLC_Documentation/Figures/CX9020.png" width="400">
 
 ### Where to start?
 
