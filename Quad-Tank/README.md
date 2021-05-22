@@ -1,4 +1,20 @@
-All code relating to explicit MPC on the quad-tank.
+# All materials relating to explicit MPC on the quad-tank.
+### Folder Structure
+MATLAB Files 
+> All files relating to problem initialization, implicit and explicit formulation, and simulation
+>
+PLC Files
+> TwinCAT 3 Solutions and documentation on PLC usage for data capture and general purposes (to be added)
+
+Derivations
+> Control derivations for various schemes on the quad-tank
+
+Data Capture
+> Store all captured data in various formats (figures, csv, screenshots...) and scripts to plot data in MATLAB
+
+Final Figures
+> All final figures to be used in Paper submission
+
 
 # Tools Needed:
 *PLC specific tools such as IDE, main unit, and I/O modules can vary. May need to alter minor syntax of generated structured text on case-by-case basis.*
