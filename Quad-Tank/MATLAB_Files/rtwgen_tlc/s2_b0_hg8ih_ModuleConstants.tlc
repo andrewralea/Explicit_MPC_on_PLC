@@ -1,0 +1,5 @@
+%implements s2_b0_hg8ih_ModuleConstants "C"
+
+%function ModuleConstants(block) Output
+
+%endfunction
