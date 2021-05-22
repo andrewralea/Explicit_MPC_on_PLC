@@ -26,7 +26,7 @@ m = 3;          % control horizon
 mpcobj = mpc(plant,Ts, p, m);
 
 % Specify constraints of the manipulated variable (V)
-mpcobj.MV = struct('Min', {0 - (L10/6.536), 0 - (L20/6.536)},'Max', {23 - (L10/6.536), 23 - (L20/6.536)}, 'Scalefactor', 1/6.536);
+mpcobj.MV = struct('Min', {0 - Vp10, 0 - Vp20},'Max', {23 - (L10/6.536), 23 - (L20/6.536)}, 'Scalefactor', 1/6.536);
 
 % Create discrete model for simulation
 plant_discrete = c2d(plant,Ts);
