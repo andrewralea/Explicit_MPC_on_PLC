@@ -1,4 +1,4 @@
-%implements s2_b0_dt9ih_ModuleConstants "C"
+%implements s2_b0_fncjh_ModuleConstants "C"
 
 %function ModuleConstants(block) Output
 
