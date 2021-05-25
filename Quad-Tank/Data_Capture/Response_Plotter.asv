@@ -1,8 +1,0 @@
-%% Michael Ralea
-% Data capture plotting
-
-Array = csvread('Explicit_18regions.csv');
-Time_s = Array(:, 1) * 0.01;
-Tank_1_Height = Array(:, 2);
-Tank_2_Height = Array(:, 3);
-plot(Time_s, Tank_1_Height, Time_s, Tank_2_Height, Time_s, Tank_1_Setpoint, Time_s, Tank_2_Setpoint)
