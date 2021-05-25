@@ -8,9 +8,9 @@
 >  - Useful PID Tutorial https://www.youtube.com/playlist?list=PL762SfoJC-e_1CtDQoRe6PYEG6Iz_zdvz
 >  - How to Use Scope https://www.youtube.com/watch?v=y-vqv3LFRjY&list=PL762SfoJC-e_1CtDQoRe6PYEG6Iz_zdvz&index=36&t=847s
 #### Beckhoff CX9020 
-> EL3004 A/D Input Module  (4 channel)
+> EL3004 Analog Input Module  (4 channel)
 > - https://www.beckhoff.com/en-us/products/i-o/ethercat-terminals/el3xxx-analog-input/el3004.html
 > 
-> EL4002 D/A Output Module (2 channel)
+> EL4002 Analog Output Module (2 channel)
 > - https://www.beckhoff.com/sv-se/products/i-o/ethercat-terminals/el4xxx-analog-output/el4002.html
 
