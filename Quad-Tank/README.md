@@ -20,6 +20,7 @@ Final Figures
 *PLC specific tools such as IDE, main unit, and I/O modules can vary. May need to alter minor syntax of generated structured text on case-by-case basis.*
 #### MATLAB (2020b used)
 > Model Predictive Control Toolbox (for generating explicit regions)
+> Simulink PLC Coder (to generate structured text for search and state estimation)
 > 
 #### Beckhoff TwinCAT 3 (IDE)
 #### Beckhoff CX9020 
