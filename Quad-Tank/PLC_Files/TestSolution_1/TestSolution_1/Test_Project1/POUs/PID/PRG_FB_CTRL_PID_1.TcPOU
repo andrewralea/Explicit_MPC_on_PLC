@@ -34,7 +34,7 @@ END_VAR
 	stCTRL_PID_PARAMS.tTn					:= T#1S;		(*  Tn								*)
 	stCTRL_PID_PARAMS.tTv					:= T#200MS;		(*  Tv								*)
 	stCTRL_PID_PARAMS.tTd					:= T#100MS;		(*  Td								*)
-	stCTRL_PID_PARAMS.fOutMaxLimit			:= 5.7;			(* maximum output limit				*)
+	stCTRL_PID_PARAMS.fOutMaxLimit			:= 5.33;			(* maximum output limit				*)
 	stCTRL_PID_PARAMS.fOutMinLimit			:= 0;			(* minimum output limit				*)
 
 	(* set the mode to ACTIVE --> normal operation *)
