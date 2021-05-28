@@ -19,7 +19,7 @@ clc
 plant = ss(A_ct, B_ct, C_ct, D_ct);
 
 % Creating Controller
-Ts = 0.1;       % sampling period
+Ts = 0.01;       % sampling period
 p = 3;          % prediction horizon
 m = 3;          % control horizon
 
