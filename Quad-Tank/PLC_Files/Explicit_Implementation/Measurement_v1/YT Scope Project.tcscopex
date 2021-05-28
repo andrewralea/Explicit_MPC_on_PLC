@@ -63,11 +63,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>1</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>1530e470-01f9-4c5b-a472-05379be7e367</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409424</IndexOffset>
+          <IndexOffset>630528</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fActualValueToScope_1</Name>
@@ -144,11 +144,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>2</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>47eba342-40f8-48f4-9799-00b3e0bb96df</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409448</IndexOffset>
+          <IndexOffset>630552</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fActualValueToScope_2</Name>
@@ -225,11 +225,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>3</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>13129bb2-ae1d-4dfc-9c4b-c7ef519ff1d0</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409432</IndexOffset>
+          <IndexOffset>630536</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fOutToScope_1</Name>
@@ -306,11 +306,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>4</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>a92575a0-d5cb-4306-9dab-d63a2ee31e35</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409456</IndexOffset>
+          <IndexOffset>630560</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fOutToScope_2</Name>
@@ -387,11 +387,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>5</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>fc471466-9e69-4efa-9519-2e90840877be</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409416</IndexOffset>
+          <IndexOffset>630520</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fSetpointValueToScope_1</Name>
@@ -468,11 +468,11 @@
           <DataType>REAL64</DataType>
           <DisplayColor>Black</DisplayColor>
           <Enabled>true</Enabled>
-          <FileHandle>0</FileHandle>
+          <FileHandle>6</FileHandle>
           <ForceOversampling>false</ForceOversampling>
           <Guid>81dda7a1-62d5-444c-a774-2b1d4834589d</Guid>
           <IndexGroup>16448</IndexGroup>
-          <IndexOffset>409440</IndexOffset>
+          <IndexOffset>630544</IndexOffset>
           <IsFileBased>false</IsFileBased>
           <IsHistorical>false</IsHistorical>
           <Name>fSetpointValueToScope_2</Name>
