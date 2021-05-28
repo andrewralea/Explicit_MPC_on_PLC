@@ -51,7 +51,7 @@ range.Reference.Min = [0 - L10, 0 - L20] * 1.25;
 range.Reference.Max = [30 - L10, 30 - L20] * 1.25;
 
 % Range of manipulated variable must contain the constraints (V)
-range.ManipulatedVariable.Min = [-1 - Vp10; -1 - Vp20];
+range.ManipulatedVariable.Min = [1 - Vp10; 1 - Vp20];
 range.ManipulatedVariable.Max = [23; 23];
 
 mpcobjExplicit = generateExplicitMPC(mpcobj, range);
