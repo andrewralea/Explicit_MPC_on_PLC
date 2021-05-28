@@ -26,7 +26,7 @@ m = 3;          % control horizon
 mpcobj = mpc(plant,Ts, p, m);
 
 % Specify constraints of the manipulated variable (V)
-mpcobj.MV = struct('Min', {1 - Vp10, 1 - Vp20},'Max', {23, 23}, 'Scalefactor', 1/6.536);
+mpcobj.MV = struct('Min', {0, 0},'Max', {23, 23}, 'Scalefactor', 1/6.536);
 
 % Create discrete model for simulation
 plant_discrete = c2d(plant,Ts);
@@ -52,7 +52,7 @@ range.Reference.Max = [30 - L10, 30 - L20] * 1.25;
 
 % Range of manipulated variable must contain the constraints (V)
 range.ManipulatedVariable.Min = [1 - Vp10; 1 - Vp20];
-range.ManipulatedVariable.Max = [23; 23];
+range.ManipulatedVariable.Max = [26; 26];
 
 mpcobjExplicit = generateExplicitMPC(mpcobj, range);
 
