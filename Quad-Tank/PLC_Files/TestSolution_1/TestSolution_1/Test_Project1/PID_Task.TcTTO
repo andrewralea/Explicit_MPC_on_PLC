@@ -2,7 +2,7 @@
 <TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.5">
   <Task Name="PID_Task" Id="{302947d7-2473-4a25-9977-e4e17beb4bf1}">
     <!--CycleTime in micro seconds.-->
-    <CycleTime>50000</CycleTime>
+    <CycleTime>10000</CycleTime>
     <Priority>1</Priority>
     <PouCall>
       <Name>PRG_PID_CALL</Name>
