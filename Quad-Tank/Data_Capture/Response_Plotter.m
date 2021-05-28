@@ -1,7 +1,7 @@
 %% Michael Ralea
 % Data capture plotting
 
-Array = csvread('122.csv');
+Array = csvread('65_Regions_3_3_corrected.csv');
 Time_s = Array(:, 1) * 0.001;
 Tank_1_Height = Array(:, 2);
 Tank_2_Height = Array(:, 3);
